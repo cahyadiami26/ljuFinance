@@ -36,12 +36,15 @@ return [
         'stage' => 5,
     ],
     [
-        'type'  => 'link',
-        'label' => 'Cash & Bank',
-        'route' => 'cash',
+        'type'  => 'group',
+        'label' => 'Kas & Bank',
         'icon'  => 'wallet',
-        'permission' => 'cash.view',
-        'stage' => 3,
+        'items' => [
+            ['label' => 'Kas & Bank', 'route' => 'cash', 'icon' => 'wallet', 'permission' => 'cash.view'],
+            ['label' => 'Uang Muka', 'route' => 'advance', 'icon' => 'coins', 'permission' => 'advance.view'],
+            ['label' => 'Pengajuan Biaya', 'route' => 'expense', 'icon' => 'receipt', 'permission' => 'expense.view'],
+            ['label' => 'Rekonsiliasi Bank', 'route' => 'cash/reconciliation', 'icon' => 'scale', 'permission' => 'cash.view'],
+        ],
     ],
     [
         'type'  => 'link',

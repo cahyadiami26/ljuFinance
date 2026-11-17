@@ -11,7 +11,7 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 |-------|------|--------|
 | 1 | Fondasi, Master Data & Executive Dashboard | ✅ Selesai |
 | 2 | Akuntansi Inti (jurnal, posting, tutup buku) | ✅ Selesai |
-| 3 | Kas & Bank, Uang Muka, Biaya | ⬜ Belum |
+| 3 | Kas & Bank, Uang Muka, Biaya | ✅ Selesai |
 | 4 | Hutang & Piutang | ⬜ Belum |
 | 5 | Anggaran & Approval Center | ⬜ Belum |
 | 6 | Aset Tetap & Perpajakan | ⬜ Belum |
@@ -20,7 +20,9 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 
 > **Pratinjau desain statis:** folder `preview/` berisi HTML hasil render nyata dari view PHP
 > (layout, partial, dan CSS yang sama) dengan data contoh: `dashboard`, `login`, `journal-index`,
-> `journal-form`, `journal-show`, `ledger`, `trial-balance`, `closing`. Berguna untuk meninjau tampilan
+> `journal-form`, `journal-show`, `ledger`, `trial-balance`, `closing`, `cash-index`, `cash-form`,
+> `cash-show`, `advance-index`, `advance-form`, `advance-show`, `expense-index`, `expense-form`,
+> `expense-show`, `recon-index`, `recon-form`, `recon-show`. Berguna untuk meninjau tampilan
 > tanpa server PHP/MySQL.
 
 ---
@@ -66,6 +68,25 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
   periode `closed` dengan alasan wajib, dan tutup buku tahunan dengan jurnal penutup otomatis.
 - Bukti transaksi: unggah/unduh/hapus lampiran per jurnal (tipe & ukuran divalidasi, unduhan butuh login).
 
+**Kas & bank, uang muka, biaya (Tahap 3)**
+
+- **Kas & Bank**: transaksi kas masuk, kas keluar, dan transfer antar rekening dengan penomoran otomatis
+  `KM/KK/TRF`, kartu saldo per rekening (bank, escrow, petty cash), filter status/tipe/rekening, dan
+  ringkasan tahun berjalan.
+- Alur persetujuan transaksi: draft → diajukan → disetujui/ditolak → **posted**; posting membuat jurnal
+  otomatis dan memperbarui `saldo_berjalan` rekening dalam satu transaksi DB.
+- Jurnal otomatis: masuk **D Bank / K akun lawan**, keluar **D akun lawan / K Bank**, transfer
+  **D Bank tujuan / K Bank asal** — dengan dimensi bidang/divisi/proyek/cost center.
+- **Uang muka kegiatan** (`CA`): pengajuan → persetujuan (jumlah disetujui) → pencairan (D Uang Muka /
+  K Bank) → pertanggungjawaban per akun beban → penyelesaian dengan pengembalian sisa atau pelunasan
+  kekurangan dana.
+- **Pengajuan biaya** (`EXP`): rincian multi-baris (COA beban, PPN, PPh, no. bukti), total = subtotal +
+  PPN − PPh, persetujuan, lalu pembayaran dengan jurnal D beban + D PPN Masukan / K utang PPh + K Bank.
+- **Rekonsiliasi bank**: saldo buku otomatis dari jurnal posted per rentang tanggal, baris rekening koran
+  manual, penandaan cocok, rekap selisih, penyelesaian dengan catatan wajib bila masih berselisih.
+- Editor baris dinamis (`assets/js/transaksi.js`) untuk rincian biaya/uang muka/rekening koran, termasuk
+  perhitungan total dan pengisian pajak otomatis dari tarif.
+
 **Administrasi sistem**
 
 - Pengguna & hak akses (9 role, permission granular `modul.aksi`).
@@ -103,6 +124,10 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 
    Alternatif manual: import berurutan `database/schema/01_foundation.sql` … `07_*.sql`,
    lalu `database/seed/01_reference.sql` dan (opsional) `database/seed/02_demo.sql`.
+
+   Jika database sudah terpasang **sebelum** Tahap 3, jalankan juga
+   `database/migrations/2026-11-17_tahap3_cash_permissions.sql` agar permission
+   `cash.approve` / `cash.post` tersedia (idempotent).
 
 4. **Jalankan installer** dengan token (default ada di `config/config.php` → `security.install_token`):
 
@@ -162,21 +187,26 @@ ljuFinance/
 │   ├── Config/                # menu.php, resources.php
 │   ├── Core/                  # Config, Db, Auth, Router, View, Csrf, Flash, Validator, Audit, Paginator, App
 │   ├── Support/               # helpers.php, icons.php
-│   ├── Services/              # Period, Numbering, Dashboard, Journal, Ledger, Closing
+│   ├── Services/              # Period, Numbering, Dashboard, Journal, Ledger, Closing, AccountMap,
+│   │                          # Cash, Advance, Expense, BankRecon
 │   ├── Controllers/           # Base, Master, Coa, Dashboard, Period, User, Role, Audit, Setting, Profile, Auth,
-│   │                          # Journal, Ledger, TrialBalance, Closing, Placeholder
+│   │                          # Journal, Ledger, TrialBalance, Closing, Cash, Advance, Expense,
+│   │                          # Reconciliation, Placeholder, TransaksiTrait
 │   └── Views/
 │       ├── layouts/           # app.php (shell), blank.php (auth/error)
 │       ├── partials/          # sidebar, topbar, flash, dashboard_head
 │       └── pages/             # dashboard, master/*, coa/*, period, user, role, audit, settings, profile,
-│                              # journal/{index,form,show}, ledger, trial-balance, closing, login, soon, error
+│                              # journal/{index,form,show}, ledger, trial-balance, closing,
+│                              # cash/{index,form,show,reconciliation-*}, advance/*, expense/*, login, soon, error
 ├── assets/
 │   ├── css/app.css            # design system (token, layout, komponen, editor jurnal)
 │   ├── js/app.js              # sidebar, flash, konfirmasi, format uang, ⌘K
-│   └── js/journal.js          # editor baris jurnal, total & indikator keseimbangan
+│   ├── js/journal.js          # editor baris jurnal, total & indikator keseimbangan
+│   └── js/transaksi.js        # baris dinamis kas/uang muka/biaya/rekonsiliasi + total & pajak
 ├── database/
 │   ├── schema/                # 53 tabel, 7 file
-│   └── seed/                  # 01_reference.sql, 02_demo.sql
+│   ├── seed/                  # 01_reference.sql, 02_demo.sql
+│   └── migrations/            # patch idempotent untuk database yang sudah terpasang
 ├── preview/                   # HTML statis pratinjau desain
 ├── storage/                   # log & ekspor (tidak di-commit)
 ├── uploads/                   # lampiran (tidak di-commit)
@@ -232,6 +262,19 @@ Sembilan role aplikasi: `super_admin`, `dirut`, `dirops`, `kabid_keuangan`, `sta
 11. Buka **Neraca Saldo** → total debit = total kredit (badge "Neraca seimbang").
 12. **Tutup Buku** → klik *Sinkronkan Saldo* → tutup satu periode yang tidak punya jurnal belum posted.
 13. Posting jurnal lalu **Buat Pembalik** → pastikan jurnal asal berstatus `reversed` dan saldo kembali.
+
+**Tahap 3 — kas & bank, uang muka, biaya**
+
+14. **Kas & Bank → Transaksi Baru**: buat kas keluar 1.000.000 (beban operasional) → ajukan → setujui →
+    posting → cek saldo rekening berkurang dan jurnal `KK/...` terbentuk dengan **D beban / K bank**.
+15. Buat **transfer** antar rekening → pastikan saldo asal berkurang dan saldo tujuan bertambah sebesar
+    nominal yang sama, tanpa akun beban/pendapatan.
+16. **Uang Muka → Pengajuan Baru** (mis. 5.000.000) → ajukan → setujui → **Cairkan** (jurnal D Uang Muka /
+    K Bank) → isi 2 rincian pertanggungjawaban → **Selesaikan** → sisa dana masuk kembali ke rekening.
+17. **Pengajuan Biaya → Baru**: isi rincian dengan PPN 11% dan PPh 2% → ajukan → setujui → **Bayar** →
+    periksa jurnal: D beban, D PPN Masukan, K utang PPh, K bank (total bersih).
+18. **Rekonsiliasi Bank → Baru**: pilih rekening + rentang tanggal → masukkan saldo rekening koran dan
+    satu mutasi bank → cocokkan baris → selesaikan (isi catatan bila masih ada selisih).
 
 ---
 

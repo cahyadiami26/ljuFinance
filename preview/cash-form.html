@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Transaksi Kas Baru · LJU Finance</title>
+    <link rel="icon" href="https://dms.lju.co.id/assets/img/logo.png">
+    <link rel="stylesheet" href="../assets/css/app.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo">
+            <span class="fallback">LJU</span>
+            <img src="https://dms.lju.co.id/assets/img/logo.png" alt="LJU" onerror="this.style.display='none'">
+        </div>
+        <div class="brand-text">
+            <div class="brand-name">LJU Finance</div>
+            <div class="brand-sub">FMS Enterprise</div>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+                                                    <a class="nav-item active"
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></span>
+                    <span class="nav-label">Dashboard</span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8.5" ry="3"/><path d="M3.5 5v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3V5"/><path d="M3.5 11v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3v-6"/></svg></span>
+                        <span class="nav-label">Master Data</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Chart of Accounts</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Bidang &amp; Divisi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Cost Center</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Unit Usaha</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Vendor &amp; Customer</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Proyek</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekening Bank</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Periode Akuntansi</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></span>
+                    <span class="nav-label">RKAP &amp; Budget</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 5"></span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H19a2 2 0 0 1 2 2v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17V8.5Z"/><path d="M3 9h14"/><path d="M16.5 12.5h3"/></svg></span>
+                        <span class="nav-label">Kas &amp; Bank</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Kas &amp; Bank</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Uang Muka</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengajuan Biaya</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekonsiliasi Bank</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="4" x2="12" y2="19"/><polyline points="6 13 12 19 18 13"/></svg></span>
+                    <span class="nav-label">Account Payable</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 4"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="20" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg></span>
+                    <span class="nav-label">Account Receivable</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 4"></span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5Z"/></svg></span>
+                        <span class="nav-label">Accounting</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Jurnal Umum</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Buku Besar</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Neraca Saldo</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Tutup Buku</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 12 3.5l9 5v7l-9 5-9-5v-7Z"/><path d="M3 8.5 12 13.5l9-5M12 13.5V21"/></svg></span>
+                    <span class="nav-label">Fixed Asset</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 6"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg></span>
+                    <span class="nav-label">Tax Management</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 6"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span>
+                    <span class="nav-label">Financial Reports</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 7"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="8.5 12.5 11 15 15.5 9.5"/></svg></span>
+                    <span class="nav-label">Approval Center</span>
+                                            <span class="nav-badge">5</span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.5 14.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.3 1Z"/></svg></span>
+                        <span class="nav-label">System Admin</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengguna &amp; Hak Akses</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Role &amp; Permission</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Audit Trail</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengaturan</span>
+                            </a>
+                                            </div>
+                </details>
+                        </nav>
+
+    <div class="sidebar-foot">
+        <span>v1.0.0 Enterprise</span>
+        <span class="foot-status"><span class="dot"></span>Online</span>
+    </div>
+</aside>
+
+    <div class="main">
+        <header class="topbar">
+    <div class="topbar-left">
+        <button class="icon-btn sidebar-toggle" type="button" data-sidebar-toggle aria-label="Buka menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>        </button>
+
+        <div class="product">
+            <strong>LJU Finance</strong>
+            <span>Finance</span>
+        </div>
+
+        <div class="crumbs">
+                                                                <span class="">Kas &amp; Bank</span>
+                                            <span class="sep">›</span>                                    <span class="current">Baru</span>
+                                    </div>
+    </div>
+
+    <form class="topbar-search" method="get" action="#" role="search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>        <input type="search" name="q" placeholder="Cari akun, COA, voucher…" value="" aria-label="Pencarian">
+        <kbd>⌘K</kbd>
+    </form>
+
+    <div class="topbar-actions">
+        <div class="chip chip--period" title="Periode akuntansi aktif">
+            <span class="chip-top">TA 2026</span>
+            <span class="chip-bottom">Nov 2026 · Open</span>
+        </div>
+
+        <span class="chip"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="5.5" ry="2.6"/><path d="M3.5 7v3.5c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6V7"/><path d="M14.5 12.4c2.7.2 4.8 1.3 4.8 2.6 0 1.4-2.5 2.6-5.5 2.6-2.3 0-4.3-.8-5.1-1.8"/><path d="M14.5 12.4v3.5"/></svg> IDR</span>
+
+        <a class="btn btn--primary" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Transaksi Baru
+        </a>
+
+        <a class="icon-btn" href="#" aria-label="Notifikasi">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10.5 20a2 2 0 0 0 3 0"/></svg>            <span class="dot-badge"></span>        </a>
+
+        <a class="profile" href="#" aria-label="Profil">
+            <span class="avatar">
+                                <span>BH</span>
+            </span>
+            <span class="profile-meta">
+                <span class="profile-name">Bambang Hartono</span>
+                <span class="profile-role">Direktur Utama</span>
+            </span>
+        </a>
+    </div>
+</header>
+
+        <main class="content">
+            
+                            <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Transaksi Kas Baru</h1>
+                                                    <div class="page-sub">Catat perpindahan dana kas/bank dengan akun lawan yang tepat.</div>
+                                                                    </div>
+                                            <div class="page-actions"><a class="btn" href="#">Batal</a></div>
+                                    </div>
+            
+            
+<form method="post" action="#" id="cash-form" data-no-spinner>
+    <input type="hidden" name="_token" value="b56febaee078cbfa01d8504fa904261ffa74e5c6df660cdc380187ebc326f725">
+    <div class="card mb-16">
+        <div class="card-head">
+            <div>
+                <h2 class="card-title">Informasi Transaksi</h2>
+                <div class="card-sub">Nomor dokumen dibuat otomatis: KM (masuk), KK (keluar), TRF (transfer).</div>
+            </div>
+                    </div>
+        <div class="card-body">
+            <div class="form-grid">
+                <div class="field">
+                    <label class="field-label" for="f-tipe">Tipe Transaksi</label>
+                    <select class="select" id="f-tipe" name="tipe" data-cash-tipe>
+                                                    <option value="masuk" >Kas Masuk</option>
+                                                    <option value="keluar" selected>Kas Keluar</option>
+                                                    <option value="transfer" >Transfer Antar Rekening</option>
+                                            </select>
+                                    </div>
+
+                <div class="field">
+                    <label class="field-label" for="f-tanggal">Tanggal</label>
+                    <input class="input" type="date" id="f-tanggal" name="tanggal" required value="2026-11-17">
+                    <span class="field-help">Transaksi hanya dapat dicatat pada periode terbuka.</span>
+                                    </div>
+
+                <div class="field">
+                    <label class="field-label" for="f-bank">Rekening Kas / Bank</label>
+                    <select class="select" id="f-bank" name="bank_account_id" required>
+                        <option value="">— pilih rekening —</option>
+                                                    <option value="1" selected>
+                                BNK-MDR — Mandiri Giro Operasional (Rp 22,45 M)                            </option>
+                                                    <option value="2" >
+                                BNK-BCA — BCA Payroll &amp; Vendor Pool (Rp 14,82 M)                            </option>
+                                                    <option value="3" >
+                                BNK-BNI — BNI Escrow Proyek Strategis (Rp 9,65 M)                            </option>
+                                                    <option value="4" >
+                                KAS-PC — Kas Kecil Kantor Pusat (Petty Cash) (Rp 1,80 M)                            </option>
+                                            </select>
+                                    </div>
+
+                <div class="field">
+                    <label class="field-label" for="f-jumlah">Jumlah (Rp)</label>
+                    <input class="input money" type="text" inputmode="numeric" id="f-jumlah" name="jumlah" required
+                           data-money value="12.500.000" placeholder="0">
+                                    </div>
+
+                <div class="field" data-cash-tipe-show="transfer">
+                    <label class="field-label" for="f-bank-tujuan">Rekening Tujuan</label>
+                    <select class="select" id="f-bank-tujuan" name="bank_account_tujuan_id">
+                        <option value="">— pilih rekening tujuan —</option>
+                                                    <option value="1" >
+                                BNK-MDR — Mandiri Giro Operasional                            </option>
+                                                    <option value="2" >
+                                BNK-BCA — BCA Payroll &amp; Vendor Pool                            </option>
+                                                    <option value="3" >
+                                BNK-BNI — BNI Escrow Proyek Strategis                            </option>
+                                                    <option value="4" >
+                                KAS-PC — Kas Kecil Kantor Pusat (Petty Cash)                            </option>
+                                            </select>
+                    <span class="field-help">Dana berpindah antar rekening, tanpa memengaruhi laba rugi.</span>
+                                    </div>
+
+                <div class="field" data-cash-tipe-hide="transfer">
+                    <label class="field-label" for="f-coa">Akun Lawan</label>
+                    <select class="select" id="f-coa" name="coa_lawan_id">
+                        <option value="">— pilih akun —</option>
+                                                    <option value="81" >
+                                5-1100 — Beban Material Proyek                            </option>
+                                                    <option value="88" selected>
+                                5-2100 — Beban Gaji &amp; Tunjangan                            </option>
+                                                    <option value="95" >
+                                5-3100 — Beban Perjalanan Dinas                            </option>
+                                                    <option value="43" >
+                                2-1100 — Utang Usaha                            </option>
+                                                    <option value="12" >
+                                1-1300 — Piutang Usaha                            </option>
+                                                    <option value="69" >
+                                4-1100 — Pendapatan Jasa Konstruksi                            </option>
+                                            </select>
+                    <span class="field-help">Akun pendapatan/piutang untuk kas masuk, akun beban/utang untuk kas keluar.</span>
+                                    </div>
+
+                <div class="field">
+                    <label class="field-label" for="f-referensi">Referensi</label>
+                    <input class="input" type="text" id="f-referensi" name="referensi" maxlength="80"
+                           value="BKK-1124" placeholder="mis. BKM-0123 / faktur vendor">
+                                    </div>
+
+                <div class="field">
+                    <label class="field-label" for="f-partner">Vendor / Customer</label>
+                    <select class="select" id="f-partner" name="partner_id">
+                        <option value="">—</option>
+                                                    <option value="1" selected>
+                                PT Wijaya Perkasa Teknik · Vendor                            </option>
+                                                    <option value="2" >
+                                PT PLN (Persero) · Customer                            </option>
+                                            </select>
+                                    </div>
+
+                <div class="field field--full">
+                    <label class="field-label" for="f-deskripsi">Deskripsi</label>
+                    <input class="input" type="text" id="f-deskripsi" name="deskripsi" maxlength="255" required
+                           value="Pembayaran honor narasumber pelatihan K3" placeholder="mis. Pembayaran honor narasumber pelatihan">
+                                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-16">
+        <div class="card-head">
+            <div>
+                <h2 class="card-title">Dimensi Laporan</h2>
+                <div class="card-sub">Opsional, dipakai untuk analisis per bidang, divisi, proyek, dan cost center.</div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="form-grid">
+                <div class="field">
+                    <label class="field-label" for="f-bidang">Bidang</label>
+                    <select class="select" id="f-bidang" name="bidang_id">
+                        <option value="">—</option>
+                                                    <option value="1" selected>Divisi Konstruksi &amp; Proyek Sipil</option>
+                                                    <option value="2" >Divisi Operasional</option>
+                                            </select>
+                </div>
+                <div class="field">
+                    <label class="field-label" for="f-divisi">Divisi</label>
+                    <select class="select" id="f-divisi" name="divisi_id">
+                        <option value="">—</option>
+                                                    <option value="4" selected>Proyek Gedung Regional</option>
+                                                    <option value="2" >Operasional</option>
+                                            </select>
+                </div>
+                <div class="field">
+                    <label class="field-label" for="f-project">Proyek</label>
+                    <select class="select" id="f-project" name="project_id">
+                        <option value="">—</option>
+                                                    <option value="1" selected>PRJ-001 — Pembangunan Gedung Regional</option>
+                                                    <option value="3" >PRJ-003 — Angkutan Batubara</option>
+                                            </select>
+                </div>
+                <div class="field">
+                    <label class="field-label" for="f-cc">Cost Center</label>
+                    <select class="select" id="f-cc" name="cost_center_id">
+                        <option value="">—</option>
+                                                    <option value="4" selected>CC-04 — CC Proyek Sipil</option>
+                                                    <option value="2" >CC-02 — CC Operasional</option>
+                                            </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-16">
+        <div class="card-head">
+            <div>
+                <h2 class="card-title">Efek Jurnal</h2>
+                <div class="card-sub">Jurnal dibuat otomatis saat transaksi diposting.</div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="notice">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="8" r=".7"/></svg>                <div>
+                    <strong>Kas masuk:</strong> Debit rekening bank, Kredit akun lawan.
+                    <br><strong>Kas keluar:</strong> Debit akun lawan, Kredit rekening bank.
+                    <br><strong>Transfer:</strong> Debit rekening tujuan, Kredit rekening asal.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn btn--primary" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h11l3 3v15H5V3Z"/><path d="M8 3v6h7V3"/><rect x="8" y="13" width="8" height="8"/></svg> Simpan Draft</button>
+        <a class="btn" href="#">Batal</a>
+        <span class="spacer"></span>
+        <span class="tiny muted">Setelah tersimpan, transaksi masih draft dan perlu diajukan serta disetujui sebelum posting.</span>
+    </div>
+</form>
+
+<script src="../assets/js/transaksi.js" defer></script>
+        </main>
+
+        <div class="footer-bar">
+            <span>&copy; 2026 PT. Lampung Jasa Utama · LJU Finance v1.0.0</span>
+            <span>Zona waktu Asia/Jakarta · Data per 17 Nov 2026 06:45 WIB</span>
+        </div>
+    </div>
+</div>
+<div class="sidebar-backdrop" data-sidebar-close></div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -9,17 +9,21 @@
  * @var \Lju\Core\Router $router
  */
 
+use Lju\Controllers\AdvanceController;
 use Lju\Controllers\AuditController;
+use Lju\Controllers\CashController;
 use Lju\Controllers\ClosingController;
 use Lju\Controllers\AuthController;
 use Lju\Controllers\CoaController;
 use Lju\Controllers\DashboardController;
+use Lju\Controllers\ExpenseController;
 use Lju\Controllers\JournalController;
 use Lju\Controllers\LedgerController;
 use Lju\Controllers\MasterController;
 use Lju\Controllers\PeriodController;
 use Lju\Controllers\PlaceholderController;
 use Lju\Controllers\ProfileController;
+use Lju\Controllers\ReconciliationController;
 use Lju\Controllers\RoleController;
 use Lju\Controllers\SettingController;
 use Lju\Controllers\TrialBalanceController;
@@ -99,9 +103,57 @@ $router->post('closing/year', [ClosingController::class, 'closeYear'], 'period.m
 $router->post('closing/{id}/close', [ClosingController::class, 'close'], 'period.manage');
 $router->post('closing/{id}/lock', [ClosingController::class, 'lock'], 'period.manage');
 $router->post('closing/{id}/reopen', [ClosingController::class, 'reopen'], 'period.manage');
-$router->get('cash', [PlaceholderController::class, 'show'], 'cash.view');
-$router->get('cash/advance', [PlaceholderController::class, 'show'], 'advance.view');
-$router->get('expense', [PlaceholderController::class, 'show'], 'expense.view');
+/* ------------------------------------------------------------------ kas & bank */
+$router->get('cash', [CashController::class, 'index'], 'cash.view');
+$router->get('cash/create', [CashController::class, 'create'], 'cash.manage');
+$router->post('cash', [CashController::class, 'store'], 'cash.manage');
+
+$router->get('cash/reconciliation', [ReconciliationController::class, 'index'], 'cash.view');
+$router->get('cash/reconciliation/create', [ReconciliationController::class, 'create'], 'cash.manage');
+$router->post('cash/reconciliation', [ReconciliationController::class, 'store'], 'cash.manage');
+$router->get('cash/reconciliation/{id}', [ReconciliationController::class, 'show'], 'cash.view');
+$router->post('cash/reconciliation/{id}/match', [ReconciliationController::class, 'match'], 'cash.manage');
+$router->post('cash/reconciliation/{id}/finish', [ReconciliationController::class, 'finish'], 'cash.manage');
+$router->post('cash/reconciliation/{id}/delete', [ReconciliationController::class, 'destroy'], 'cash.manage');
+
+$router->get('cash/advance', [AdvanceController::class, 'index'], 'advance.view');
+
+$router->get('cash/{id}', [CashController::class, 'show'], 'cash.view');
+$router->get('cash/{id}/edit', [CashController::class, 'edit'], 'cash.manage');
+$router->post('cash/{id}', [CashController::class, 'update'], 'cash.manage');
+$router->post('cash/{id}/submit', [CashController::class, 'submit'], 'cash.manage');
+$router->post('cash/{id}/approve', [CashController::class, 'approve'], 'cash.approve');
+$router->post('cash/{id}/reject', [CashController::class, 'reject'], 'cash.approve');
+$router->post('cash/{id}/post', [CashController::class, 'post'], 'cash.post');
+$router->post('cash/{id}/delete', [CashController::class, 'destroy'], 'cash.manage');
+
+/* ------------------------------------------------------------------ uang muka */
+$router->get('advance', [AdvanceController::class, 'index'], 'advance.view');
+$router->get('advance/create', [AdvanceController::class, 'create'], 'advance.manage');
+$router->post('advance', [AdvanceController::class, 'store'], 'advance.manage');
+$router->get('advance/{id}', [AdvanceController::class, 'show'], 'advance.view');
+$router->get('advance/{id}/edit', [AdvanceController::class, 'edit'], 'advance.manage');
+$router->post('advance/{id}', [AdvanceController::class, 'update'], 'advance.manage');
+$router->post('advance/{id}/submit', [AdvanceController::class, 'submit'], 'advance.manage');
+$router->post('advance/{id}/approve', [AdvanceController::class, 'approve'], 'advance.approve');
+$router->post('advance/{id}/reject', [AdvanceController::class, 'reject'], 'advance.approve');
+$router->post('advance/{id}/cair', [AdvanceController::class, 'cair'], 'advance.manage');
+$router->post('advance/{id}/items', [AdvanceController::class, 'items'], 'advance.manage');
+$router->post('advance/{id}/settle', [AdvanceController::class, 'settle'], 'advance.manage');
+$router->post('advance/{id}/delete', [AdvanceController::class, 'destroy'], 'advance.manage');
+
+/* --------------------------------------------------------------- pengajuan biaya */
+$router->get('expense', [ExpenseController::class, 'index'], 'expense.view');
+$router->get('expense/create', [ExpenseController::class, 'create'], 'expense.manage');
+$router->post('expense', [ExpenseController::class, 'store'], 'expense.manage');
+$router->get('expense/{id}', [ExpenseController::class, 'show'], 'expense.view');
+$router->get('expense/{id}/edit', [ExpenseController::class, 'edit'], 'expense.manage');
+$router->post('expense/{id}', [ExpenseController::class, 'update'], 'expense.manage');
+$router->post('expense/{id}/submit', [ExpenseController::class, 'submit'], 'expense.manage');
+$router->post('expense/{id}/approve', [ExpenseController::class, 'approve'], 'expense.approve');
+$router->post('expense/{id}/reject', [ExpenseController::class, 'reject'], 'expense.approve');
+$router->post('expense/{id}/pay', [ExpenseController::class, 'pay'], 'expense.manage');
+$router->post('expense/{id}/delete', [ExpenseController::class, 'destroy'], 'expense.manage');
 $router->get('ap', [PlaceholderController::class, 'show'], 'ap.view');
 $router->get('ar', [PlaceholderController::class, 'show'], 'ar.view');
 $router->get('budget', [PlaceholderController::class, 'show'], 'budget.view');

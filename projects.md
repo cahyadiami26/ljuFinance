@@ -67,13 +67,16 @@ menunggu konfirmasi sebelum tahap berikutnya dimulai.
 │       └── pages/             # halaman per modul
 ├── assets/
 │   ├── css/app.css            # design system (satu file, tanpa framework)
-│   ├── js/app.js              # sidebar, modal, konfirmasi, format angka, chart tooltip
+│   ├── js/app.js              # sidebar, konfirmasi, format angka, ⌘K
+│   ├── js/journal.js          # editor baris jurnal & indikator keseimbangan
+│   ├── js/transaksi.js        # baris dinamis kas/uang muka/biaya/rekonsiliasi
 │   └── img/                   # fallback logo, placeholder
 ├── uploads/                   # bukti transaksi (diproteksi dari eksekusi PHP)
 ├── vendor/dompdf/             # domPDF (manual, tanpa composer)
 ├── database/
 │   ├── schema/                # 01_foundation.sql ... 07_approval.sql
-│   └── seed/                  # 01_reference.sql (wajib), 02_demo.sql (opsional)
+│   ├── seed/                  # 01_reference.sql (wajib), 02_demo.sql (opsional)
+│   └── migrations/            # patch idempotent untuk database yang sudah terpasang
 ├── storage/                   # log, cache, export sementara
 └── projects.md, readme.md
 ```
@@ -142,6 +145,9 @@ Role aplikasi (bukan role SSO — SSO hanya `admin|user|op_arsip`):
 
 Permission granular: `<modul>.<aksi>` (contoh `journal.create`, `ap.approve`, `period.close`,
 `audit.view`). Disimpan di `app_role_permissions`. Daftar lengkap ada di `database/seed/01_reference.sql`.
+Kas & bank memakai pemisahan `cash.view` / `cash.manage` / `cash.approve` / `cash.post`; database yang
+dipasang sebelum Tahap 3 perlu menjalankan `database/migrations/2026-11-17_tahap3_cash_permissions.sql`
+agar dua permission terakhir tersedia.
 
 **Approval engine** mendukung: approve, return-for-revision, reject-with-reason, delegasi,
 penggantian pejabat (delegation berlaku per modul & rentang tanggal), riwayat persetujuan,
@@ -213,6 +219,23 @@ ditutup melalui `fiscal_years.status=closed` + jurnal penutup tahunan.
 Catatan: persetujuan jurnal pada tahap ini masih di level modul (`journal.approve`). Pada Tahap 5
 seluruh approval dimigrasikan ke **Approval Center** (`approval_requests`, delegasi, SLA) tanpa
 mengubah status jurnal yang sudah ada.
+
+### Implementasi (Tahap 3 — selesai)
+
+| Komponen | Perilaku |
+|----------|----------|
+| `AccountMap` | pemetaan akun COA untuk modul transaksi: rekening bank → `ms_bank_accounts.coa_account_id`, uang muka `1-1410`, PPN masukan dari `tax_types.coa_masukan_id`, utang PPh dari `tax_types.coa_keluaran_id`, dengan fallback pencarian kode akun + cache dalam request |
+| `JournalService::catat()` | jalur posting jurnal otomatis untuk modul: validasi periode terbuka & debit = kredit, tanpa nomor manual (memakai `doc_sequences`), aman dipanggil di dalam transaksi modul (`inTransaction()` dideteksi, tidak membuat transaksi bersarang) |
+| `CashService` | kas masuk/keluar/transfer: nomor `KM/KK/TRF`, status draft → diajukan → disetujui/ditolak → posted; posting atomik (jurnal + `journal_id` + `posted_at` + saldo rekening), transfer mengisi `coa_lawan_id` dengan COA rekening tujuan karena kolom wajib |
+| Jurnal kas | masuk: **D Bank / K akun lawan**; keluar: **D akun lawan / K Bank**; transfer: **D Bank tujuan / K Bank asal** — dimensi bidang/divisi/proyek/cost center ikut tercatat pada baris |
+| `AdvanceService` | uang muka `CA`: pengajuan → disetujui (jumlah disetujui boleh ≤ pengajuan) → **cair** (D Uang Muka / K Bank) → rincian pertanggungjawaban → **selesai** (D beban sesuai rincian, K Uang Muka sebesar pencairan, selisih sisa → D Bank bila kembali atau K Bank bila kurang bayar) |
+| `ExpenseService` | biaya `EXP`: rincian per akun beban dengan PPN & PPh per baris; total = subtotal + PPN − PPh; **bayar** membuat jurnal D beban + D PPN Masukan / K Utang PPh + K Bank, saldo rekening berkurang |
+| `BankReconService` | rekonsiliasi: baris buku diambil otomatis dari `journal_lines` akun rekening yang `posted` pada rentang tanggal, baris rekening koran diisi manual, penandaan cocok, rekap `jumlah_cocok`/`jumlah_selisih`, penyelesaian wajib beralasan bila masih ada selisih |
+| UI | daftar + form + detail untuk kas/bank, uang muka, biaya, dan rekonsiliasi; kartu saldo rekening real-time, strip ringkasan, editor baris dinamis (`assets/js/transaksi.js`), timeline proses, dan tautan ke jurnal otomatis |
+| Penomoran | `KM` (kas masuk), `KK` (kas keluar), `TRF` (transfer), `CA` (uang muka), `EXP` (biaya) melanjutkan `doc_sequences` yang sudah ada |
+
+Catatan: status `cash_advances` memakai `cair` dan `pertanggungjawaban`; `expense_requests` memakai
+`dibayar`. Keduanya sudah tersedia pada enum skema sehingga tidak ada migrasi tambahan.
 
 ---
 
@@ -302,11 +325,20 @@ Legenda: ✅ selesai · 🚧 berjalan · ⬜ belum
 - Mapping akun transaksi memakai kolom yang sudah ada pada master: `ms_bank_accounts.coa_account_id`,
   `tax_types.coa_keluaran_id/coa_masukan_id`, `asset_categories.coa_aset_id/coa_akumulasi_id/coa_beban_penyusutan_id`.
 
-### Tahap 3 — Kas & Bank, Uang Muka, Biaya ⬜
-Petty cash, kas masuk/keluar, transfer antar rekening, mutasi rekening, rekonsiliasi bank,
-monitoring saldo real-time, cash advance (pengajuan → persetujuan → pencairan → pertanggungjawaban →
-pengembalian sisa), expense management (perjalanan dinas, rapat, pemeliharaan, transportasi) berikut
-verifikasi bukti dan jurnal otomatis.
+### Tahap 3 — Kas & Bank, Uang Muka, Biaya ✅
+- **Kas & Bank**: kas masuk (`KM`), kas keluar (`KK`), transfer antar rekening (`TRF`) dengan kartu saldo
+  rekening real-time, filter status/tipe/rekening, dan ringkasan tahun berjalan.
+- Alur persetujuan transaksi: draft → diajukan → disetujui/ditolak → **posted**; posting membuat jurnal
+  otomatis dan menyesuaikan `ms_bank_accounts.saldo_berjalan` dalam satu transaksi DB.
+- **Uang muka**: pengajuan (`CA`), persetujuan dengan jumlah disetujui, pencairan (D Uang Muka / K Bank),
+  rincian pertanggungjawaban per akun beban, penyelesaian dengan pengembalian sisa atau penagihan
+  kekurangan dana, tautan ke jurnal pencairan & penyelesaian.
+- **Pengajuan biaya** (`EXP`): jenis biaya, rincian multi-baris dengan COA beban, PPN masukan dan potongan
+  PPh per baris, persetujuan, pembayaran dengan jurnal D beban + D PPN / K utang PPh + K Bank.
+- **Rekonsiliasi bank**: rentang tanggal per rekening, saldo buku dihitung dari jurnal posted, baris
+  rekening koran manual, penandaan baris cocok, rekap selisih, dan penyelesaian dengan catatan wajib
+  bila masih berselisih.
+- Mapping akun terpusat di `AccountMap`; jurnal modul memakai `JournalService::catat()`.
 
 ### Tahap 4 — Hutang & Piutang ⬜
 AP: tagihan supplier, termin, approval pembayaran, pembayaran sebagian/penuh, aging payable.
@@ -367,3 +399,14 @@ Detail lengkap ada di `readme.md`.
 - [ ] `account_period_balances` dapat dihitung ulang tanpa mengubah angka laporan.
 - [ ] Tutup buku bulanan menolak periode yang masih punya jurnal belum posted.
 - [ ] Lampiran jurnal tidak dapat diakses tanpa login (bukan URL publik langsung).
+
+**Khusus kas & bank (Tahap 3)**
+
+- [ ] Posting kas/uang muka/biaya membuat jurnal yang **seimbang** (debit = kredit) dan menolak periode tertutup.
+- [ ] Saldo rekening hanya berubah saat posting/pencairan/pembayaran, bukan saat draft atau pengajuan.
+- [ ] Transfer menolak rekening tujuan yang sama dengan rekening asal dan mencatat lawan ke COA rekening tujuan.
+- [ ] Pencairan uang muka hanya mungkin dari status `approved`; penyelesaian hanya setelah ada rincian.
+- [ ] Selisih uang muka (sisa/kurang) masuk ke rekening bank, bukan ke akun beban.
+- [ ] Pembayaran biaya memisahkan PPN masukan (D) dan potongan PPh (K) dari nilai bank (K).
+- [ ] Penyelesaian rekonsiliasi menolak selisih tanpa catatan penjelasan.
+- [ ] Penomoran `KM/KK/TRF/CA/EXP` melanjutkan urutan `doc_sequences` yang ada (tanpa duplikat).

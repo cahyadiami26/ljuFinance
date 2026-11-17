@@ -330,6 +330,84 @@ final class JournalService
         });
     }
 
+    /**
+     * Catat jurnal otomatis yang langsung berstatus posted (dipakai modul kas/bank,
+     * uang muka, biaya, dan rekonsiliasi). Total dibulatkan & wajib seimbang.
+     *
+     * @param array{tanggal:string,tipe?:string,sumber?:string,referensi?:?string,deskripsi:string} $header
+     * @param array<int,array<string,mixed>> $lines
+     */
+    public static function catat(array $header, array $lines): int
+    {
+        $work = static function () use ($header, $lines): int {
+            $tanggal = (string) ($header['tanggal'] ?? today());
+            $periode = PeriodService::forDate($tanggal);
+            if ($periode === null) {
+                throw new \RuntimeException('Tidak ada periode akuntansi untuk tanggal ' . $tanggal . '.');
+            }
+            if ((string) $periode['status'] !== 'open') {
+                throw new \RuntimeException('Periode ' . $periode['nama'] . ' sudah ditutup/dikunci.');
+            }
+
+            $totalDebit = 0.0;
+            $totalKredit = 0.0;
+            foreach ($lines as $line) {
+                $totalDebit += (float) ($line['debit'] ?? 0);
+                $totalKredit += (float) ($line['kredit'] ?? 0);
+            }
+
+            if (abs($totalDebit - $totalKredit) > 0.005) {
+                throw new \RuntimeException('Jurnal otomatis tidak seimbang (debit ' . rupiah($totalDebit) . ' vs kredit ' . rupiah($totalKredit) . ').');
+            }
+            if ($totalDebit <= 0) {
+                throw new \RuntimeException('Nilai jurnal otomatis harus lebih besar dari nol.');
+            }
+
+            $tipe = (string) ($header['tipe'] ?? 'otomatis');
+            $journalId = Db::insert('journal_entries', [
+                'nomor'        => NumberingService::next((string) ($header['kode_dokumen'] ?? self::kodeDokumen($tipe)), $tanggal),
+                'tanggal'      => $tanggal,
+                'periode_id'   => (int) $periode['id'],
+                'fiscal_year'  => (int) $periode['tahun'],
+                'tipe'         => $tipe,
+                'sumber'       => (string) ($header['sumber'] ?? 'integrasi'),
+                'referensi'    => isset($header['referensi']) && $header['referensi'] !== '' ? $header['referensi'] : null,
+                'deskripsi'    => mb_substr((string) $header['deskripsi'], 0, 255),
+                'total_debit'  => number_format($totalDebit, 2, '.', ''),
+                'total_kredit' => number_format($totalKredit, 2, '.', ''),
+                'status'       => 'posted',
+                'created_by'   => auth_id() ?: null,
+                'posted_by'    => auth_id() ?: null,
+                'posted_at'    => now(),
+            ]);
+
+            foreach (array_values($lines) as $index => $line) {
+                Db::insert('journal_lines', [
+                    'journal_id'       => $journalId,
+                    'urutan'           => $index + 1,
+                    'coa_id'           => (int) $line['coa_id'],
+                    'deskripsi'        => isset($line['deskripsi']) ? mb_substr((string) $line['deskripsi'], 0, 255) : null,
+                    'debit'            => number_format((float) ($line['debit'] ?? 0), 2, '.', ''),
+                    'kredit'           => number_format((float) ($line['kredit'] ?? 0), 2, '.', ''),
+                    'bidang_id'        => $line['bidang_id'] ?? null,
+                    'divisi_id'        => $line['divisi_id'] ?? null,
+                    'business_unit_id' => $line['business_unit_id'] ?? null,
+                    'project_id'       => $line['project_id'] ?? null,
+                    'cost_center_id'   => $line['cost_center_id'] ?? null,
+                    'partner_id'       => $line['partner_id'] ?? null,
+                    'tax_type_id'      => $line['tax_type_id'] ?? null,
+                ]);
+            }
+
+            self::rebuildYear((int) $periode['tahun']);
+
+            return $journalId;
+        };
+
+        // terbuka untuk dipanggil dari dalam transaksi modul pemanggil
+        return Db::pdo()->inTransaction() ? $work() : Db::transaction($work);
+    }
+
     public static function ubahStatus(int $id, string $status, array $extra = []): void
     {
         Db::update('journal_entries', array_merge(['status' => $status], $extra), 'id = :id', [':id' => $id]);
