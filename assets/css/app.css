@@ -700,7 +700,88 @@ table.table.compact tbody td { padding: 9px 12px; }
     .crumbs { display: none; }
     .card-head { padding: 16px 16px 12px; }
     .card-body { padding: 0 16px 16px; }
+    .dimensi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .action-pop-body { width: 240px; }
 }
+
+
+/* ================================================== akuntansi & jurnal === */
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: -.01em; }
+.num-strong { font-weight: 700; color: var(--ink); }
+.dk-tag {
+    display: inline-block; margin-left: 3px; padding: 1px 5px; border-radius: 5px;
+    background: #eef2f7; color: var(--ink-3); font-size: 9.5px; font-weight: 700;
+    letter-spacing: .04em; vertical-align: 1px;
+}
+.table--compact th, .table--compact td { padding: 8px 10px; font-size: 11.5px; }
+.row-opening td { background: #f8fafc; }
+
+/* editor baris jurnal */
+.journal-editor td { vertical-align: top; padding: 7px 8px; }
+.journal-editor .select, .journal-editor .input { height: 34px; font-size: 12.5px; }
+.jline-no { color: var(--ink-4); font-size: 11.5px; font-weight: 600; padding-top: 15px !important; }
+.jline-actions { display: flex; gap: 4px; padding-top: 3px; }
+.icon-btn {
+    width: 28px; height: 28px; display: inline-grid; place-items: center;
+    border: 1px solid var(--border); background: #fff; border-radius: 7px;
+    color: var(--ink-3); cursor: pointer; transition: all .12s ease;
+}
+.icon-btn:hover { background: #f4f7fb; color: var(--ink); border-color: var(--border-strong); }
+.icon-btn.is-active { background: var(--primary-soft); border-color: #c7d8fb; color: var(--primary); }
+.jline-dimensi td { background: #f8fafc; border-top: 0; padding: 2px 8px 10px; }
+.dimensi-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.dimensi-item { display: flex; flex-direction: column; gap: 3px; }
+.dimensi-item span {
+    font-size: 10px; text-transform: uppercase; letter-spacing: .04em;
+    color: var(--ink-4); font-weight: 600;
+}
+.balance-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.balance-chip {
+    display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px;
+    border-radius: 99px; font-size: 12px; font-weight: 700;
+    background: #f1f5f9; color: var(--ink-2);
+}
+.balance-chip[data-state="balanced"] { background: var(--success-soft); color: #15803d; }
+.balance-chip[data-state="unbalanced"] { background: var(--danger-soft); color: #b91c1c; }
+
+/* panel aksi tambahan */
+.action-pop { position: relative; }
+.action-pop > summary { list-style: none; cursor: pointer; }
+.action-pop > summary::-webkit-details-marker { display: none; }
+.action-pop-body {
+    margin-top: 8px; width: 268px; background: #fff; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 12px; box-shadow: var(--shadow-md);
+}
+
+/* timeline proses */
+.timeline { display: flex; flex-direction: column; gap: 14px; }
+.timeline-item { display: flex; gap: 10px; align-items: flex-start; }
+.timeline-dot {
+    width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center;
+    flex: 0 0 auto; background: #f1f5f9; color: var(--ink-3);
+}
+.timeline-dot--primary { background: var(--primary-soft); color: var(--primary); }
+.timeline-dot--info { background: var(--info-soft); color: var(--info); }
+.timeline-dot--sukses { background: var(--success-soft); color: #15803d; }
+.timeline-dot--bahaya { background: var(--danger-soft); color: var(--danger); }
+.timeline-dot--warning { background: var(--warning-soft); color: var(--warning); }
+
+/* lampiran */
+.attach-list { display: flex; flex-direction: column; gap: 8px; }
+.attach-item {
+    display: flex; align-items: center; gap: 10px; padding: 9px 11px;
+    border: 1px solid var(--border); border-radius: var(--radius-sm); background: #fff;
+}
+.attach-icon {
+    width: 30px; height: 30px; border-radius: 8px; background: #f1f5f9;
+    display: grid; place-items: center; color: var(--ink-3); flex: 0 0 auto;
+}
+.attach-meta { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0; }
+.attach-meta a {
+    font-size: 12.5px; font-weight: 600; color: var(--ink); text-decoration: none;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.attach-meta a:hover { color: var(--primary); }
 
 /* --------------------------------------------------------------- print --- */
 @media print {

@@ -197,6 +197,23 @@ penyesuaian, penutup, pembalik, integrasi`.
 `account_period_balances` awal periode berikutnya, kunci periode (`status=locked`). Tahun buku
 ditutup melalui `fiscal_years.status=closed` + jurnal penutup tahunan.
 
+### Implementasi (Tahap 2 — selesai)
+
+| Komponen | Perilaku |
+|----------|----------|
+| `JournalService` | normalisasi input, validasi (periode terbuka, akun posting, debit=kredit), simpan draft, ajukan → setujui/tolak → posting, pembalik, hapus draft |
+| Posting | satu `Db::transaction`: ubah status → `posted`, isi `posted_by/posted_at`, lalu `rebuildYear()` |
+| `account_period_balances` | **cache** saldo per akun per periode (debit positif). `saldo_akhir = saldo_awal + mutasi_debit − mutasi_kredit`. Dihitung ulang penuh per tahun buku — idempotent & aman terhadap backdate |
+| Laporan | buku besar, buku besar pembantu, dan neraca saldo **dihitung langsung dari `journal_lines` status `posted`**, sehingga tidak pernah bergantung pada cache yang basi |
+| Pembalik | jurnal baru `tipe=pembalik` dengan debit/kredit tertukar, langsung posted; jurnal asal → `status=reversed` + `reversed_by_id` |
+| Tutup buku bulanan | ditolak bila masih ada jurnal belum posted; set periode `closed`, hitung ulang saldo (carry-forward otomatis), catat `period_closings` |
+| Tutup buku tahunan | jurnal penutup `tipe=penutup`: pendapatan (D) & beban (K) → `3-2100 Laba Tahun Berjalan` → `3-2000 Saldo Laba`; seluruh periode → `locked`; `fiscal_years.status=closed` |
+| Bukti transaksi | `attachments` (module=`journal`), disimpan di `uploads/journal/YYYY/MM`, unduhan melalui rute ber-permission (bukan URL publik) |
+
+Catatan: persetujuan jurnal pada tahap ini masih di level modul (`journal.approve`). Pada Tahap 5
+seluruh approval dimigrasikan ke **Approval Center** (`approval_requests`, delegasi, SLA) tanpa
+mengubah status jurnal yang sudah ada.
+
 ---
 
 ## 9. Nomor Dokumen
@@ -269,11 +286,21 @@ Legenda: ✅ selesai · 🚧 berjalan · ⬜ belum
 - Catatan penyesuaian: `View::partial()` memakai parameter berprefiks (`$__template`, `$__data`) agar
   variabel view seperti `$data` / `$file` tidak tertutup oleh `extract()`.
 
-### Tahap 2 — Akuntansi Inti (Core Accounting) ⬜
-COA lanjutan (mapping akun transaksi), Journal Management (manual, penyesuaian, akrual, pembalik),
-posting engine atomik + `account_period_balances`, General Ledger per akun, Buku Besar Pembantu,
-Trial Balance, Accounting Period Management (buka/tutup/kunci, tutup buku bulanan & tahunan, saldo awal),
-upload bukti transaksi, approval jurnal.
+### Tahap 2 — Akuntansi Inti (Core Accounting) ✅
+- `JournalService`: simpan draft multi-baris (dimensi bidang/divisi/proyek/cost center/vendor), validasi
+  debit = kredit, akun wajib `allow_posting`, periode wajib terbuka.
+- Alur status: **draft → diajukan → disetujui/ditolak → posted**; hapus & ubah hanya pada draft/ditolak.
+- Posting atomik (satu transaksi DB) + pembalik otomatis (`tipe=pembalik`, jurnal asal ditandai `reversed`).
+- `account_period_balances` sebagai cache saldo per akun/periode (dihitung ulang per tahun buku).
+- **Buku Besar** per akun: saldo awal, mutasi berjalan, saldo akhir, filter dimensi + rekap
+  buku besar pembantu per bidang/divisi/proyek.
+- **Neraca Saldo**: saldo awal, mutasi, saldo akhir per akun, mode periode/kumulatif, pemeriksaan keseimbangan.
+- **Tutup Buku**: bulanan (validasi jurnal belum posted, carry-forward saldo), kunci periode permanen,
+  buka kembali periode `closed` dengan alasan, tutup tahunan dengan jurnal penutup otomatis.
+- **Bukti transaksi**: unggah/unduh/hapus lampiran per jurnal (validasi tipe & ukuran, unduhan ber-permission).
+- Penomoran otomatis `JU/KM/KK/TRF` dari `doc_sequences`.
+- Mapping akun transaksi memakai kolom yang sudah ada pada master: `ms_bank_accounts.coa_account_id`,
+  `tax_types.coa_keluaran_id/coa_masukan_id`, `asset_categories.coa_aset_id/coa_akumulasi_id/coa_beban_penyusutan_id`.
 
 ### Tahap 3 — Kas & Bank, Uang Muka, Biaya ⬜
 Petty cash, kas masuk/keluar, transfer antar rekening, mutasi rekening, rekonsiliasi bank,
@@ -330,3 +357,13 @@ Detail lengkap ada di `readme.md`.
 - [ ] Uji peran: `super_admin`, `dirut`, `staff_finance`, `auditor` (read-only) — menu & aksi sesuai.
 - [ ] Angka uang selalu `DECIMAL` dan diformat `rupiah()`.
 - [ ] Aksi destruktif memakai konfirmasi + tercatat di audit log.
+
+**Khusus akuntansi (Tahap 2)**
+
+- [ ] Jurnal tidak seimbang ditolak di server (bukan hanya di klien).
+- [ ] Posting tidak mungkin pada periode `closed`/`locked`.
+- [ ] Neraca saldo seimbang setelah posting & setelah pembalikan.
+- [ ] Jurnal `reversed` tidak dihitung ganda (asal diabaikan, pembalik dihitung).
+- [ ] `account_period_balances` dapat dihitung ulang tanpa mengubah angka laporan.
+- [ ] Tutup buku bulanan menolak periode yang masih punya jurnal belum posted.
+- [ ] Lampiran jurnal tidak dapat diakses tanpa login (bukan URL publik langsung).

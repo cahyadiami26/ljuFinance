@@ -64,10 +64,10 @@ return [
         'label' => 'Accounting',
         'icon'  => 'book',
         'items' => [
-            ['label' => 'Jurnal Umum', 'route' => 'journal', 'icon' => 'edit', 'permission' => 'journal.view', 'stage' => 2],
-            ['label' => 'Buku Besar', 'route' => 'ledger', 'icon' => 'book', 'permission' => 'journal.view', 'stage' => 2],
-            ['label' => 'Neraca Saldo', 'route' => 'trial-balance', 'icon' => 'scale', 'permission' => 'journal.view', 'stage' => 2],
-            ['label' => 'Tutup Buku', 'route' => 'closing', 'icon' => 'lock', 'permission' => 'period.manage', 'stage' => 2],
+            ['label' => 'Jurnal Umum', 'route' => 'journal', 'icon' => 'edit', 'permission' => 'journal.view'],
+            ['label' => 'Buku Besar', 'route' => 'ledger', 'icon' => 'book', 'permission' => 'journal.view'],
+            ['label' => 'Neraca Saldo', 'route' => 'trial-balance', 'icon' => 'scale', 'permission' => 'journal.view'],
+            ['label' => 'Tutup Buku', 'route' => 'closing', 'icon' => 'lock', 'permission' => 'period.view'],
         ],
     ],
     [

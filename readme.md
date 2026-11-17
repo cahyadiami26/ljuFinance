@@ -10,7 +10,7 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 | Tahap | Tema | Status |
 |-------|------|--------|
 | 1 | Fondasi, Master Data & Executive Dashboard | ✅ Selesai |
-| 2 | Akuntansi Inti (jurnal, posting, tutup buku) | ⬜ Belum |
+| 2 | Akuntansi Inti (jurnal, posting, tutup buku) | ✅ Selesai |
 | 3 | Kas & Bank, Uang Muka, Biaya | ⬜ Belum |
 | 4 | Hutang & Piutang | ⬜ Belum |
 | 5 | Anggaran & Approval Center | ⬜ Belum |
@@ -18,9 +18,10 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 | 7 | Pelaporan Keuangan & PDF | ⬜ Belum |
 | 8 | Integrasi & Hardening | ⬜ Belum |
 
-> **Pratinjau desain statis:** `preview/dashboard.html` dan `preview/login.html` adalah HTML hasil render
-> nyata dari view PHP (layout, partial, dan CSS yang sama) dengan data contoh. Berguna untuk meninjau
-> tampilan tanpa server PHP/MySQL.
+> **Pratinjau desain statis:** folder `preview/` berisi HTML hasil render nyata dari view PHP
+> (layout, partial, dan CSS yang sama) dengan data contoh: `dashboard`, `login`, `journal-index`,
+> `journal-form`, `journal-show`, `ledger`, `trial-balance`, `closing`. Berguna untuk meninjau tampilan
+> tanpa server PHP/MySQL.
 
 ---
 
@@ -52,6 +53,18 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 - Saldo kas & bank per rekening (dengan indikator saldo minimum).
 - Matriks aging piutang vs hutang dalam 4 bucket + current ratio.
 - Antrean persetujuan dengan indikator SLA, feed audit terbaru.
+
+**Akuntansi inti (Tahap 2)**
+
+- Jurnal umum multi-baris dengan editor baris dinamis, validasi debit = kredit, dan dimensi laporan
+  (bidang, divisi, proyek, cost center, vendor) per baris.
+- Alur persetujuan: draft → diajukan → disetujui/ditolak → **posted**, dengan riwayat proses dan alasan penolakan.
+- Posting atomik + pembalik otomatis (jurnal asal ditandai `reversed`, tidak lagi dihitung di saldo).
+- Buku besar per akun (saldo awal, mutasi berjalan, saldo akhir) + rekap buku besar pembantu per dimensi.
+- Neraca saldo per periode atau kumulatif tahun buku, lengkap dengan pemeriksaan keseimbangan.
+- Tutup buku bulanan (validasi jurnal belum posted, carry-forward saldo), kunci periode, buka kembali
+  periode `closed` dengan alasan wajib, dan tutup buku tahunan dengan jurnal penutup otomatis.
+- Bukti transaksi: unggah/unduh/hapus lampiran per jurnal (tipe & ukuran divalidasi, unduhan butuh login).
 
 **Administrasi sistem**
 
@@ -149,15 +162,18 @@ ljuFinance/
 │   ├── Config/                # menu.php, resources.php
 │   ├── Core/                  # Config, Db, Auth, Router, View, Csrf, Flash, Validator, Audit, Paginator, App
 │   ├── Support/               # helpers.php, icons.php
-│   ├── Services/              # PeriodService, NumberingService, DashboardService
-│   ├── Controllers/           # BaseController, Master, Coa, Dashboard, Period, User, Role, Audit, Setting, Profile, Auth, Placeholder
+│   ├── Services/              # Period, Numbering, Dashboard, Journal, Ledger, Closing
+│   ├── Controllers/           # Base, Master, Coa, Dashboard, Period, User, Role, Audit, Setting, Profile, Auth,
+│   │                          # Journal, Ledger, TrialBalance, Closing, Placeholder
 │   └── Views/
 │       ├── layouts/           # app.php (shell), blank.php (auth/error)
 │       ├── partials/          # sidebar, topbar, flash, dashboard_head
-│       └── pages/             # dashboard, master/*, coa/*, period, user, role, audit, settings, profile, login, soon, error
+│       └── pages/             # dashboard, master/*, coa/*, period, user, role, audit, settings, profile,
+│                              # journal/{index,form,show}, ledger, trial-balance, closing, login, soon, error
 ├── assets/
-│   ├── css/app.css            # design system (token, layout, komponen)
-│   └── js/app.js              # sidebar, flash, konfirmasi, format uang, ⌘K
+│   ├── css/app.css            # design system (token, layout, komponen, editor jurnal)
+│   ├── js/app.js              # sidebar, flash, konfirmasi, format uang, ⌘K
+│   └── js/journal.js          # editor baris jurnal, total & indikator keseimbangan
 ├── database/
 │   ├── schema/                # 53 tabel, 7 file
 │   └── seed/                  # 01_reference.sql, 02_demo.sql
@@ -197,12 +213,25 @@ Sembilan role aplikasi: `super_admin`, `dirut`, `dirops`, `kabid_keuangan`, `sta
 
 ## 8. Pengujian Cepat (smoke test)
 
+**Tahap 1 — fondasi**
+
 1. Buka `install.php?token=...` → import skema + seed demo.
 2. Login (mode pengembangan) sebagai **Bambang Hartono** (Direktur Utama) → dashboard terisi data contoh.
 3. Buka **Master Data → Chart of Accounts** → cari "kas", tambah akun anak, pastikan muncul di tabel.
 4. Buka **Role & Permission** → centang/hapus satu permission, simpan → cek **Audit Trail**.
 5. Ubah status satu periode di **Periode Akuntansi** → pastikan perubahan tercatat di audit.
 6. Buka **Pengaturan** → ubah ambang anggaran, simpan, muat ulang.
+
+**Tahap 2 — akuntansi**
+
+7. Login sebagai **Budi Darmawan** (Staff Finance) → **Jurnal Umum → Jurnal Baru**; isi 2 baris
+   (mis. Beban Material 1.000.000 D / Utang Usaha 1.000.000 K) → **Simpan Draft**.
+8. Coba simpan jurnal tidak seimbang → indikator jendela menunjukkan selisih dan server menolak.
+9. **Ajukan** jurnal → login sebagai **Siti Rahmayanti** (Kepala Bidang Keuangan) → **Setujui** → **Posting**.
+10. Buka **Buku Besar** akun `5-1100 Beban Material Proyek` → saldo awal, mutasi, saldo berjalan muncul.
+11. Buka **Neraca Saldo** → total debit = total kredit (badge "Neraca seimbang").
+12. **Tutup Buku** → klik *Sinkronkan Saldo* → tutup satu periode yang tidak punya jurnal belum posted.
+13. Posting jurnal lalu **Buat Pembalik** → pastikan jurnal asal berstatus `reversed` dan saldo kembali.
 
 ---
 

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Tutup Buku · LJU Finance</title>
+    <link rel="icon" href="https://dms.lju.co.id/assets/img/logo.png">
+    <link rel="stylesheet" href="../assets/css/app.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo">
+            <span class="fallback">LJU</span>
+            <img src="https://dms.lju.co.id/assets/img/logo.png" alt="LJU" onerror="this.style.display='none'">
+        </div>
+        <div class="brand-text">
+            <div class="brand-name">LJU Finance</div>
+            <div class="brand-sub">FMS Enterprise</div>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+                                                    <a class="nav-item active"
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></span>
+                    <span class="nav-label">Dashboard</span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8.5" ry="3"/><path d="M3.5 5v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3V5"/><path d="M3.5 11v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3v-6"/></svg></span>
+                        <span class="nav-label">Master Data</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Chart of Accounts</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Bidang &amp; Divisi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Cost Center</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Unit Usaha</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Vendor &amp; Customer</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Proyek</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekening Bank</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Periode Akuntansi</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></span>
+                    <span class="nav-label">RKAP &amp; Budget</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 5"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H19a2 2 0 0 1 2 2v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17V8.5Z"/><path d="M3 9h14"/><path d="M16.5 12.5h3"/></svg></span>
+                    <span class="nav-label">Cash &amp; Bank</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 3"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="4" x2="12" y2="19"/><polyline points="6 13 12 19 18 13"/></svg></span>
+                    <span class="nav-label">Account Payable</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 4"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="20" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg></span>
+                    <span class="nav-label">Account Receivable</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 4"></span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5Z"/></svg></span>
+                        <span class="nav-label">Accounting</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Jurnal Umum</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Buku Besar</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Neraca Saldo</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Tutup Buku</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 12 3.5l9 5v7l-9 5-9-5v-7Z"/><path d="M3 8.5 12 13.5l9-5M12 13.5V21"/></svg></span>
+                    <span class="nav-label">Fixed Asset</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 6"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg></span>
+                    <span class="nav-label">Tax Management</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 6"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span>
+                    <span class="nav-label">Financial Reports</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 7"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="8.5 12.5 11 15 15.5 9.5"/></svg></span>
+                    <span class="nav-label">Approval Center</span>
+                                            <span class="nav-badge">5</span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.5 14.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.3 1Z"/></svg></span>
+                        <span class="nav-label">System Admin</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengguna &amp; Hak Akses</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Role &amp; Permission</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Audit Trail</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengaturan</span>
+                            </a>
+                                            </div>
+                </details>
+                        </nav>
+
+    <div class="sidebar-foot">
+        <span>v1.0.0 Enterprise</span>
+        <span class="foot-status"><span class="dot"></span>Online</span>
+    </div>
+</aside>
+
+    <div class="main">
+        <header class="topbar">
+    <div class="topbar-left">
+        <button class="icon-btn sidebar-toggle" type="button" data-sidebar-toggle aria-label="Buka menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>        </button>
+
+        <div class="product">
+            <strong>LJU Finance</strong>
+            <span>Finance</span>
+        </div>
+
+        <div class="crumbs">
+                                                                <span class="">Accounting</span>
+                                            <span class="sep">›</span>                                    <span class="current">Tutup Buku</span>
+                                    </div>
+    </div>
+
+    <form class="topbar-search" method="get" action="#" role="search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>        <input type="search" name="q" placeholder="Cari akun, COA, voucher…" value="" aria-label="Pencarian">
+        <kbd>⌘K</kbd>
+    </form>
+
+    <div class="topbar-actions">
+        <div class="chip chip--period" title="Periode akuntansi aktif">
+            <span class="chip-top">TA 2026</span>
+            <span class="chip-bottom">Nov 2026 · Open</span>
+        </div>
+
+        <span class="chip"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="5.5" ry="2.6"/><path d="M3.5 7v3.5c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6V7"/><path d="M14.5 12.4c2.7.2 4.8 1.3 4.8 2.6 0 1.4-2.5 2.6-5.5 2.6-2.3 0-4.3-.8-5.1-1.8"/><path d="M14.5 12.4v3.5"/></svg> IDR</span>
+
+        <a class="btn btn--primary" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Transaksi Baru
+        </a>
+
+        <a class="icon-btn" href="#" aria-label="Notifikasi">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10.5 20a2 2 0 0 0 3 0"/></svg>            <span class="dot-badge"></span>        </a>
+
+        <a class="profile" href="#" aria-label="Profil">
+            <span class="avatar">
+                                <span>BH</span>
+            </span>
+            <span class="profile-meta">
+                <span class="profile-name">Bambang Hartono</span>
+                <span class="profile-role">Direktur Utama</span>
+            </span>
+        </a>
+    </div>
+</header>
+
+        <main class="content">
+            
+                            <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Tutup Buku</h1>
+                                                    <div class="page-sub">Kontrol periode, tutup buku bulanan/tahunan, dan pemindahan saldo.</div>
+                                                                    </div>
+                                    </div>
+            
+            <div class="toolbar">
+    <div class="row" style="gap:6px">
+                    <a class="btn btn--sm btn--primary" href="#">
+                2026            </a>
+                    <a class="btn btn--sm " href="#">
+                2025            </a>
+            </div>
+    <span class="spacer"></span>
+            <form method="post" action="#" data-confirm="Hitung ulang saldo akun dari seluruh jurnal posted?">
+            <input type="hidden" name="_token" value="de90a1ed23a94d12ad557525d21678a6fe61d520d7ad82dab40d9f4a280cc679">            <input type="hidden" name="tahun" value="2026">
+            <button class="btn btn--sm" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.3-6.4L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.3 6.4L3 16"/><path d="M3 21v-5h5"/></svg> Sinkronkan Saldo</button>
+        </form>
+    </div>
+
+<div class="grid-3 mb-16">
+    <div class="card">
+        <div class="card-body" style="padding-top:18px">
+            <div class="summary-label">Tahun Buku</div>
+            <div class="summary-value" style="font-size:22px">2026</div>
+            <div class="row" style="gap:6px;margin-top:6px">
+                <span class="badge badge--sukses">Terbuka</span>                <span class="badge badge--netral">132 jurnal posted</span>
+            </div>
+            <div class="tiny muted mt-8">
+                01 Jan 2026 –
+                31 Des 2026            </div>
+                            <details class="mt-12">
+                    <summary class="btn btn--sm btn--dark" style="display:inline-flex"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Tutup Buku Tahunan</summary>
+                    <form method="post" action="#" class="stack-8 mt-12"
+                          data-confirm="Jalankan tutup buku tahunan 2026? Jurnal penutup akan dibuat, seluruh periode dikunci permanen.">
+                        <input type="hidden" name="_token" value="de90a1ed23a94d12ad557525d21678a6fe61d520d7ad82dab40d9f4a280cc679">                        <input type="hidden" name="tahun" value="2026">
+                        <input class="input input--sm" type="text" name="catatan" placeholder="Catatan rapat tutup buku (opsional)" maxlength="200">
+                        <button class="btn btn--sm btn--danger" type="submit">Konfirmasi Tutup Tahun</button>
+                        <span class="tiny muted">Pastikan seluruh periode sudah ditutup dan seluruh jurnal sudah posted.</span>
+                    </form>
+                </details>
+                    </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body" style="padding-top:18px">
+            <div class="summary-label">Laba / Rugi Tahun Berjalan</div>
+            <div class="summary-value" style="font-size:20px;color:var(--success)">
+                Rp 65.600.000.000                <span class="tiny muted" style="font-weight:600">laba</span>
+            </div>
+            <dl class="kv mt-12" style="grid-template-columns:1fr auto">
+                <dt>Pendapatan</dt><dd>Rp 210.000.000.000</dd>
+                <dt>Beban</dt><dd>Rp 144.400.000.000</dd>
+            </dl>
+            <div class="tiny muted mt-8">Dihitung dari jurnal posted sampai 31 Desember 2026.</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body" style="padding-top:18px">
+            <div class="summary-label">Keseimbangan Neraca</div>
+            <div class="summary-value" style="font-size:20px">
+                <span class="badge badge--sukses">Seimbang</span>            </div>
+            <dl class="kv mt-12" style="grid-template-columns:1fr auto">
+                <dt>Total debit</dt><dd>Rp 105.594.550.000</dd>
+                <dt>Total kredit</dt><dd>Rp 105.594.550.000</dd>
+                <dt>Baris saldo tersimpan</dt><dd>1204</dd>
+            </dl>
+            <div class="tiny muted mt-8">
+                                    Cache saldo tersinkron dengan jurnal posted.
+                            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card--flush mb-16">
+    <div class="card-head">
+        <div>
+            <h2 class="card-title">Periode 2026</h2>
+            <div class="card-sub">Tutup buku bulanan hanya dapat dilakukan bila tidak ada jurnal yang belum posted.</div>
+        </div>
+        <span class="badge badge--warning">
+            2 periode masih terbuka        </span>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:150px">Periode</th>
+                    <th class="num" style="width:80px">Jurnal</th>
+                    <th class="num" style="width:120px">Belum Posted</th>
+                    <th class="num" style="width:160px">Total Posted</th>
+                    <th style="width:110px">Status</th>
+                    <th style="width:130px">Ditutup</th>
+                    <th class="right" style="width:220px">Aksi</th>                </tr>
+            </thead>
+            <tbody>
+                                                        <tr>
+                        <td>
+                            <div class="strong small">Januari 2026</div>
+                            <div class="tiny muted">2026-01</div>
+                        </td>
+                        <td class="num small">12</td>
+                        <td class="num small"><span class="muted">—</span></td>
+                        <td class="num small">Rp 262.145.000.000</td>
+                        <td><span class="badge badge--bahaya">Terkunci</span></td>
+                        <td class="tiny muted">05 Feb 2026</td>
+                                                    <td>
+                                <div class="row-actions">
+                                                                            <span class="tiny muted"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7.4 7 9 4-1.6 7-5 7-9V6l-7-3Z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg> terkunci</span>
+                                                                    </div>
+                            </td>
+                                            </tr>
+                                                        <tr>
+                        <td>
+                            <div class="strong small">Februari 2026</div>
+                            <div class="tiny muted">2026-02</div>
+                        </td>
+                        <td class="num small">12</td>
+                        <td class="num small"><span class="muted">—</span></td>
+                        <td class="num small">Rp 262.145.000.000</td>
+                        <td><span class="badge badge--bahaya">Terkunci</span></td>
+                        <td class="tiny muted">05 Mar 2026</td>
+                                                    <td>
+                                <div class="row-actions">
+                                                                            <span class="tiny muted"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7.4 7 9 4-1.6 7-5 7-9V6l-7-3Z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg> terkunci</span>
+                                                                    </div>
+                            </td>
+                                            </tr>
+                                                        <tr>
+                        <td>
+                            <div class="strong small">Maret 2026</div>
+                            <div class="tiny muted">2026-03</div>
+                        </td>
+                        <td class="num small">12</td>
+                        <td class="num small"><span class="muted">—</span></td>
+                        <td class="num small">Rp 262.145.000.000</td>
+                        <td><span class="badge badge--bahaya">Terkunci</span></td>
+                        <td class="tiny muted">05 Apr 2026</td>
+                                                    <td>
+                                <div class="row-actions">
+                                                                            <span class="tiny muted"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7.4 7 9 4-1.6 7-5 7-9V6l-7-3Z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg> terkunci</span>
+                                                                    </div>
+                            </td>
+                                            </tr>
+                                                        <tr>
+                        <td>
+                            <div class="strong small">April 2026</div>
+                            <div class="tiny muted">2026-04</div>
+                        </td>
+                        <td class="num small">12</td>
+                        <td class="num small"><span class="muted">—</span></td>
+                        <td class="num small">Rp 262.145.000.000</td>
+                        <td><span class="badge badge--bahaya">Terkunci</span></td>
+                        <td class="tiny muted">05 Mei 2026</td>
+                                                    <td>
+                                <div class="row-actions">
+                                                                            <span class="tiny muted"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7.4 7 9 4-1.6 7-5 7-9V6l-7-3Z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg> terkunci</span>
+                                                                    </div>
+                            </td>
+                                            </tr>
+                                                        <tr>
+                        <td>
+                            <div class="strong small">Mei 2026</div>
+                            <div class="tiny muted">2026-05</div>
+                        </td>
+                        <td class="num small">12</td>
+                        <td class="num small"><span class="muted">—</span></td>
+                        <td class="num small">Rp 262.145.000.000</td>
+                        <td><span class="badge badge--bahaya">Terkunci</span></td>
+                        <td class="tiny muted">05 Jun 2026</td>
+                                                    <td>
+                                <div class="row-actions">
+                                                                            <span class="tiny muted"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7.4 7 9 4-1.6 7-5 7-9V6l-7-3Z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg> terkunci</span>
+                                                                    </div>
+                            </td>
+                                            </tr>
+                                                        <tr>
+                        <td>
+                            <div class="strong small">Juni 2026</div>
+                            <div class="tiny muted">2026-06</div>
+                        </td>
+                        <td class="num small">12</td>
+                        <td class="num small"><span class="muted">—</span></td>
+                        <td class="num small">Rp 262.145.000.000</td>
+                        <td><span class="badge badge--bahaya">Terkunci</span></td>
+                        <td class="tiny muted">05 Jul 2026</td>
+                                                    <td>
+                                <div class="row-actions">
+                                                                            <span class="tiny muted"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7.4 7 9 4-1.6 7-5 7-9V6l-7-3Z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg> terkunci</span>
+                                                                    </div>
+                            </td>
+                                            </tr>
+                                                        <tr>
+                        <td>
+                            <div class="strong small">Juli 2026</div>
+                            <div class="tiny muted">2026-07</div>
+                        </td>
+                        <td class="num small">12</td>
+                        <td class="num small"><span class="muted">—</span></td>
+                        <td class="num small">Rp 262.145.000.000</td>
+                        <td><span class="badge badge--bahaya">Terkunci</span></td>
+                        <td class="tiny muted">05 Agu 2026</td>
+                                                    <td>
+                                <div class="row-actions">
+                                                                            <span class="tiny muted"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7.4 7 9 4-1.6 7-5 7-9V6l-7-3Z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg> terkunci</span>
+                                                                    </div>
+                            </td>
+                                            </tr>
+                                                        <tr>
+                        <td>
+                            <div class="strong small">Agustus 2026</div>
+                            <div class="tiny muted">2026-08</div>
+                        </td>
+                        <td class="num small">12</td>
+                        <td class="num small"><span class="muted">—</span></td>
+                        <td class="num small">Rp 262.145.000.000</td>
+                        <td><span class="badge badge--bahaya">Terkunci</span></td>
+                        <td class="tiny muted">05 Sep 2026</td>
+                                                    <td>
+                                <div class="row-actions">
+                                                                            <span class="tiny muted"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7.4 7 9 4-1.6 7-5 7-9V6l-7-3Z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg> terkunci</span>
+                                                                    </div>
+                            </td>
+                                            </tr>
+                                                        <tr>
+                        <td>
+                            <div class="strong small">September 2026</div>
+                            <div class="tiny muted">2026-09</div>
+                        </td>
+                        <td class="num small">12</td>
+                        <td class="num small"><span class="muted">—</span></td>
+                        <td class="num small">Rp 262.145.000.000</td>
+                        <td><span class="badge badge--bahaya">Terkunci</span></td>
+                        <td class="tiny muted">05 Okt 2026</td>
+                                                    <td>
+                                <div class="row-actions">
+                                                                            <span class="tiny muted"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7.4 7 9 4-1.6 7-5 7-9V6l-7-3Z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg> terkunci</span>
+                                                                    </div>
+                            </td>
+                                            </tr>
+                                                        <tr>
+                        <td>
+                            <div class="strong small">Oktober 2026</div>
+                            <div class="tiny muted">2026-10</div>
+                        </td>
+                        <td class="num small">12</td>
+                        <td class="num small"><span class="muted">—</span></td>
+                        <td class="num small">Rp 262.145.000.000</td>
+                        <td><span class="badge badge--bahaya">Terkunci</span></td>
+                        <td class="tiny muted">05 Nov 2026</td>
+                                                    <td>
+                                <div class="row-actions">
+                                                                            <span class="tiny muted"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7.4 7 9 4-1.6 7-5 7-9V6l-7-3Z"/><polyline points="9 12 11.5 14.5 15.5 10"/></svg> terkunci</span>
+                                                                    </div>
+                            </td>
+                                            </tr>
+                                                        <tr>
+                        <td>
+                            <div class="strong small">November 2026</div>
+                            <div class="tiny muted">2026-11</div>
+                        </td>
+                        <td class="num small">12</td>
+                        <td class="num small"><span class="badge badge--warning">4</span></td>
+                        <td class="num small">Rp 262.145.000.000</td>
+                        <td><span class="badge badge--sukses">Terbuka</span></td>
+                        <td class="tiny muted">—</td>
+                                                    <td>
+                                <div class="row-actions">
+                                                                            <form method="post" action="#"
+                                              data-confirm="Tutup buku November 2026? Pastikan seluruh jurnal sudah posted.">
+                                            <input type="hidden" name="_token" value="de90a1ed23a94d12ad557525d21678a6fe61d520d7ad82dab40d9f4a280cc679">                                            <button class="btn btn--sm btn--dark" type="submit" disabled title="Masih ada jurnal belum posted">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Tutup
+                                            </button>
+                                        </form>
+                                                                    </div>
+                            </td>
+                                            </tr>
+                                                        <tr>
+                        <td>
+                            <div class="strong small">Desember 2026</div>
+                            <div class="tiny muted">2026-12</div>
+                        </td>
+                        <td class="num small">12</td>
+                        <td class="num small"><span class="muted">—</span></td>
+                        <td class="num small">Rp 262.145.000.000</td>
+                        <td><span class="badge badge--sukses">Terbuka</span></td>
+                        <td class="tiny muted">—</td>
+                                                    <td>
+                                <div class="row-actions">
+                                                                            <form method="post" action="#"
+                                              data-confirm="Tutup buku Desember 2026? Pastikan seluruh jurnal sudah posted.">
+                                            <input type="hidden" name="_token" value="de90a1ed23a94d12ad557525d21678a6fe61d520d7ad82dab40d9f4a280cc679">                                            <button class="btn btn--sm btn--dark" type="submit" >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Tutup
+                                            </button>
+                                        </form>
+                                                                    </div>
+                            </td>
+                                            </tr>
+                            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card card--flush">
+    <div class="card-head">
+        <div>
+            <h2 class="card-title">Riwayat Tutup Buku</h2>
+            <div class="card-sub">Jejak eksekusi tutup buku bulanan dan tahunan.</div>
+        </div>
+    </div>
+            <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width:110px">Waktu</th>
+                        <th style="width:170px">Periode</th>
+                        <th style="width:110px">Tipe</th>
+                        <th class="num" style="width:150px">Laba/Rugi</th>
+                        <th style="width:170px">Jurnal Penutup</th>
+                        <th>Catatan</th>
+                        <th style="width:140px">Oleh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                            <tr>
+                            <td class="small">05 Nov 2026 10:12</td>
+                            <td class="small">Oktober 2026</td>
+                            <td><span class="badge badge--netral">Bulanan</span></td>
+                            <td class="num small">Rp 0</td>
+                            <td class="small">
+                                                                    <span class="muted">—</span>
+                                                            </td>
+                            <td class="small muted">Tutup buku Oktober selesai</td>
+                            <td class="small">Siti Rahmayanti</td>
+                        </tr>
+                                            <tr>
+                            <td class="small">04 Mei 2026 09:30</td>
+                            <td class="small">April 2026</td>
+                            <td><span class="badge badge--netral">Bulanan</span></td>
+                            <td class="num small">Rp 0</td>
+                            <td class="small">
+                                                                    <span class="muted">—</span>
+                                                            </td>
+                            <td class="small muted">—</td>
+                            <td class="small">Siti Rahmayanti</td>
+                        </tr>
+                                    </tbody>
+            </table>
+        </div>
+    </div>
+        </main>
+
+        <div class="footer-bar">
+            <span>&copy; 2026 PT. Lampung Jasa Utama · LJU Finance v1.0.0</span>
+            <span>Zona waktu Asia/Jakarta · Data per 17 Nov 2026 06:35 WIB</span>
+        </div>
+    </div>
+</div>
+<div class="sidebar-backdrop" data-sidebar-close></div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

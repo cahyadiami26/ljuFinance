@@ -10,15 +10,19 @@
  */
 
 use Lju\Controllers\AuditController;
+use Lju\Controllers\ClosingController;
 use Lju\Controllers\AuthController;
 use Lju\Controllers\CoaController;
 use Lju\Controllers\DashboardController;
+use Lju\Controllers\JournalController;
+use Lju\Controllers\LedgerController;
 use Lju\Controllers\MasterController;
 use Lju\Controllers\PeriodController;
 use Lju\Controllers\PlaceholderController;
 use Lju\Controllers\ProfileController;
 use Lju\Controllers\RoleController;
 use Lju\Controllers\SettingController;
+use Lju\Controllers\TrialBalanceController;
 use Lju\Controllers\UserController;
 
 /* --------------------------------------------------------------- autentikasi */
@@ -68,11 +72,33 @@ $router->get('system/settings', [SettingController::class, 'index'], 'settings.m
 $router->post('system/settings', [SettingController::class, 'update'], 'settings.manage');
 
 /* ------------------------------------------- modul tahap berikutnya (placeholder) */
-$router->get('journal', [PlaceholderController::class, 'show'], 'journal.view');
-$router->get('journal/create', [PlaceholderController::class, 'show'], 'journal.create');
-$router->get('ledger', [PlaceholderController::class, 'show'], 'journal.view');
-$router->get('trial-balance', [PlaceholderController::class, 'show'], 'journal.view');
-$router->get('closing', [PlaceholderController::class, 'show'], 'period.manage');
+/* -------------------------------------------------------- akuntansi inti */
+// rute statis didaftarkan sebelum pola berparameter
+$router->get('journal', [JournalController::class, 'index'], 'journal.view');
+$router->get('journal/create', [JournalController::class, 'create'], 'journal.create');
+$router->post('journal', [JournalController::class, 'store'], 'journal.create');
+$router->get('journal/{id}', [JournalController::class, 'show'], 'journal.view');
+$router->get('journal/{id}/edit', [JournalController::class, 'edit'], 'journal.create');
+$router->post('journal/{id}', [JournalController::class, 'update'], 'journal.create');
+$router->post('journal/{id}/submit', [JournalController::class, 'submit'], 'journal.submit');
+$router->post('journal/{id}/approve', [JournalController::class, 'approve'], 'journal.approve');
+$router->post('journal/{id}/reject', [JournalController::class, 'reject'], 'journal.approve');
+$router->post('journal/{id}/post', [JournalController::class, 'post'], 'journal.post');
+$router->post('journal/{id}/reverse', [JournalController::class, 'reverse'], 'journal.reverse');
+$router->post('journal/{id}/delete', [JournalController::class, 'destroy'], 'journal.create');
+$router->post('journal/{id}/attachment', [JournalController::class, 'upload'], 'journal.create');
+$router->get('journal/{id}/attachment/{aid}', [JournalController::class, 'download'], 'journal.view');
+$router->post('journal/{id}/attachment/{aid}/delete', [JournalController::class, 'deleteAttachment'], 'journal.create');
+
+$router->get('ledger', [LedgerController::class, 'index'], 'journal.view');
+$router->get('trial-balance', [TrialBalanceController::class, 'index'], 'journal.view');
+
+$router->get('closing', [ClosingController::class, 'index'], 'period.view');
+$router->post('closing/sync', [ClosingController::class, 'sync'], 'period.manage');
+$router->post('closing/year', [ClosingController::class, 'closeYear'], 'period.manage');
+$router->post('closing/{id}/close', [ClosingController::class, 'close'], 'period.manage');
+$router->post('closing/{id}/lock', [ClosingController::class, 'lock'], 'period.manage');
+$router->post('closing/{id}/reopen', [ClosingController::class, 'reopen'], 'period.manage');
 $router->get('cash', [PlaceholderController::class, 'show'], 'cash.view');
 $router->get('cash/advance', [PlaceholderController::class, 'show'], 'advance.view');
 $router->get('expense', [PlaceholderController::class, 'show'], 'expense.view');
