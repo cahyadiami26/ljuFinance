@@ -1,0 +1,14 @@
+# Folder unggahan: izinkan file, tetapi blokir eksekusi skrip.
+Options -Indexes -ExecCGI
+AddType text/plain .php .phtml .php3 .php4 .php5 .php7 .phar .pht .shtml
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<FilesMatch "\.(php|phtml|phar|pht|shtml|cgi|pl)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+</IfModule>

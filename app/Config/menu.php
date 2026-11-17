@@ -1,0 +1,117 @@
+<?php
+/**
+ * Struktur navigasi sidebar.
+ * Setiap item: label, route, icon, permission (null = selalu tampil), badge (opsional).
+ */
+
+return [
+    [
+        'type'  => 'link',
+        'label' => 'Dashboard',
+        'route' => 'dashboard',
+        'icon'  => 'dashboard',
+        'permission' => 'dashboard.view',
+    ],
+    [
+        'type'  => 'group',
+        'label' => 'Master Data',
+        'icon'  => 'database',
+        'items' => [
+            ['label' => 'Chart of Accounts', 'route' => 'master/coa', 'icon' => 'list', 'permission' => 'coa.view'],
+            ['label' => 'Bidang & Divisi', 'route' => 'master/bidang', 'icon' => 'org', 'permission' => 'master.view'],
+            ['label' => 'Cost Center', 'route' => 'master/cost-center', 'icon' => 'grid', 'permission' => 'master.view'],
+            ['label' => 'Unit Usaha', 'route' => 'master/business-unit', 'icon' => 'layers', 'permission' => 'master.view'],
+            ['label' => 'Vendor & Customer', 'route' => 'master/partner', 'icon' => 'users', 'permission' => 'master.view'],
+            ['label' => 'Proyek', 'route' => 'master/project', 'icon' => 'briefcase', 'permission' => 'project.view'],
+            ['label' => 'Rekening Bank', 'route' => 'master/bank-account', 'icon' => 'bank', 'permission' => 'master.view'],
+            ['label' => 'Periode Akuntansi', 'route' => 'master/period', 'icon' => 'calendar', 'permission' => 'period.view'],
+        ],
+    ],
+    [
+        'type'  => 'link',
+        'label' => 'RKAP & Budget',
+        'route' => 'budget',
+        'icon'  => 'chart',
+        'permission' => 'budget.view',
+        'stage' => 5,
+    ],
+    [
+        'type'  => 'link',
+        'label' => 'Cash & Bank',
+        'route' => 'cash',
+        'icon'  => 'wallet',
+        'permission' => 'cash.view',
+        'stage' => 3,
+    ],
+    [
+        'type'  => 'link',
+        'label' => 'Account Payable',
+        'route' => 'ap',
+        'icon'  => 'arrow-down',
+        'permission' => 'ap.view',
+        'stage' => 4,
+    ],
+    [
+        'type'  => 'link',
+        'label' => 'Account Receivable',
+        'route' => 'ar',
+        'icon'  => 'arrow-up',
+        'permission' => 'ar.view',
+        'stage' => 4,
+    ],
+    [
+        'type'  => 'group',
+        'label' => 'Accounting',
+        'icon'  => 'book',
+        'items' => [
+            ['label' => 'Jurnal Umum', 'route' => 'journal', 'icon' => 'edit', 'permission' => 'journal.view', 'stage' => 2],
+            ['label' => 'Buku Besar', 'route' => 'ledger', 'icon' => 'book', 'permission' => 'journal.view', 'stage' => 2],
+            ['label' => 'Neraca Saldo', 'route' => 'trial-balance', 'icon' => 'scale', 'permission' => 'journal.view', 'stage' => 2],
+            ['label' => 'Tutup Buku', 'route' => 'closing', 'icon' => 'lock', 'permission' => 'period.manage', 'stage' => 2],
+        ],
+    ],
+    [
+        'type'  => 'link',
+        'label' => 'Fixed Asset',
+        'route' => 'asset',
+        'icon'  => 'asset',
+        'permission' => 'asset.view',
+        'stage' => 6,
+    ],
+    [
+        'type'  => 'link',
+        'label' => 'Tax Management',
+        'route' => 'tax',
+        'icon'  => 'receipt',
+        'permission' => 'tax.view',
+        'stage' => 6,
+    ],
+    [
+        'type'  => 'link',
+        'label' => 'Financial Reports',
+        'route' => 'report',
+        'icon'  => 'report',
+        'permission' => 'report.view',
+        'stage' => 7,
+    ],
+    [
+        'type'  => 'link',
+        'label' => 'Approval Center',
+        'route' => 'approval',
+        'icon'  => 'check-circle',
+        'permission' => 'approval.view',
+        'badge' => 'approval',
+        'stage' => 5,
+    ],
+    [
+        'type'  => 'group',
+        'label' => 'System Admin',
+        'icon'  => 'settings',
+        'items' => [
+            ['label' => 'Pengguna & Hak Akses', 'route' => 'master/user', 'icon' => 'users', 'permission' => 'user.view'],
+            ['label' => 'Role & Permission', 'route' => 'master/role', 'icon' => 'shield', 'permission' => 'role.manage'],
+            ['label' => 'Audit Trail', 'route' => 'system/audit', 'icon' => 'history', 'permission' => 'audit.view'],
+            ['label' => 'Pengaturan', 'route' => 'system/settings', 'icon' => 'sliders', 'permission' => 'settings.manage'],
+        ],
+    ],
+];
