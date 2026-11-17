@@ -222,22 +222,24 @@ function setting(string $key, mixed $default = null): mixed
 function rupiah(mixed $value, int $decimals = 0): string
 {
     $number = (float) $value;
-    return 'Rp ' . number_format($number, $decimals, ',', '.');
+    $sign = $number < 0 ? '-' : '';
+    return $sign . 'Rp ' . number_format(abs($number), $decimals, ',', '.');
 }
 
 function rupiah_short(mixed $value): string
 {
     $number = (float) $value;
     $abs = abs($number);
+    $sign = $number < 0 ? '-' : '';
 
     if ($abs >= 1_000_000_000_000) {
-        return 'Rp ' . number_format($number / 1_000_000_000_000, 2, ',', '.') . ' T';
+        return $sign . 'Rp ' . number_format($abs / 1_000_000_000_000, 2, ',', '.') . ' T';
     }
     if ($abs >= 1_000_000_000) {
-        return 'Rp ' . number_format($number / 1_000_000_000, 2, ',', '.') . ' M';
+        return $sign . 'Rp ' . number_format($abs / 1_000_000_000, 2, ',', '.') . ' M';
     }
     if ($abs >= 1_000_000) {
-        return 'Rp ' . number_format($number / 1_000_000, 2, ',', '.') . ' jt';
+        return $sign . 'Rp ' . number_format($abs / 1_000_000, 2, ',', '.') . ' jt';
     }
     return rupiah($number, 0);
 }
