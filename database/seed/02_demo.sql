@@ -117,6 +117,37 @@ INSERT INTO `ap_invoices` (`nomor`,`nomor_supplier`,`partner_id`,`tanggal`,`tang
 ON DUPLICATE KEY UPDATE `sisa` = VALUES(`sisa`);
 
 -- ---------------------------------------------------------------------
+-- 4a. RINCIAN TAGIHAN, RINCIAN INVOICE, PENGAKUAN PENDAPATAN
+-- ---------------------------------------------------------------------
+DELETE FROM `ap_invoice_items`;
+INSERT INTO `ap_invoice_items` (`invoice_id`,`keterangan`,`coa_id`,`jumlah`,`ppn`,`total`)
+SELECT a.id,
+       CONCAT('Tagihan vendor ', a.nomor_supplier),
+       81,
+       a.subtotal,
+       a.ppn,
+       a.total
+FROM `ap_invoices` a;
+
+DELETE FROM `ar_invoice_items`;
+INSERT INTO `ar_invoice_items` (`invoice_id`,`keterangan`,`coa_id`,`jumlah`,`ppn`,`total`)
+SELECT a.id,
+       a.deskripsi,
+       69,
+       a.subtotal,
+       a.ppn,
+       a.total
+FROM `ar_invoices` a;
+
+INSERT INTO `revenue_recognitions` (`nomor`,`project_id`,`contract_id`,`periode_id`,`tanggal`,`persentase`,`nilai`,`metode`,`status`,`keterangan`,`created_by`) VALUES
+(CONCAT('REV/',DATE_FORMAT(@today,'%m/%Y'),'/0001'),1,1,@periode,DATE_SUB(@today,INTERVAL 45 DAY),25.00,12000000000.00,'persentase_penyelesaian','approved','Progres fisik 25% berdasarkan berita acara pengukuran',4),
+(CONCAT('REV/',DATE_FORMAT(@today,'%m/%Y'),'/0002'),3,3,@periode,DATE_SUB(@today,INTERVAL 20 DAY),40.00,14400000000.00,'termin','submitted','Termin III pengangkutan batubara',4),
+(CONCAT('REV/',DATE_FORMAT(@today,'%m/%Y'),'/0003'),2,2,@periode,@today,15.00,4125000000.00,'persentase_penyelesaian','draft','Draft pengakuan progres irigasi Way Sekampung',4)
+ON DUPLICATE KEY UPDATE `nilai` = VALUES(`nilai`);
+
+UPDATE `doc_sequences` SET `last_number` = 3 WHERE `code` = 'REV' AND `period_key` = DATE_FORMAT(@today,'%Y');
+
+-- ---------------------------------------------------------------------
 -- 5. RKAP & KOMITMEN
 -- ---------------------------------------------------------------------
 INSERT INTO `budgets` (`id`,`nomor`,`tahun`,`versi`,`judul`,`status`,`total_pendapatan`,`total_beban`,`catatan`,`created_by`,`approved_by`,`approved_at`) VALUES

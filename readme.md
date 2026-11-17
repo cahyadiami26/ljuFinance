@@ -12,7 +12,7 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 | 1 | Fondasi, Master Data & Executive Dashboard | ✅ Selesai |
 | 2 | Akuntansi Inti (jurnal, posting, tutup buku) | ✅ Selesai |
 | 3 | Kas & Bank, Uang Muka, Biaya | ✅ Selesai |
-| 4 | Hutang & Piutang | ⬜ Belum |
+| 4 | Hutang & Piutang | ✅ Selesai |
 | 5 | Anggaran & Approval Center | ⬜ Belum |
 | 6 | Aset Tetap & Perpajakan | ⬜ Belum |
 | 7 | Pelaporan Keuangan & PDF | ⬜ Belum |
@@ -22,8 +22,9 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 > (layout, partial, dan CSS yang sama) dengan data contoh: `dashboard`, `login`, `journal-index`,
 > `journal-form`, `journal-show`, `ledger`, `trial-balance`, `closing`, `cash-index`, `cash-form`,
 > `cash-show`, `advance-index`, `advance-form`, `advance-show`, `expense-index`, `expense-form`,
-> `expense-show`, `recon-index`, `recon-form`, `recon-show`. Berguna untuk meninjau tampilan
-> tanpa server PHP/MySQL.
+> `expense-show`, `recon-index`, `recon-form`, `recon-show`, `ap-index`, `ap-form`, `ap-show`,
+> `ar-index`, `ar-form`, `ar-show`, `revenue-index`, `revenue-form`, `revenue-show`. Berguna untuk
+> meninjau tampilan tanpa server PHP/MySQL.
 
 ---
 
@@ -87,6 +88,24 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 - Editor baris dinamis (`assets/js/transaksi.js`) untuk rincian biaya/uang muka/rekening koran, termasuk
   perhitungan total dan pengisian pajak otomatis dari tarif.
 
+**Hutang & piutang (Tahap 4)**
+
+- **Hutang usaha (AP)**: tagihan vendor `AP` dengan rincian akun beban/aset, PPN masukan per baris, termin
+  dan jatuh tempo otomatis dari master vendor, alur draft → diajukan → disetujui → **posted**, serta
+  pembayaran sebagian/penuh `APP` dengan potongan PPh.
+- **Piutang usaha (AR)**: invoice pelanggan `AR` (opsional terhubung kontrak & termin) dengan rincian akun
+  pendapatan dan PPN keluaran, persetujuan, posting, dan penerimaan `ARP` termasuk PPh yang dipotong pelanggan.
+- Jurnal otomatis: AP **D beban + D PPN Masukan / K Utang Usaha**, pembayaran **D Utang Usaha / K Bank +
+  K Utang PPh**; AR **D Piutang Usaha / K Pendapatan + K PPN Keluaran**, penerimaan **D Bank + D PPh
+  Dibayar Dimuka / K Piutang Usaha**.
+- **Pengakuan pendapatan** `REV`: metode persentase penyelesaian, termin, dan kontrak selesai; nilai
+  dihitung dari nilai kontrak dikurangi yang sudah diakui dan ditolak bila melebihi nilai kontrak; jurnal
+  **D Piutang Belum Ditagih / K Pendapatan Usaha**. Penagihan atas bagian yang sudah diakui mengkredit
+  `1-1330` sehingga pendapatan tidak diakui dua kali.
+- **Aging** hutang dan piutang 5 bucket (belum jatuh tempo, 1–30, 31–60, 61–90, > 90 hari) di halaman daftar,
+  status `overdue` dihitung otomatis saat tampil.
+- Form AP/AR memakai editor baris dinamis dengan total berjalan dan jatuh tempo otomatis (`transaksi.js`).
+
 **Administrasi sistem**
 
 - Pengguna & hak akses (9 role, permission granular `modul.aksi`).
@@ -128,6 +147,10 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
    Jika database sudah terpasang **sebelum** Tahap 3, jalankan juga
    `database/migrations/2026-11-17_tahap3_cash_permissions.sql` agar permission
    `cash.approve` / `cash.post` tersedia (idempotent).
+
+   Database yang dipasang **sebelum** Tahap 4 perlu menjalankan
+   `database/migrations/2026-11-17_tahap4_ap_ar.sql` agar akun `1-1330`, `1-1440`, dan prefix `REV`
+   tersedia (idempotent).
 
 4. **Jalankan installer** dengan token (default ada di `config/config.php` → `security.install_token`):
 
@@ -275,6 +298,22 @@ Sembilan role aplikasi: `super_admin`, `dirut`, `dirops`, `kabid_keuangan`, `sta
     periksa jurnal: D beban, D PPN Masukan, K utang PPh, K bank (total bersih).
 18. **Rekonsiliasi Bank → Baru**: pilih rekening + rentang tanggal → masukkan saldo rekening koran dan
     satu mutasi bank → cocokkan baris → selesaikan (isi catatan bila masih ada selisih).
+
+**Tahap 4 — hutang & piutang**
+
+19. **Hutang Usaha → Tagihan Baru**: pilih vendor, isi 2 rincian beban dengan PPN 11% → simpan → ajukan →
+    setujui → **Posting** → cek jurnal **D beban + D PPN Masukan / K Utang Usaha**.
+20. Pada tagihan yang sudah posted, catat **pembayaran sebagian** dengan potongan PPh → pastikan status
+    menjadi `partial`, `sisa` berkurang, dan jurnal **D Utang Usaha / K Bank + K Utang PPh** terbentuk;
+    lunasi sisanya → status `paid`.
+21. **Piutang Usaha → Invoice Baru**: pilih pelanggan (dan kontrak bila ada), isi rincian pendapatan + PPN →
+    posting → jurnal **D Piutang Usaha / K Pendapatan + K PPN Keluaran**; lalu catat **penerimaan** dengan
+    PPh dipotong pelanggan.
+22. **Pengakuan Pendapatan → Baru**: pilih kontrak, metode persentase penyelesaian 25% → nilai terisi dari
+    25% nilai kontrak → posting → jurnal **D Piutang Belum Ditagih / K Pendapatan Usaha**; coba nilai yang
+    melebihi nilai kontrak → ditolak.
+23. Buka daftar **Hutang Usaha** dan **Piutang Usaha** → kartu aging 5 bucket terisi dan totalnya sama dengan
+    jumlah sisa dokumen posted/partial.
 
 ---
 

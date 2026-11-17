@@ -425,7 +425,9 @@ INSERT INTO `coa_accounts` (`id`,`kode`,`nama`,`tipe`,`kategori`,`parent_id`,`le
 (106,'5-3100','Beban Administrasi Bank','beban','beban_lain',105,3,'D',1,0,0,'operasi',1),
 (107,'5-3200','Beban Bunga & Denda Pajak','beban','beban_lain',105,3,'D',1,0,0,'operasi',1),
 (108,'5-3300','Beban Pajak Final','beban','pajak',105,3,'D',1,0,0,'operasi',1),
-(109,'5-3900','Beban Lain-lain Lainnya','beban','beban_lain',105,3,'D',1,0,0,'operasi',1)
+(109,'5-3900','Beban Lain-lain Lainnya','beban','beban_lain',105,3,'D',1,0,0,'operasi',1),
+(110,'1-1440','PPh Dibayar Dimuka','aset','aset_lancar',14,4,'D',1,0,0,'operasi',1),
+(111,'1-1330','Piutang Belum Ditagih','aset','aset_lancar',11,4,'D',1,0,1,'operasi',1)
 ON DUPLICATE KEY UPDATE `nama` = VALUES(`nama`), `parent_id` = VALUES(`parent_id`), `kategori` = VALUES(`kategori`);
 
 -- ---------------------------------------------------------------------
@@ -489,6 +491,7 @@ INSERT INTO `doc_sequences` (`code`,`period_key`,`prefix`,`last_number`,`padding
 ('APP',DATE_FORMAT(CURDATE(),'%Y'), CONCAT('APP/',DATE_FORMAT(CURDATE(),'%Y'),'/'),0, 4),
 ('AR', DATE_FORMAT(CURDATE(),'%Y'), CONCAT('AR/',DATE_FORMAT(CURDATE(),'%m/%Y'),'/'), 0, 4),
 ('ARP',DATE_FORMAT(CURDATE(),'%Y'), CONCAT('ARP/',DATE_FORMAT(CURDATE(),'%Y'),'/'),0, 4),
+('REV',DATE_FORMAT(CURDATE(),'%Y'), CONCAT('REV/',DATE_FORMAT(CURDATE(),'%m/%Y'),'/'),0, 4),
 ('AST',DATE_FORMAT(CURDATE(),'%Y'), CONCAT('AST/',DATE_FORMAT(CURDATE(),'%Y'),'/'),0, 4),
 ('DEP',DATE_FORMAT(CURDATE(),'%Y'), CONCAT('DEP/',DATE_FORMAT(CURDATE(),'%m/%Y'),'/'),0, 4),
 ('TAX',DATE_FORMAT(CURDATE(),'%Y'), CONCAT('TAX/',DATE_FORMAT(CURDATE(),'%m/%Y'),'/'),0, 4),

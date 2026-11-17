@@ -81,6 +81,81 @@ final class AccountMap
         return $id;
     }
 
+    /** Akun piutang usaha (1-1310 → fallback 1-13xx). */
+    public static function piutangUsaha(): int
+    {
+        $id = self::byKode('1-1310') ?? self::firstPosting('1-13');
+        if ($id === null) {
+            throw new \RuntimeException('Akun COA untuk piutang usaha (1-1310) tidak ditemukan.');
+        }
+        return $id;
+    }
+
+    /** Akun pendapatan usaha utama (4-1100 → akun pendapatan posting pertama). */
+    public static function pendapatanUsaha(): int
+    {
+        $id = self::byKode('4-1100');
+        if ($id === null) {
+            $id = (int) Db::val("SELECT id FROM coa_accounts WHERE allow_posting = 1 AND is_active = 1 AND tipe = 'pendapatan' ORDER BY kode LIMIT 1");
+        }
+        if ($id <= 0) {
+            throw new \RuntimeException('Akun COA untuk pendapatan usaha tidak ditemukan.');
+        }
+        return $id;
+    }
+
+    /** Akun piutang belum ditagih untuk pengakuan pendapatan kontrak (1-1330). */
+    public static function piutangBelumDitagih(): int
+    {
+        $id = self::byKode('1-1330') ?? self::byKode('1-1310');
+        if ($id === null) {
+            throw new \RuntimeException('Akun COA untuk piutang belum ditagih (1-1330) tidak ditemukan.');
+        }
+        return $id;
+    }
+
+    /** Akun utang usaha vendor (2-1110 → fallback 2-11xx). */
+    public static function utangUsaha(): int
+    {
+        $id = self::byKode('2-1110') ?? self::firstPosting('2-11');
+        if ($id === null) {
+            throw new \RuntimeException('Akun COA untuk utang usaha (2-1110) tidak ditemukan.');
+        }
+        return $id;
+    }
+
+    /** Akun PPN keluaran (default dari tarif pajak PPN, fallback 2-1210). */
+    public static function ppnKeluaran(?int $taxTypeId = null): int
+    {
+        if ($taxTypeId !== null) {
+            $coa = (int) Db::val('SELECT coa_keluaran_id FROM tax_types WHERE id = ?', [$taxTypeId]);
+            if ($coa > 0) {
+                return $coa;
+            }
+        }
+
+        $coa = (int) Db::val("SELECT coa_keluaran_id FROM tax_types WHERE jenis = 'ppn' ORDER BY id LIMIT 1");
+        if ($coa > 0) {
+            return $coa;
+        }
+
+        $id = self::byKode('2-1210') ?? self::firstPosting('2-12');
+        if ($id === null) {
+            throw new \RuntimeException('Akun COA untuk PPN keluaran tidak ditemukan.');
+        }
+        return $id;
+    }
+
+    /** Akun kredit pajak PPh yang dipotong pelanggan (1-1440). */
+    public static function pphDibayarDimuka(): int
+    {
+        $id = self::byKode('1-1440');
+        if ($id === null) {
+            throw new \RuntimeException('Akun COA untuk PPh dibayar dimuka (1-1440) tidak ditemukan.');
+        }
+        return $id;
+    }
+
     /** Akun utang pajak untuk potongan (PPh). */
     public static function pajakPotongan(?int $taxTypeId = null): int
     {

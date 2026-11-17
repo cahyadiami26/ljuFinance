@@ -47,20 +47,14 @@ return [
         ],
     ],
     [
-        'type'  => 'link',
-        'label' => 'Account Payable',
-        'route' => 'ap',
-        'icon'  => 'arrow-down',
-        'permission' => 'ap.view',
-        'stage' => 4,
-    ],
-    [
-        'type'  => 'link',
-        'label' => 'Account Receivable',
-        'route' => 'ar',
-        'icon'  => 'arrow-up',
-        'permission' => 'ar.view',
-        'stage' => 4,
+        'type'  => 'group',
+        'label' => 'Hutang & Piutang',
+        'icon'  => 'scale',
+        'items' => [
+            ['label' => 'Hutang Usaha (AP)', 'route' => 'ap', 'icon' => 'arrow-down', 'permission' => 'ap.view'],
+            ['label' => 'Piutang Usaha (AR)', 'route' => 'ar', 'icon' => 'arrow-up', 'permission' => 'ar.view'],
+            ['label' => 'Pengakuan Pendapatan', 'route' => 'revenue', 'icon' => 'chart', 'permission' => 'ar.view'],
+        ],
     ],
     [
         'type'  => 'group',

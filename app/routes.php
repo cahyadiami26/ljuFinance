@@ -10,6 +10,8 @@
  */
 
 use Lju\Controllers\AdvanceController;
+use Lju\Controllers\ApController;
+use Lju\Controllers\ArController;
 use Lju\Controllers\AuditController;
 use Lju\Controllers\CashController;
 use Lju\Controllers\ClosingController;
@@ -24,6 +26,7 @@ use Lju\Controllers\PeriodController;
 use Lju\Controllers\PlaceholderController;
 use Lju\Controllers\ProfileController;
 use Lju\Controllers\ReconciliationController;
+use Lju\Controllers\RevenueController;
 use Lju\Controllers\RoleController;
 use Lju\Controllers\SettingController;
 use Lju\Controllers\TrialBalanceController;
@@ -154,8 +157,46 @@ $router->post('expense/{id}/approve', [ExpenseController::class, 'approve'], 'ex
 $router->post('expense/{id}/reject', [ExpenseController::class, 'reject'], 'expense.approve');
 $router->post('expense/{id}/pay', [ExpenseController::class, 'pay'], 'expense.manage');
 $router->post('expense/{id}/delete', [ExpenseController::class, 'destroy'], 'expense.manage');
-$router->get('ap', [PlaceholderController::class, 'show'], 'ap.view');
-$router->get('ar', [PlaceholderController::class, 'show'], 'ar.view');
+/* ------------------------------------------------------------ hutang usaha (AP) */
+$router->get('ap', [ApController::class, 'index'], 'ap.view');
+$router->get('ap/create', [ApController::class, 'create'], 'ap.manage');
+$router->post('ap', [ApController::class, 'store'], 'ap.manage');
+$router->get('ap/{id}', [ApController::class, 'show'], 'ap.view');
+$router->get('ap/{id}/edit', [ApController::class, 'edit'], 'ap.manage');
+$router->post('ap/{id}', [ApController::class, 'update'], 'ap.manage');
+$router->post('ap/{id}/submit', [ApController::class, 'submit'], 'ap.manage');
+$router->post('ap/{id}/approve', [ApController::class, 'approve'], 'ap.approve');
+$router->post('ap/{id}/reject', [ApController::class, 'reject'], 'ap.approve');
+$router->post('ap/{id}/post', [ApController::class, 'post'], 'ap.manage');
+$router->post('ap/{id}/pay', [ApController::class, 'pay'], 'ap.pay');
+$router->post('ap/{id}/delete', [ApController::class, 'destroy'], 'ap.manage');
+
+/* ------------------------------------------------------------ piutang usaha (AR) */
+$router->get('ar', [ArController::class, 'index'], 'ar.view');
+$router->get('ar/create', [ArController::class, 'create'], 'ar.manage');
+$router->post('ar', [ArController::class, 'store'], 'ar.manage');
+$router->get('ar/{id}', [ArController::class, 'show'], 'ar.view');
+$router->get('ar/{id}/edit', [ArController::class, 'edit'], 'ar.manage');
+$router->post('ar/{id}', [ArController::class, 'update'], 'ar.manage');
+$router->post('ar/{id}/submit', [ArController::class, 'submit'], 'ar.manage');
+$router->post('ar/{id}/approve', [ArController::class, 'approve'], 'ar.approve');
+$router->post('ar/{id}/reject', [ArController::class, 'reject'], 'ar.approve');
+$router->post('ar/{id}/post', [ArController::class, 'post'], 'ar.manage');
+$router->post('ar/{id}/terima', [ArController::class, 'terima'], 'ar.manage');
+$router->post('ar/{id}/delete', [ArController::class, 'destroy'], 'ar.manage');
+
+/* -------------------------------------------------------- pengakuan pendapatan */
+$router->get('revenue', [RevenueController::class, 'index'], 'ar.view');
+$router->get('revenue/create', [RevenueController::class, 'create'], 'ar.manage');
+$router->post('revenue', [RevenueController::class, 'store'], 'ar.manage');
+$router->get('revenue/{id}', [RevenueController::class, 'show'], 'ar.view');
+$router->get('revenue/{id}/edit', [RevenueController::class, 'edit'], 'ar.manage');
+$router->post('revenue/{id}', [RevenueController::class, 'update'], 'ar.manage');
+$router->post('revenue/{id}/submit', [RevenueController::class, 'submit'], 'ar.manage');
+$router->post('revenue/{id}/approve', [RevenueController::class, 'approve'], 'ar.approve');
+$router->post('revenue/{id}/reject', [RevenueController::class, 'reject'], 'ar.approve');
+$router->post('revenue/{id}/post', [RevenueController::class, 'post'], 'ar.manage');
+$router->post('revenue/{id}/delete', [RevenueController::class, 'destroy'], 'ar.manage');
 $router->get('budget', [PlaceholderController::class, 'show'], 'budget.view');
 $router->get('approval', [PlaceholderController::class, 'show'], 'approval.view');
 $router->get('asset', [PlaceholderController::class, 'show'], 'asset.view');

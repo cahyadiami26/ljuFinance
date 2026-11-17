@@ -138,6 +138,8 @@
 
     /* ---------------------------------------------- total pengajuan biaya */
     function recalc() {
+        recalcInvoice();
+
         var form = document.getElementById('expense-form');
         if (!form) {
             return;
@@ -170,6 +172,95 @@
                 el.textContent = targets[key];
             }
         });
+    }
+
+    /* ------------------------------------------- total invoice AP / AR */
+    function recalcInvoice() {
+        var form = document.getElementById('invoice-form');
+        if (!form) {
+            return;
+        }
+
+        var subtotal = 0;
+        var ppn = 0;
+
+        form.querySelectorAll('[data-rowset="invoice-items"] [data-row]').forEach(function (row) {
+            var jumlah = row.querySelector('[data-item-jumlah]');
+            var rowPpn = row.querySelector('[data-item-ppn]');
+            subtotal += toNumber(jumlah ? jumlah.value : 0);
+            ppn += toNumber(rowPpn ? rowPpn.value : 0);
+        });
+
+        var targets = {
+            subtotal: formatRp(subtotal),
+            ppn: formatRp(ppn),
+            total: formatRp(subtotal + ppn)
+        };
+        form.querySelectorAll('[data-invoice-total]').forEach(function (el) {
+            var key = el.getAttribute('data-invoice-total');
+            if (targets[key] !== undefined) {
+                el.textContent = targets[key];
+            }
+        });
+    }
+
+    /* ------------------------------------------- jatuh tempo otomatis AP/AR */
+    function syncDueDate() {
+        var form = document.getElementById('invoice-form');
+        if (!form) {
+            return;
+        }
+        var tanggal = form.querySelector('[data-tanggal-tagihan]');
+        var termin = form.querySelector('[data-termin]');
+        var due = form.querySelector('[data-jatuh-tempo]');
+        if (!tanggal || !due || !tanggal.value) {
+            return;
+        }
+        var days = parseInt((termin && termin.value) || '0', 10);
+        if (isNaN(days) || days < 0) {
+            days = 0;
+        }
+        var base = new Date(tanggal.value + 'T00:00:00');
+        if (isNaN(base.getTime())) {
+            return;
+        }
+        base.setDate(base.getDate() + days);
+        due.value = base.toISOString().slice(0, 10);
+    }
+
+    function bindInvoiceForm() {
+        var form = document.getElementById('invoice-form');
+        if (!form) {
+            return;
+        }
+        form.querySelectorAll('[data-tanggal-tagihan], [data-termin]').forEach(function (field) {
+            field.addEventListener('change', syncDueDate);
+        });
+
+        var partner = form.querySelector('[data-partner]');
+        if (partner) {
+            partner.addEventListener('change', function () {
+                var option = partner.options[partner.selectedIndex];
+                var termin = form.querySelector('[data-termin]');
+                var days = option ? parseInt(option.getAttribute('data-termin') || '0', 10) : 0;
+                if (termin && days > 0) {
+                    termin.value = String(days);
+                    syncDueDate();
+                }
+            });
+        }
+
+        var contract = form.querySelector('[data-contract]');
+        if (contract) {
+            contract.addEventListener('change', function () {
+                var option = contract.options[contract.selectedIndex];
+                var projectId = option ? option.getAttribute('data-project') : '';
+                var project = form.querySelector('[data-project]');
+                if (project && projectId) {
+                    project.value = projectId;
+                }
+            });
+        }
     }
 
     /* --------------------------------------------- isi pajak otomatis */
@@ -224,6 +315,7 @@
     }
 
     /* ------------------------------------------------------- inisialisasi */
+    bindInvoiceForm();
     document.querySelectorAll('input[data-money]').forEach(bindMoney);
     document.querySelectorAll('[data-rowset] [data-row] input, [data-rowset] [data-row] select').forEach(function (field) {
         field.addEventListener('input', recalc);

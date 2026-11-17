@@ -69,7 +69,7 @@ menunggu konfirmasi sebelum tahap berikutnya dimulai.
 │   ├── css/app.css            # design system (satu file, tanpa framework)
 │   ├── js/app.js              # sidebar, konfirmasi, format angka, ⌘K
 │   ├── js/journal.js          # editor baris jurnal & indikator keseimbangan
-│   ├── js/transaksi.js        # baris dinamis kas/uang muka/biaya/rekonsiliasi
+│   ├── js/transaksi.js        # baris dinamis kas/uang muka/biaya/rekonsiliasi/AP/AR
 │   └── img/                   # fallback logo, placeholder
 ├── uploads/                   # bukti transaksi (diproteksi dari eksekusi PHP)
 ├── vendor/dompdf/             # domPDF (manual, tanpa composer)
@@ -148,6 +148,12 @@ Permission granular: `<modul>.<aksi>` (contoh `journal.create`, `ap.approve`, `p
 Kas & bank memakai pemisahan `cash.view` / `cash.manage` / `cash.approve` / `cash.post`; database yang
 dipasang sebelum Tahap 3 perlu menjalankan `database/migrations/2026-11-17_tahap3_cash_permissions.sql`
 agar dua permission terakhir tersedia.
+
+Hutang & piutang memakai `ap.view` / `ap.manage` / `ap.approve` / `ap.pay` dan `ar.view` / `ar.manage` /
+`ar.approve`; penerimaan piutang memakai `ar.manage` (belum ada `ar.pay` terpisah). Pengakuan pendapatan
+mengikuti permission AR. Database lama perlu menjalankan
+`database/migrations/2026-11-17_tahap4_ap_ar.sql` untuk akun `1-1330` (piutang belum ditagih),
+`1-1440` (PPh dibayar dimuka), dan prefix `REV`.
 
 **Approval engine** mendukung: approve, return-for-revision, reject-with-reason, delegasi,
 penggantian pejabat (delegation berlaku per modul & rentang tanggal), riwayat persetujuan,
@@ -236,6 +242,23 @@ mengubah status jurnal yang sudah ada.
 
 Catatan: status `cash_advances` memakai `cair` dan `pertanggungjawaban`; `expense_requests` memakai
 `dibayar`. Keduanya sudah tersedia pada enum skema sehingga tidak ada migrasi tambahan.
+
+### Implementasi (Tahap 4 — selesai)
+
+| Komponen | Perilaku |
+|----------|----------|
+| `ApService` | tagihan vendor `AP`: rincian per akun beban/aset dengan PPN masukan per baris, termin & jatuh tempo otomatis dari `ms_partners.termin_hari`, alur draft → diajukan → disetujui → **posted** (D beban + D PPN Masukan / K Utang Usaha), pembayaran sebagian/penuh `APP` (D Utang Usaha / K Bank + K Utang PPh) yang memperbarui `dibayar`, `sisa`, dan status `partial`/`paid`, serta aging 5 bucket |
+| `ArService` | invoice pelanggan `AR`: rincian akun pendapatan + PPN keluaran, tautan kontrak/termin/business unit, posting **D Piutang Usaha / K Pendapatan + K PPN Keluaran**, penerimaan `ARP` (**D Bank + D PPh Dibayar Dimuka / K Piutang Usaha**), aging 5 bucket |
+| Penagihan atas pengakuan | bila kontrak sudah memiliki `revenue_recognitions` posted yang belum ditagih, bagian itu dikreditkan ke `1-1330 Piutang Belum Ditagih` (bukan pendapatan) sehingga pendapatan tidak diakui dua kali; sisanya tetap ke akun pendapatan |
+| `RevenueService` | pengakuan pendapatan `REV` per kontrak/proyek/periode dengan metode `persentase_penyelesaian` (kumulatif terhadap nilai kontrak), `termin`, dan `kontrak_selesai`; nilai dihitung dari nilai kontrak − yang sudah diakui, total pengakuan ditolak bila melebihi nilai kontrak; posting **D Piutang Belum Ditagih / K Pendapatan Usaha** |
+| `AccountMap` | tambahan pemetaan: piutang usaha `1-1310`, piutang belum ditagih `1-1330`, utang usaha `2-1110`, PPN keluaran dari `tax_types.coa_keluaran_id` (fallback `2-1210`), PPh dibayar dimuka `1-1440`, pendapatan usaha `4-1100` |
+| UI | daftar + form + detail AP (strip ringkasan, aging, panel pembayaran, timeline), daftar + form + detail AR (aging, panel penerimaan, info kontrak), daftar + form + detail pengakuan pendapatan (progress bar kontrak); total & jatuh tempo form otomatis lewat `assets/js/transaksi.js` |
+| Penomoran | `AP`, `APP`, `AR`, `ARP`, dan `REV` melanjutkan `doc_sequences` |
+
+Catatan: status `overdue` dihitung saat tampil (`sisa > 0` dan `tanggal_jatuh_tempo < hari ini`) sehingga
+tidak perlu job harian; nilai `overdue` pada data demo tetap didukung. `revenue_recognitions`,
+`ap_payments`, dan `ar_payments` tidak memiliki kolom `approved_at`, jadi riwayat persetujuan memakai
+`updated_at`/`created_at` pada timeline.
 
 ---
 
@@ -340,9 +363,16 @@ Legenda: ✅ selesai · 🚧 berjalan · ⬜ belum
   bila masih berselisih.
 - Mapping akun terpusat di `AccountMap`; jurnal modul memakai `JournalService::catat()`.
 
-### Tahap 4 — Hutang & Piutang ⬜
-AP: tagihan supplier, termin, approval pembayaran, pembayaran sebagian/penuh, aging payable.
-AR: invoice & contract billing, pengakuan pendapatan, penerimaan, riwayat pelanggan, aging receivable.
+### Tahap 4 — Hutang & Piutang ✅
+- **Hutang usaha (AP)**: tagihan vendor `AP` dengan rincian akun beban/aset dan PPN masukan per baris,
+  termin/jatuh tempo, alur persetujuan, posting jurnal, pembayaran sebagian/penuh `APP` dengan potongan PPh,
+  serta aging hutang 5 bucket.
+- **Piutang usaha (AR)**: invoice pelanggan `AR` (opsional terhubung kontrak & termin) dengan rincian akun
+  pendapatan dan PPN keluaran, persetujuan, posting jurnal, penerimaan `ARP` termasuk PPh dipotong pelanggan,
+  dan aging piutang 5 bucket.
+- **Pengakuan pendapatan** `REV`: persentase penyelesaian, termin, atau kontrak selesai, dengan validasi
+  kumulatif terhadap nilai kontrak dan jurnal D Piutang Belum Ditagih / K Pendapatan; penagihan atas
+  bagian yang sudah diakui mengkredit `1-1330` agar pendapatan tidak ganda.
 
 ### Tahap 5 — Anggaran & Pengendalian ⬜
 RKAP (penyusunan, per bidang/divisi/akun/proyek), revisi & persetujuan, monitoring realisasi + peringatan
@@ -410,3 +440,15 @@ Detail lengkap ada di `readme.md`.
 - [ ] Pembayaran biaya memisahkan PPN masukan (D) dan potongan PPh (K) dari nilai bank (K).
 - [ ] Penyelesaian rekonsiliasi menolak selisih tanpa catatan penjelasan.
 - [ ] Penomoran `KM/KK/TRF/CA/EXP` melanjutkan urutan `doc_sequences` yang ada (tanpa duplikat).
+
+**Khusus hutang & piutang (Tahap 4)**
+
+- [ ] Posting tagihan AP menghasilkan **D beban/aset + D PPN Masukan = K Utang Usaha** dan hanya dari status `approved`.
+- [ ] Pembayaran AP menolak nilai melebihi `sisa`, memperbarui `dibayar`/`sisa`, dan menutup tagihan (`paid`) saat sisa nol.
+- [ ] Pembayaran AP memisahkan potongan PPh (K Utang PPh) dari kas keluar bank.
+- [ ] Posting invoice AR menghasilkan **D Piutang Usaha = K Pendapatan + K PPN Keluaran**.
+- [ ] Penerimaan AR memisahkan PPh dipotong pelanggan (D PPh Dibayar Dimuka) dari kas masuk dan menolak nilai melebihi sisa.
+- [ ] Pengakuan pendapatan menolak total yang melebihi nilai kontrak dan periode tertutup.
+- [ ] Invoice atas kontrak yang sudah diakui mengkredit `1-1330` sehingga pendapatan tidak tercatat dua kali.
+- [ ] Aging AP/AR hanya menghitung dokumen posted/partial dengan `sisa > 0` dan memakai 5 bucket umur.
+- [ ] Penomoran `AP/APP/AR/ARP/REV` melanjutkan urutan `doc_sequences` yang ada (tanpa duplikat).

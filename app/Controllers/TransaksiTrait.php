@@ -62,6 +62,44 @@ trait TransaksiTrait
         return Db::all('SELECT id, kode, nama, tipe FROM ms_partners WHERE is_active = 1 ORDER BY nama');
     }
 
+    /** Partner sesuai tipe transaksi (vendor / customer / both). */
+    protected function opsiPartnerTipe(string $tipe): array
+    {
+        return Db::all(
+            'SELECT id, kode, nama, tipe, npwp, termin_hari
+             FROM ms_partners
+             WHERE is_active = 1 AND tipe IN (?, ?)
+             ORDER BY nama',
+            [$tipe, 'both']
+        );
+    }
+
+    /** @return array<int,array<string,mixed>> */
+    protected function opsiContract(): array
+    {
+        return Db::all(
+            'SELECT k.id, k.nomor, k.judul, k.partner_id, k.project_id, k.nilai_kontrak, k.status
+             FROM ms_contracts k
+             ORDER BY k.nomor'
+        );
+    }
+
+    /** @return array<int,array<string,mixed>> */
+    protected function opsiBusinessUnit(): array
+    {
+        return Db::all('SELECT id, kode, nama FROM ms_business_units WHERE is_active = 1 ORDER BY nama');
+    }
+
+    /** Akun pendapatan (untuk rincian invoice pelanggan). */
+    protected function opsiCoaPendapatan(): array
+    {
+        return Db::all(
+            "SELECT id, kode, nama FROM coa_accounts
+             WHERE allow_posting = 1 AND is_active = 1 AND tipe = 'pendapatan'
+             ORDER BY kode"
+        );
+    }
+
     /** Akun COA yang boleh menerima posting (untuk rincian biaya). */
     protected function opsiCoaPosting(): array
     {
