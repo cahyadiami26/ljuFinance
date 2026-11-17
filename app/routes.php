@@ -11,11 +11,14 @@
 
 use Lju\Controllers\AdvanceController;
 use Lju\Controllers\ApController;
+use Lju\Controllers\ApprovalController;
+use Lju\Controllers\ArController;
 use Lju\Controllers\ArController;
 use Lju\Controllers\AuditController;
 use Lju\Controllers\CashController;
 use Lju\Controllers\ClosingController;
 use Lju\Controllers\AuthController;
+use Lju\Controllers\BudgetController;
 use Lju\Controllers\CoaController;
 use Lju\Controllers\DashboardController;
 use Lju\Controllers\ExpenseController;
@@ -197,8 +200,37 @@ $router->post('revenue/{id}/approve', [RevenueController::class, 'approve'], 'ar
 $router->post('revenue/{id}/reject', [RevenueController::class, 'reject'], 'ar.approve');
 $router->post('revenue/{id}/post', [RevenueController::class, 'post'], 'ar.manage');
 $router->post('revenue/{id}/delete', [RevenueController::class, 'destroy'], 'ar.manage');
-$router->get('budget', [PlaceholderController::class, 'show'], 'budget.view');
-$router->get('approval', [PlaceholderController::class, 'show'], 'approval.view');
+/* ------------------------------------------------------ anggaran & pengendalian */
+$router->get('budget', [BudgetController::class, 'index'], 'budget.view');
+$router->get('budget/create', [BudgetController::class, 'create'], 'budget.manage');
+$router->post('budget', [BudgetController::class, 'store'], 'budget.manage');
+
+$router->get('budget/monitoring', [BudgetController::class, 'monitoring'], 'budget.view');
+
+$router->get('budget/commitments', [BudgetController::class, 'commitments'], 'budget.view');
+$router->post('budget/commitments', [BudgetController::class, 'commitmentStore'], 'budget.manage');
+$router->post('budget/commitments/{id}/status', [BudgetController::class, 'commitmentStatus'], 'budget.manage');
+$router->post('budget/commitments/{id}/delete', [BudgetController::class, 'commitmentDestroy'], 'budget.manage');
+
+$router->get('budget/{id}', [BudgetController::class, 'show'], 'budget.view');
+$router->get('budget/{id}/edit', [BudgetController::class, 'edit'], 'budget.manage');
+$router->post('budget/{id}', [BudgetController::class, 'update'], 'budget.manage');
+$router->post('budget/{id}/submit', [BudgetController::class, 'submit'], 'budget.manage');
+$router->post('budget/{id}/approve', [BudgetController::class, 'approve'], 'budget.approve');
+$router->post('budget/{id}/reject', [BudgetController::class, 'reject'], 'budget.approve');
+$router->post('budget/{id}/activate', [BudgetController::class, 'activate'], 'budget.approve');
+$router->post('budget/{id}/archive', [BudgetController::class, 'archive'], 'budget.approve');
+$router->post('budget/{id}/revise', [BudgetController::class, 'revise'], 'budget.manage');
+$router->post('budget/{id}/delete', [BudgetController::class, 'destroy'], 'budget.manage');
+
+/* ------------------------------------------------------------- approval center */
+$router->get('approval', [ApprovalController::class, 'index'], 'approval.view');
+$router->get('approval/delegations', [ApprovalController::class, 'delegations'], 'approval.view');
+$router->post('approval/delegations', [ApprovalController::class, 'delegationStore'], 'approval.act');
+$router->post('approval/delegations/{id}/close', [ApprovalController::class, 'delegationClose'], 'approval.act');
+$router->get('approval/{id}', [ApprovalController::class, 'show'], 'approval.view');
+$router->post('approval/{id}/act', [ApprovalController::class, 'act'], 'approval.act');
+$router->post('approval/{id}/cancel', [ApprovalController::class, 'cancel'], 'approval.act');
 $router->get('asset', [PlaceholderController::class, 'show'], 'asset.view');
 $router->get('tax', [PlaceholderController::class, 'show'], 'tax.view');
 $router->get('report', [PlaceholderController::class, 'show'], 'report.view');

@@ -319,7 +319,7 @@ final class ApService
 
     public static function ajukan(int $id): void
     {
-        $row = Db::one('SELECT status FROM ap_invoices WHERE id = ?', [$id]);
+        $row = Db::one('SELECT * FROM ap_invoices WHERE id = ?', [$id]);
         if ($row === null) {
             throw new \RuntimeException('Tagihan tidak ditemukan.');
         }
@@ -327,6 +327,15 @@ final class ApService
             throw new \RuntimeException('Hanya draft yang dapat diajukan.');
         }
         Db::exec('UPDATE ap_invoices SET status = ? WHERE id = ?', ['submitted', $id]);
+
+        ApprovalService::daftarkan('ap_invoice', $id, [
+            'nomor'      => (string) $row['nomor'],
+            'judul'      => 'Tagihan vendor ' . $row['nomor'],
+            'amount'     => (float) $row['total'],
+            'bidang_id'  => $row['bidang_id'] ?? null,
+            'divisi_id'  => $row['divisi_id'] ?? null,
+            'project_id' => $row['project_id'] ?? null,
+        ]);
     }
 
     public static function setujui(int $id): void
@@ -341,6 +350,7 @@ final class ApService
         Db::exec('UPDATE ap_invoices SET status = ?, approved_by = ?, approved_at = ? WHERE id = ?', [
             'approved', auth_id() ?: null, now(), $id,
         ]);
+        ApprovalService::selesaikanOlehModul('ap_invoice', $id, 'approved');
     }
 
     public static function tolak(int $id, string $alasan = ''): void
@@ -353,6 +363,7 @@ final class ApService
             throw new \RuntimeException('Hanya tagihan yang diajukan dapat ditolak.');
         }
         Db::exec('UPDATE ap_invoices SET status = ? WHERE id = ?', ['draft', $id]);
+        ApprovalService::selesaikanOlehModul('ap_invoice', $id, 'rejected');
 
         Audit::log('reject', 'ap', [
             'ref_table'   => 'ap_invoices',

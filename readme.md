@@ -23,8 +23,10 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 > `journal-form`, `journal-show`, `ledger`, `trial-balance`, `closing`, `cash-index`, `cash-form`,
 > `cash-show`, `advance-index`, `advance-form`, `advance-show`, `expense-index`, `expense-form`,
 > `expense-show`, `recon-index`, `recon-form`, `recon-show`, `ap-index`, `ap-form`, `ap-show`,
-> `ar-index`, `ar-form`, `ar-show`, `revenue-index`, `revenue-form`, `revenue-show`. Berguna untuk
-> meninjau tampilan tanpa server PHP/MySQL.
+> `ar-index`, `ar-form`, `ar-show`, `revenue-index`, `revenue-form`, `revenue-show`,
+> `budget-index`, `budget-form`, `budget-show`, `budget-monitoring`, `budget-commitments`,
+> `approval-index`, `approval-show`, `approval-delegations`. Berguna untuk meninjau tampilan tanpa
+> server PHP/MySQL.
 
 ---
 
@@ -106,6 +108,23 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
   status `overdue` dihitung otomatis saat tampil.
 - Form AP/AR memakai editor baris dinamis dengan total berjalan dan jatuh tempo otomatis (`transaksi.js`).
 
+**Anggaran & pengendalian (Tahap 5)**
+
+- **RKAP berversi**: penyusunan pagu pendapatan & beban per akun dan dimensi (bidang, divisi, unit usaha,
+  cost center, proyek), nomor otomatis `RKAP/<tahun>/NN`, penyebaran 12 bulan, alur
+  draft → diajukan → disetujui → **aktif** → arsip, serta **revisi** `RKAP-REV-NN/<tahun>` yang menyalin
+  baris versi sebelumnya (hanya satu versi aktif per tahun).
+- **Monitoring realisasi**: pagu vs realisasi jurnal posted s.d. bulan terpilih vs komitmen, sisa pagu,
+  persentase serapan, status `aman`/`waspada`/`over` (ambang `budget_alert_percent`), rekap per divisi,
+  dan rincian bulanan 12 kolom.
+- **Komitmen pengadaan**: PO/kontrak pengadaan (nomor PO unik, vendor, akun, proyek/divisi) dengan status
+  `open`/`sebagian`/`closed`/`cancelled`; komitmen terbuka mengurangi pagu tersedia.
+- **Approval Center**: antrean persetujuan seluruh modul (jurnal, kas, uang muka, biaya, AP, AR, pendapatan,
+  RKAP) dengan SLA per level dari `approval_flows`, aksi setujui/tolak/kembalikan/delegasi, otorisasi
+  pejabat per level, notifikasi in-app, riwayat aksi, statistik ketepatan waktu, serta **delegasi**
+  per modul & rentang tanggal.
+- Status dokumen modul tidak berubah oleh Approval Center; posting/void tetap hanya dari modul asal.
+
 **Administrasi sistem**
 
 - Pengguna & hak akses (9 role, permission granular `modul.aksi`).
@@ -151,6 +170,11 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
    Database yang dipasang **sebelum** Tahap 4 perlu menjalankan
    `database/migrations/2026-11-17_tahap4_ap_ar.sql` agar akun `1-1330`, `1-1440`, dan prefix `REV`
    tersedia (idempotent).
+
+   Database yang dipasang **sebelum** Tahap 5 perlu menjalankan
+   `database/migrations/2026-11-17_tahap5_budget_approval.sql` agar permission
+   `budget.*`/`approval.*`, setting ambang anggaran, alur `AF-BUD-*`, dan prefix `RKAP` tersedia
+   (idempotent).
 
 4. **Jalankan installer** dengan token (default ada di `config/config.php` → `security.install_token`):
 
@@ -314,6 +338,20 @@ Sembilan role aplikasi: `super_admin`, `dirut`, `dirops`, `kabid_keuangan`, `sta
     melebihi nilai kontrak → ditolak.
 23. Buka daftar **Hutang Usaha** dan **Piutang Usaha** → kartu aging 5 bucket terisi dan totalnya sama dengan
     jumlah sisa dokumen posted/partial.
+
+**Tahap 5 — anggaran & approval**
+
+24. **RKAP & Versi → RKAP Baru**: pilih tahun, isi 2 baris (satu akun pendapatan, satu akun beban) → simpan →
+    pastikan total 12 bulan pada detail sama dengan pagu tahunan dan total dihitung otomatis di form.
+25. Ajukan RKAP → setujui → **Aktifkan** → buka **Monitoring Realisasi** → serapan, sisa pagu, dan status
+    `aman/waspada/over` muncul; versi aktif lain (bila ada) otomatis berstatus `arsip`.
+26. Dari RKAP aktif, klik **Buat Revisi** → draft versi +1 dengan salinan baris dan nomor `RKAP-REV-…`.
+27. **Komitmen PO**: catat PO baru (vendor, akun beban, nilai) → pagu tersedia pada monitoring berkurang;
+    ubah status ke `closed` → pagu kembali.
+28. **Approval Center**: dari salah satu modul klik *Ajukan* → permintaan muncul di antrean dengan SLA;
+    setujui level 1 → level naik; selesaikan level terakhir → dokumen modul ikut berstatus disetujui.
+    Coba **delegasikan** ke pejabat lain lalu proses dari akun penerima delegasi, dan tolak permintaan
+    dengan catatan → riwayat aksi tercatat.
 
 ---
 

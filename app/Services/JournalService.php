@@ -427,6 +427,13 @@ final class JournalService
                 throw new \RuntimeException('Periode jurnal sudah ditutup.');
             }
             self::ubahStatus($id, 'submitted', ['submitted_at' => now()]);
+
+            ApprovalService::daftarkan('journal', $id, [
+                'nomor'    => (string) $journal['nomor'],
+                'judul'    => (string) $journal['deskripsi'],
+                'amount'   => (float) $journal['total_debit'],
+                'bidang_id' => null,
+            ]);
         });
     }
 
@@ -441,6 +448,7 @@ final class JournalService
                 throw new \RuntimeException('Hanya jurnal yang diajukan dapat disetujui.');
             }
             self::ubahStatus($id, 'approved', ['approved_by' => auth_id() ?: null, 'approved_at' => now()]);
+            ApprovalService::selesaikanOlehModul('journal', $id, 'approved');
         });
     }
 
@@ -459,6 +467,7 @@ final class JournalService
                 'rejected_at'      => now(),
                 'rejection_reason' => mb_substr($alasan !== '' ? $alasan : 'Tidak disebutkan', 0, 255),
             ]);
+            ApprovalService::selesaikanOlehModul('journal', $id, 'rejected');
         });
     }
 

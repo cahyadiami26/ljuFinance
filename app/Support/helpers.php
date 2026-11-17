@@ -371,6 +371,9 @@ function status_badge(string $status): string
         'final'       => ['sukses', 'Final'],
         'dilaporkan'  => ['info', 'Dilaporkan'],
         'terbuka'     => ['sukses', 'Terbuka'],
+        'aman'        => ['sukses', 'Aman'],
+        'waspada'     => ['warning', 'Waspada'],
+        'over'        => ['bahaya', 'Melebihi Pagu'],
     ];
 
     [$variant, $label] = $map[$status] ?? ['netral', ucfirst($status)];

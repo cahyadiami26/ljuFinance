@@ -155,6 +155,11 @@ mengikuti permission AR. Database lama perlu menjalankan
 `database/migrations/2026-11-17_tahap4_ap_ar.sql` untuk akun `1-1330` (piutang belum ditagih),
 `1-1440` (PPh dibayar dimuka), dan prefix `REV`.
 
+Anggaran & Approval Center memakai `budget.view/manage/approve` dan `approval.view/act`. Database yang
+dipasang sebelum Tahap 5 perlu menjalankan `database/migrations/2026-11-17_tahap5_budget_approval.sql`
+agar permission, setting (`budget_alert_percent`, `budget_hard_stop`, `approval_sla_hours`), alur
+`AF-BUD-*`, dan prefix `RKAP` tersedia.
+
 **Approval engine** mendukung: approve, return-for-revision, reject-with-reason, delegasi,
 penggantian pejabat (delegation berlaku per modul & rentang tanggal), riwayat persetujuan,
 notifikasi (in-app + antrean email), serta matriks **nominal × unit organisasi × level**.
@@ -222,8 +227,8 @@ ditutup melalui `fiscal_years.status=closed` + jurnal penutup tahunan.
 | Tutup buku tahunan | jurnal penutup `tipe=penutup`: pendapatan (D) & beban (K) → `3-2100 Laba Tahun Berjalan` → `3-2000 Saldo Laba`; seluruh periode → `locked`; `fiscal_years.status=closed` |
 | Bukti transaksi | `attachments` (module=`journal`), disimpan di `uploads/journal/YYYY/MM`, unduhan melalui rute ber-permission (bukan URL publik) |
 
-Catatan: persetujuan jurnal pada tahap ini masih di level modul (`journal.approve`). Pada Tahap 5
-seluruh approval dimigrasikan ke **Approval Center** (`approval_requests`, delegasi, SLA) tanpa
+Catatan: persetujuan jurnal pada tahap ini masih di level modul (`journal.approve`). Sejak Tahap 5
+seluruh approval juga tercatat pada **Approval Center** (`approval_requests`, delegasi, SLA) tanpa
 mengubah status jurnal yang sudah ada.
 
 ### Implementasi (Tahap 3 — selesai)
@@ -259,6 +264,28 @@ Catatan: status `overdue` dihitung saat tampil (`sisa > 0` dan `tanggal_jatuh_te
 tidak perlu job harian; nilai `overdue` pada data demo tetap didukung. `revenue_recognitions`,
 `ap_payments`, dan `ar_payments` tidak memiliki kolom `approved_at`, jadi riwayat persetujuan memakai
 `updated_at`/`created_at` pada timeline.
+
+### Implementasi (Tahap 5 — selesai)
+
+| Komponen | Perilaku |
+|----------|----------|
+| `BudgetService` | RKAP tahunan: header `budgets` + baris `budget_lines` per akun & dimensi (bidang/divisi/unit usaha/cost center/proyek), nomor `RKAP/<tahun>/NN` dari `doc_sequences`, penyebaran pagu tahunan ke 12 bulan (sisa pembulatan ke Desember), validasi kombinasi akun × dimensi tidak boleh ganda, jenis baris otomatis mengikuti tipe COA |
+| Alur versi | `draft → submitted → approved → aktif → arsip` plus `rejected`; aktivasi mengarsipkan versi aktif lain pada tahun yang sama; **revisi** membuat versi + 1 (`RKAP-REV-NN/<tahun>`) dengan `parent_id` dan salinan baris (INSERT…SELECT) sebagai draft |
+| Monitoring realisasi | realisasi per baris dihitung dari `journal_lines` jurnal **posted** tahun berjalan s.d. bulan terpilih, dialokasikan tanpa perhitungan ganda (baris dengan cost center/proyek spesifik mengambil nilai dimensi persis; baris tanpa dimensi rinci mengambil sisa), komitmen PO mengurangi pagu tersedia; status baris `aman` / `waspada` (≥ `budget_alert_percent`) / `over`, total serapan & sisa pagu, rekap per divisi |
+| Komitmen pengadaan | `budget_commitments` (nomor PO unik, vendor, akun beban, proyek/divisi/bidang/cost center, nilai, status `open/sebagian/closed/cancelled`) dikelola dari halaman Komitmen PO; hanya status open/sebagian yang mengikat pagu |
+| `ApprovalService` | antrean lintas 10 modul; `daftarkan()` memilih `approval_flows` berdasarkan nominal × bidang/divisi, menetapkan `max_level` dan `deadline` dari `sla_jam` (idempotent per `module + ref_id`); `selesaikanOlehModul()` menutup antrean saat modul menyelesaikan persetujuannya sendiri |
+| Keputusan | `putuskan()` mendukung **approve** (naik level / selesai), **reject**, **return**, dan **delegate**; otorisasi level memeriksa approver user/role pada alur, delegasi aktif, atau Super Administrator; keputusan final menyinkronkan status dokumen sumber secara best-effort (`approved_by/approved_at` hanya bila kolomnya ada) sehingga status posted/void tidak berubah |
+| Delegasi & notifikasi | delegasi per pejabat, opsional per modul dan rentang tanggal (`approval_delegations`), dapat ditutup manual; notifikasi in-app ke pejabat level 1 saat pengajuan masuk, ke penerima saat didelegasikan, dan ke pengaju saat ada keputusan |
+| Cost & profit center | `analisisCostCenter()` mengelompokkan pagu & realisasi beban per `ms_cost_centers` (tipe cost/profit/investasi); `analisisProfitCenter()` membandingkan pendapatan vs beban per unit usaha beserta margin pagu/realisasi |
+| Integrasi modul | jurnal, kas/bank, uang muka, pengajuan biaya, tagihan AP, invoice AR, pengakuan pendapatan, dan RKAP memanggil hook Approval Center pada saat diajukan/disetujui/ditolak; kegagalan antrean tidak memblokir transaksi |
+| UI | `budget/index` (ringkasan versi & komitmen), `budget/form` (editor baris + total otomatis), `budget/show` (monitoring per akun + matriks 12 bulan + komitmen), `budget/monitoring` (serapan, per divisi, cost/profit center, daftar baris), `budget/commitments` (form PO + ubah status), `approval/index` (KPI SLA, filter modul/status/terlambat), `approval/show` (aksi + riwayat), `approval/delegations` |
+| Penomoran | `RKAP` melanjutkan `doc_sequences`; revisi memakai prefix `RKAP-REV` |
+
+Catatan: status dokumen modul **tidak diubah** oleh lapisan approval — Approval Center hanya
+mencerminkan dan menyinkronkan status yang sama (`submitted/approved/rejected/draft`). Perhitungan
+realisasi memakai jurnal posted, bukan cache `account_period_balances`, sehingga konsisten dengan
+buku besar. Hard stop anggaran (`budget_hard_stop`) masih bersifat kebijakan: nilainya tersedia di
+Pengaturan dan ditampilkan pada halaman monitoring, penerapan blokir posting menyusul di Tahap 8.
 
 ---
 
@@ -374,10 +401,17 @@ Legenda: ✅ selesai · 🚧 berjalan · ⬜ belum
   kumulatif terhadap nilai kontrak dan jurnal D Piutang Belum Ditagih / K Pendapatan; penagihan atas
   bagian yang sudah diakui mengkredit `1-1330` agar pendapatan tidak ganda.
 
-### Tahap 5 — Anggaran & Pengendalian ⬜
-RKAP (penyusunan, per bidang/divisi/akun/proyek), revisi & persetujuan, monitoring realisasi + peringatan
-ambang batas, komitmen PO, Cost Center & Profit Center analysis, **Approval Center** penuh
-(delegasi, penggantian pejabat, SLA, notifikasi, riwayat).
+### Tahap 5 — Anggaran & Pengendalian ✅
+- **RKAP**: penyusunan per akun dan dimensi (bidang/divisi/unit usaha/cost center/proyek), penyebaran
+  otomatis 12 bulan, pengajuan, persetujuan, aktivasi pagu (versi aktif tunggal per tahun), pengarsipan,
+  dan **revisi berversi** (`RKAP-REV-NN/<tahun>`) dengan salinan baris.
+- **Monitoring realisasi**: pagu vs realisasi jurnal posted s.d. bulan terpilih vs komitmen PO, sisa pagu,
+  persentase serapan, status `aman`/`waspada`/`over` terhadap `budget_alert_percent`, rekap per divisi,
+  serta rincian bulanan 12 kolom.
+- **Komitmen PO**: pencatatan PO/kontrak pengadaan yang mengikat pagu beserta perubahan statusnya.
+- **Approval Center**: antrean seluruh modul dengan SLA per level, aksi setujui/tolak/kembalikan/delegasi,
+  otorisasi pejabat per level, notifikasi in-app, riwayat aksi, dan statistik ketepatan waktu.
+- **Delegasi & penggantian pejabat**: pelimpahan per modul dan rentang tanggal, dapat ditutup manual.
 
 ### Tahap 6 — Aset Tetap & Perpajakan ⬜
 Aset tetap (kode inventaris, perolehan, lokasi, penanggung jawab, penyusutan otomatis garis lurus/saldo
@@ -452,3 +486,18 @@ Detail lengkap ada di `readme.md`.
 - [ ] Invoice atas kontrak yang sudah diakui mengkredit `1-1330` sehingga pendapatan tidak tercatat dua kali.
 - [ ] Aging AP/AR hanya menghitung dokumen posted/partial dengan `sisa > 0` dan memakai 5 bucket umur.
 - [ ] Penomoran `AP/APP/AR/ARP/REV` melanjutkan urutan `doc_sequences` yang ada (tanpa duplikat).
+
+**Khusus anggaran & approval (Tahap 5)**
+
+- [ ] RKAP menolak baris dengan kombinasi akun + dimensi yang sama dan menolak tahun di luar 2000–2100.
+- [ ] Menyimpan RKAP menyebar pagu ke 12 bulan dan total kolom bulanan sama dengan pagu tahunan.
+- [ ] Aktivasi satu versi mengarsipkan versi `aktif` lain pada tahun yang sama (hanya satu pagu aktif).
+- [ ] Revisi membuat versi + 1, menyimpan `parent_id`, dan menyalin seluruh baris sebagai draft.
+- [ ] Monitoring hanya menghitung jurnal **posted** sampai bulan terpilih dan tidak menghitung ganda realisasi per baris.
+- [ ] Komitmen `open`/`sebagian` mengurangi pagu tersedia; status `closed`/`cancelled` tidak lagi mengikat.
+- [ ] Baris melewati 100% ditandai `over`, dan ≥ `budget_alert_percent` ditandai `waspada`.
+- [ ] Pengajuan dokumen modul membuat/memperbarui satu permintaan per `module + ref_id` (tanpa duplikat).
+- [ ] Keputusan approval menolak pengguna yang bukan pejabat level tersebut atau penerima delegasi aktif.
+- [ ] Keputusan final tidak mengubah status posted/void dokumen sumber; hanya status persetujuan modul.
+- [ ] Delegasi hanya berlaku pada rentang tanggal dan modul yang dipilih, dan dapat dinonaktifkan.
+- [ ] Setiap aksi approval tercatat pada `approval_actions` beserta catatan dan waktu.

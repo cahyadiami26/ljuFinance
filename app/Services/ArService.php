@@ -327,7 +327,7 @@ final class ArService
 
     public static function ajukan(int $id): void
     {
-        $row = Db::one('SELECT status FROM ar_invoices WHERE id = ?', [$id]);
+        $row = Db::one('SELECT * FROM ar_invoices WHERE id = ?', [$id]);
         if ($row === null) {
             throw new \RuntimeException('Invoice tidak ditemukan.');
         }
@@ -335,6 +335,15 @@ final class ArService
             throw new \RuntimeException('Hanya draft yang dapat diajukan.');
         }
         Db::exec('UPDATE ar_invoices SET status = ? WHERE id = ?', ['submitted', $id]);
+
+        ApprovalService::daftarkan('ar_invoice', $id, [
+            'nomor'      => (string) $row['nomor'],
+            'judul'      => (string) $row['deskripsi'],
+            'amount'     => (float) $row['total'],
+            'bidang_id'  => $row['bidang_id'] ?? null,
+            'divisi_id'  => $row['divisi_id'] ?? null,
+            'project_id' => $row['project_id'] ?? null,
+        ]);
     }
 
     public static function setujui(int $id): void
@@ -349,6 +358,7 @@ final class ArService
         Db::exec('UPDATE ar_invoices SET status = ?, approved_by = ?, approved_at = ? WHERE id = ?', [
             'approved', auth_id() ?: null, now(), $id,
         ]);
+        ApprovalService::selesaikanOlehModul('ar_invoice', $id, 'approved');
     }
 
     public static function tolak(int $id, string $alasan = ''): void
@@ -361,6 +371,7 @@ final class ArService
             throw new \RuntimeException('Hanya invoice yang diajukan dapat ditolak.');
         }
         Db::exec('UPDATE ar_invoices SET status = ? WHERE id = ?', ['draft', $id]);
+        ApprovalService::selesaikanOlehModul('ar_invoice', $id, 'rejected');
 
         Audit::log('reject', 'ar', [
             'ref_table'   => 'ar_invoices',

@@ -28,12 +28,14 @@ return [
         ],
     ],
     [
-        'type'  => 'link',
-        'label' => 'RKAP & Budget',
-        'route' => 'budget',
+        'type'  => 'group',
+        'label' => 'Anggaran & Pengendalian',
         'icon'  => 'chart',
-        'permission' => 'budget.view',
-        'stage' => 5,
+        'items' => [
+            ['label' => 'RKAP & Versi', 'route' => 'budget', 'icon' => 'chart', 'permission' => 'budget.view'],
+            ['label' => 'Monitoring Realisasi', 'route' => 'budget/monitoring', 'icon' => 'trending-up', 'permission' => 'budget.view'],
+            ['label' => 'Komitmen PO', 'route' => 'budget/commitments', 'icon' => 'briefcase', 'permission' => 'budget.view'],
+        ],
     ],
     [
         'type'  => 'group',
@@ -98,7 +100,6 @@ return [
         'icon'  => 'check-circle',
         'permission' => 'approval.view',
         'badge' => 'approval',
-        'stage' => 5,
     ],
     [
         'type'  => 'group',

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Komitmen Pengadaan · LJU Finance</title>
+    <link rel="icon" href="https://dms.lju.co.id/assets/img/logo.png">
+    <link rel="stylesheet" href="../assets/css/app.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo">
+            <span class="fallback">LJU</span>
+            <img src="https://dms.lju.co.id/assets/img/logo.png" alt="LJU" onerror="this.style.display='none'">
+        </div>
+        <div class="brand-text">
+            <div class="brand-name">LJU Finance</div>
+            <div class="brand-sub">FMS Enterprise</div>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+                                                    <a class="nav-item active"
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></span>
+                    <span class="nav-label">Dashboard</span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8.5" ry="3"/><path d="M3.5 5v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3V5"/><path d="M3.5 11v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3v-6"/></svg></span>
+                        <span class="nav-label">Master Data</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Chart of Accounts</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Bidang &amp; Divisi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Cost Center</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Unit Usaha</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Vendor &amp; Customer</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Proyek</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekening Bank</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Periode Akuntansi</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></span>
+                        <span class="nav-label">Anggaran &amp; Pengendalian</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">RKAP &amp; Versi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Monitoring Realisasi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Komitmen PO</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H19a2 2 0 0 1 2 2v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17V8.5Z"/><path d="M3 9h14"/><path d="M16.5 12.5h3"/></svg></span>
+                        <span class="nav-label">Kas &amp; Bank</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Kas &amp; Bank</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Uang Muka</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengajuan Biaya</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekonsiliasi Bank</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M6 20h12"/><path d="m12 7-6 3 3 5 3-5Z"/><path d="m12 7 6 3-3 5-3-5Z"/></svg></span>
+                        <span class="nav-label">Hutang &amp; Piutang</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Hutang Usaha (AP)</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Piutang Usaha (AR)</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengakuan Pendapatan</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5Z"/></svg></span>
+                        <span class="nav-label">Accounting</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Jurnal Umum</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Buku Besar</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Neraca Saldo</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Tutup Buku</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 12 3.5l9 5v7l-9 5-9-5v-7Z"/><path d="M3 8.5 12 13.5l9-5M12 13.5V21"/></svg></span>
+                    <span class="nav-label">Fixed Asset</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 6"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg></span>
+                    <span class="nav-label">Tax Management</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 6"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span>
+                    <span class="nav-label">Financial Reports</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 7"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="8.5 12.5 11 15 15.5 9.5"/></svg></span>
+                    <span class="nav-label">Approval Center</span>
+                                            <span class="nav-badge">5</span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.5 14.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.3 1Z"/></svg></span>
+                        <span class="nav-label">System Admin</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengguna &amp; Hak Akses</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Role &amp; Permission</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Audit Trail</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengaturan</span>
+                            </a>
+                                            </div>
+                </details>
+                        </nav>
+
+    <div class="sidebar-foot">
+        <span>v1.0.0 Enterprise</span>
+        <span class="foot-status"><span class="dot"></span>Online</span>
+    </div>
+</aside>
+
+    <div class="main">
+        <header class="topbar">
+    <div class="topbar-left">
+        <button class="icon-btn sidebar-toggle" type="button" data-sidebar-toggle aria-label="Buka menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>        </button>
+
+        <div class="product">
+            <strong>LJU Finance</strong>
+            <span>Finance</span>
+        </div>
+
+        <div class="crumbs">
+                                                                <span class="">Anggaran</span>
+                                            <span class="sep">›</span>                                    <span class="current">Komitmen PO</span>
+                                    </div>
+    </div>
+
+    <form class="topbar-search" method="get" action="#" role="search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>        <input type="search" name="q" placeholder="Cari akun, COA, voucher…" value="" aria-label="Pencarian">
+        <kbd>⌘K</kbd>
+    </form>
+
+    <div class="topbar-actions">
+        <div class="chip chip--period" title="Periode akuntansi aktif">
+            <span class="chip-top">TA 2026</span>
+            <span class="chip-bottom">Nov 2026 · Open</span>
+        </div>
+
+        <span class="chip"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="5.5" ry="2.6"/><path d="M3.5 7v3.5c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6V7"/><path d="M14.5 12.4c2.7.2 4.8 1.3 4.8 2.6 0 1.4-2.5 2.6-5.5 2.6-2.3 0-4.3-.8-5.1-1.8"/><path d="M14.5 12.4v3.5"/></svg> IDR</span>
+
+        <a class="btn btn--primary" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Transaksi Baru
+        </a>
+
+        <a class="icon-btn" href="#" aria-label="Notifikasi">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10.5 20a2 2 0 0 0 3 0"/></svg>            <span class="dot-badge"></span>        </a>
+
+        <a class="profile" href="#" aria-label="Profil">
+            <span class="avatar">
+                                <span>BH</span>
+            </span>
+            <span class="profile-meta">
+                <span class="profile-name">Bambang Hartono</span>
+                <span class="profile-role">Direktur Utama</span>
+            </span>
+        </a>
+    </div>
+</header>
+
+        <main class="content">
+            
+                            <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Komitmen Pengadaan</h1>
+                                                    <div class="page-sub">PO/kontrak yang sudah mengikat pagu anggaran sebelum realisasi jurnal.</div>
+                                                                    </div>
+                                            <div class="page-actions"><a class="btn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg> Monitoring</a></div>
+                                    </div>
+            
+            <div class="summary-strip mb-16" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+    <div class="summary-item">
+        <div class="summary-label">Total Komitmen 2026</div>
+        <div class="summary-value">Rp 23.400.000.000</div>
+        <div class="tiny muted">3 PO/kontrak</div>
+    </div>
+    <div class="summary-item">
+        <div class="summary-label">Masih Terbuka</div>
+        <div class="summary-value">Rp 18.200.000.000</div>
+        <div class="tiny muted">Mengikat pagu berjalan</div>
+    </div>
+    <div class="summary-item">
+        <div class="summary-label">Sebagian</div>
+        <div class="summary-value">Rp 14.750.000.000</div>
+        <div class="tiny muted">Sudah terealisasi sebagian</div>
+    </div>
+    <div class="summary-item">
+        <div class="summary-label">Selesai / Dibatalkan</div>
+        <div class="summary-value">Rp 5.200.000.000</div>
+        <div class="tiny muted">Tidak lagi mengikat pagu</div>
+    </div>
+</div>
+
+<form class="toolbar mb-16" method="get" action="#">
+    <input type="hidden" name="r" value="budget/commitments">
+    <div class="search-box">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>        <input type="search" name="q" value="" placeholder="Cari nomor PO atau keterangan…">
+    </div>
+    <select class="filter-select" name="tahun" data-autosubmit>
+                    <option value="2026" selected>Tahun 2026</option>
+                    <option value="2025" >Tahun 2025</option>
+            </select>
+    <select class="filter-select" name="status" data-autosubmit>
+        <option value="">Semua status</option>
+                    <option value="open" >Terbuka</option>
+                    <option value="sebagian" >Sebagian</option>
+                    <option value="closed" >Selesai</option>
+                    <option value="cancelled" >Dibatalkan</option>
+            </select>
+    <button class="btn" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></svg> Terapkan</button>
+    <span class="spacer"></span>
+            <button class="btn btn--primary" type="button" data-toggle="#commitment-form"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Catat Komitmen</button>
+    </form>
+
+    <div class="card mb-16" id="commitment-form" hidden>
+        <div class="card-head">
+            <div>
+                <h2 class="card-title">Catat Komitmen Pengadaan</h2>
+                <div class="card-sub">Nomor PO harus unik. Nilai komitmen mengurangi pagu tersedia pada monitoring.</div>
+            </div>
+        </div>
+        <form method="post" action="#">
+            <input type="hidden" name="_token" value="30b417d71c43929b115b9ed69f7b39d22a46fc4d9d933e66770bbbb35126eacb">            <div class="card-body">
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="field-label" for="c-nomor">Nomor PO / Kontrak</label>
+                        <input class="input" type="text" id="c-nomor" name="nomor_po" maxlength="40" required placeholder="PO-2026-0001">
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="c-tanggal">Tanggal</label>
+                        <input class="input" type="date" id="c-tanggal" name="tanggal" value="2026-11-17" required>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="c-budget">RKAP</label>
+                        <select class="select" id="c-budget" name="budget_id">
+                            <option value="">— tanpa RKAP —</option>
+                                                            <option value="1">RKAP/2026/01 · RKAP 2026 PT. Lampung Jasa Utama</option>
+                                                    </select>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="c-partner">Vendor</label>
+                        <select class="select" id="c-partner" name="partner_id">
+                            <option value="">— pilih vendor —</option>
+                                                            <option value="5">PT Sinar Teknik Nusantara</option>
+                                                            <option value="6">CV Mitra Pipa Sejahtera</option>
+                                                            <option value="7">PT Energi Listrik Lampung</option>
+                                                    </select>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="c-coa">Akun Beban</label>
+                        <select class="select" id="c-coa" name="coa_id" required>
+                            <option value="">— pilih akun —</option>
+                                                            <option value="81">6-1100 — Beban Gaji &amp; Tunjangan</option>
+                                                            <option value="82">6-1200 — Beban Listrik &amp; Air</option>
+                                                            <option value="83">6-1300 — Beban Pemeliharaan Jaringan</option>
+                                                            <option value="101">6-2100 — Beban Bahan Kimia</option>
+                                                            <option value="84">6-1400 — Beban Sewa</option>
+                                                    </select>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="c-nilai">Nilai Komitmen</label>
+                        <input class="input money" type="text" inputmode="numeric" data-money id="c-nilai" name="nilai" required placeholder="0">
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="c-divisi">Divisi</label>
+                        <select class="select" id="c-divisi" name="divisi_id">
+                            <option value="">—</option>
+                            <option value="1">Divisi Produksi</option><option value="2">Divisi Distribusi</option><option value="3">Divisi Keuangan</option><option value="4">Divisi Umum &amp; SDM</option>                        </select>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="c-bidang">Bidang</label>
+                        <select class="select" id="c-bidang" name="bidang_id">
+                            <option value="">—</option>
+                            <option value="1">Bidang Operasi</option><option value="2">Bidang Keuangan</option><option value="3">Bidang Umum</option>                        </select>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="c-cc">Cost Center</label>
+                        <select class="select" id="c-cc" name="cost_center_id">
+                            <option value="">—</option>
+                            <option value="1">CC Produksi</option><option value="2">CC Distribusi</option><option value="3">CC Administrasi</option>                        </select>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="c-project">Proyek</label>
+                        <select class="select" id="c-project" name="project_id">
+                            <option value="">—</option>
+                            <option value="1">Peningkatan Jaringan Kota</option><option value="2">Rehabilitasi IPA Way Ratai</option>                        </select>
+                    </div>
+                    <div class="field field--full">
+                        <label class="field-label" for="c-keterangan">Keterangan</label>
+                        <input class="input" type="text" id="c-keterangan" name="keterangan" maxlength="255" placeholder="Uraian singkat pengadaan">
+                    </div>
+                </div>
+            </div>
+            <div class="card-foot row" style="justify-content:flex-end;gap:8px">
+                <button class="btn" type="button" data-toggle="#commitment-form">Batal</button>
+                <button class="btn btn--primary" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h11l3 3v15H5V3Z"/><path d="M8 3v6h7V3"/><rect x="8" y="13" width="8" height="8"/></svg> Simpan Komitmen</button>
+            </div>
+        </form>
+    </div>
+
+<div class="card card--flush">
+            <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width:160px">Nomor PO</th>
+                        <th style="width:105px">Tanggal</th>
+                        <th>Vendor / Keterangan</th>
+                        <th style="width:200px">Akun</th>
+                        <th class="num" style="width:150px">Nilai</th>
+                        <th style="width:110px">Status</th>
+                        <th style="width:170px">Aksi</th>                    </tr>
+                </thead>
+                <tbody>
+                                            <tr>
+                            <td>
+                                <div class="mono strong">PO-2026-0891</div>
+                                <div class="tiny muted">RKAP/2026/01</div>
+                            </td>
+                            <td class="small">11 Mar 2026</td>
+                            <td>
+                                <div class="small strong">PT Sinar Teknik Nusantara</div>
+                                <div class="tiny muted">Pengadaan pipa HDPE 200mm ruas Kedaton</div>
+                            </td>
+                            <td class="small"><span class="mono">6-1300</span> Beban Pemeliharaan Jaringan</td>
+                            <td class="num strong">Rp 3.450.000.000</td>
+                            <td><span class="badge badge--sukses">Terbuka</span></td>
+                                                            <td>
+                                    <div class="row" style="gap:6px">
+                                        <form method="post" action="#">
+                                            <input type="hidden" name="_token" value="30b417d71c43929b115b9ed69f7b39d22a46fc4d9d933e66770bbbb35126eacb">                                            <select class="select select--sm" name="status" style="width:104px">
+                                                                                                    <option value="open" selected>Terbuka</option>
+                                                                                                    <option value="sebagian" >Sebagian</option>
+                                                                                                    <option value="closed" >Selesai</option>
+                                                                                                    <option value="cancelled" >Dibatalkan</option>
+                                                                                            </select>
+                                            <button class="icon-btn" type="submit" title="Ubah status"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6"/></svg></button>
+                                        </form>
+                                        <form method="post" action="#" data-confirm="Hapus komitmen PO-2026-0891?">
+                                            <input type="hidden" name="_token" value="30b417d71c43929b115b9ed69f7b39d22a46fc4d9d933e66770bbbb35126eacb">                                            <button class="icon-btn" type="submit" title="Hapus"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
+                                        </form>
+                                    </div>
+                                </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="mono strong">PO-2026-0902</div>
+                                <div class="tiny muted">RKAP/2026/01</div>
+                            </td>
+                            <td class="small">02 Apr 2026</td>
+                            <td>
+                                <div class="small strong">CV Mitra Pipa Sejahtera</div>
+                                <div class="tiny muted">Rehabilitasi unit sedimentasi IPA</div>
+                            </td>
+                            <td class="small"><span class="mono">6-1200</span> Beban Listrik &amp; Air</td>
+                            <td class="num strong">Rp 14.750.000.000</td>
+                            <td><span class="badge badge--netral">Sebagian</span></td>
+                                                            <td>
+                                    <div class="row" style="gap:6px">
+                                        <form method="post" action="#">
+                                            <input type="hidden" name="_token" value="30b417d71c43929b115b9ed69f7b39d22a46fc4d9d933e66770bbbb35126eacb">                                            <select class="select select--sm" name="status" style="width:104px">
+                                                                                                    <option value="open" >Terbuka</option>
+                                                                                                    <option value="sebagian" selected>Sebagian</option>
+                                                                                                    <option value="closed" >Selesai</option>
+                                                                                                    <option value="cancelled" >Dibatalkan</option>
+                                                                                            </select>
+                                            <button class="icon-btn" type="submit" title="Ubah status"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6"/></svg></button>
+                                        </form>
+                                        <form method="post" action="#" data-confirm="Hapus komitmen PO-2026-0902?">
+                                            <input type="hidden" name="_token" value="30b417d71c43929b115b9ed69f7b39d22a46fc4d9d933e66770bbbb35126eacb">                                            <button class="icon-btn" type="submit" title="Hapus"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
+                                        </form>
+                                    </div>
+                                </td>
+                                                    </tr>
+                                            <tr>
+                            <td>
+                                <div class="mono strong">PO-2026-0917</div>
+                                <div class="tiny muted">RKAP/2026/01</div>
+                            </td>
+                            <td class="small">20 Mei 2026</td>
+                            <td>
+                                <div class="small strong">PT Energi Listrik Lampung</div>
+                                <div class="tiny muted">Kontrak daya listrik gardu induk</div>
+                            </td>
+                            <td class="small"><span class="mono">6-1200</span> Beban Listrik &amp; Air</td>
+                            <td class="num strong">Rp 5.200.000.000</td>
+                            <td><span class="badge badge--netral">Ditutup</span></td>
+                                                            <td>
+                                    <div class="row" style="gap:6px">
+                                        <form method="post" action="#">
+                                            <input type="hidden" name="_token" value="30b417d71c43929b115b9ed69f7b39d22a46fc4d9d933e66770bbbb35126eacb">                                            <select class="select select--sm" name="status" style="width:104px">
+                                                                                                    <option value="open" >Terbuka</option>
+                                                                                                    <option value="sebagian" >Sebagian</option>
+                                                                                                    <option value="closed" selected>Selesai</option>
+                                                                                                    <option value="cancelled" >Dibatalkan</option>
+                                                                                            </select>
+                                            <button class="icon-btn" type="submit" title="Ubah status"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6"/></svg></button>
+                                        </form>
+                                        <form method="post" action="#" data-confirm="Hapus komitmen PO-2026-0917?">
+                                            <input type="hidden" name="_token" value="30b417d71c43929b115b9ed69f7b39d22a46fc4d9d933e66770bbbb35126eacb">                                            <button class="icon-btn" type="submit" title="Hapus"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
+                                        </form>
+                                    </div>
+                                </td>
+                                                    </tr>
+                                    </tbody>
+            </table>
+        </div>
+    </div>
+        </main>
+
+        <div class="footer-bar">
+            <span>&copy; 2026 PT. Lampung Jasa Utama · LJU Finance v1.0.0</span>
+            <span>Zona waktu Asia/Jakarta · Data per 17 Nov 2026 07:24 WIB</span>
+        </div>
+    </div>
+</div>
+<div class="sidebar-backdrop" data-sidebar-close></div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

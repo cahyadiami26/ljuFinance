@@ -210,7 +210,7 @@ final class RevenueService
 
     public static function ajukan(int $id): void
     {
-        $row = Db::one('SELECT status FROM revenue_recognitions WHERE id = ?', [$id]);
+        $row = Db::one('SELECT * FROM revenue_recognitions WHERE id = ?', [$id]);
         if ($row === null) {
             throw new \RuntimeException('Dokumen pengakuan tidak ditemukan.');
         }
@@ -218,6 +218,13 @@ final class RevenueService
             throw new \RuntimeException('Hanya draft yang dapat diajukan.');
         }
         Db::exec('UPDATE revenue_recognitions SET status = ? WHERE id = ?', ['submitted', $id]);
+
+        ApprovalService::daftarkan('revenue', $id, [
+            'nomor'      => (string) $row['nomor'],
+            'judul'      => 'Pengakuan pendapatan ' . $row['nomor'],
+            'amount'     => (float) $row['nilai'],
+            'project_id' => $row['project_id'] ?? null,
+        ]);
     }
 
     public static function setujui(int $id): void
@@ -230,6 +237,7 @@ final class RevenueService
             throw new \RuntimeException('Hanya dokumen yang diajukan dapat disetujui.');
         }
         Db::exec('UPDATE revenue_recognitions SET status = ? WHERE id = ?', ['approved', $id]);
+        ApprovalService::selesaikanOlehModul('revenue', $id, 'approved');
     }
 
     public static function tolak(int $id, string $alasan = ''): void
@@ -242,6 +250,7 @@ final class RevenueService
             throw new \RuntimeException('Hanya dokumen yang diajukan dapat ditolak.');
         }
         Db::exec('UPDATE revenue_recognitions SET status = ? WHERE id = ?', ['draft', $id]);
+        ApprovalService::selesaikanOlehModul('revenue', $id, 'rejected');
 
         Audit::log('reject', 'revenue', [
             'ref_table'   => 'revenue_recognitions',

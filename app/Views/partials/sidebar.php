@@ -52,13 +52,19 @@ $isActive = static function (string $route) use ($path): bool {
                 if ($visibleItems === []) {
                     continue;
                 }
-                $groupActive = false;
+                // Pilih satu submenu paling spesifik agar `budget` tidak ikut aktif
+                // ketika yang dibuka `budget/monitoring`.
+                $aktifRoute = null;
+                $aktifSkor = 0;
                 foreach ($visibleItems as $sub) {
-                    if ($isActive((string) $sub['route'])) {
-                        $groupActive = true;
-                        break;
+                    $route = (string) $sub['route'];
+                    $skor = $path === $route ? 2 : ($isActive($route) ? 1 : 0);
+                    if ($skor > $aktifSkor) {
+                        $aktifSkor = $skor;
+                        $aktifRoute = $route;
                     }
                 }
+                $groupActive = $aktifSkor > 0;
                 ?>
                 <details class="nav-group" <?= $groupActive ? 'open' : '' ?>>
                     <summary>
@@ -68,7 +74,7 @@ $isActive = static function (string $route) use ($path): bool {
                     </summary>
                     <div class="nav-items">
                         <?php foreach ($visibleItems as $sub): ?>
-                            <a class="nav-item <?= $isActive((string) $sub['route']) ? 'active' : '' ?>"
+                            <a class="nav-item <?= $aktifRoute === (string) $sub['route'] ? 'active' : '' ?>"
                                href="<?= e(url((string) $sub['route'])) ?>">
                                 <span class="nav-label"><?= e((string) $sub['label']) ?></span>
                             </a>

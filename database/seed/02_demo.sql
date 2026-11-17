@@ -201,6 +201,25 @@ ON DUPLICATE KEY UPDATE `judul` = VALUES(`judul`);
 INSERT INTO `approval_actions` (`request_id`,`level`,`approver_user_id`,`action`,`notes`,`acted_at`) VALUES
 (6,1,2,'approve','Sesuai dengan pagu perjalanan dinas divisi',DATE_SUB(NOW(),INTERVAL 2 DAY));
 
+-- Delegasi persetujuan (pelimpahan sementara)
+INSERT INTO `approval_delegations` (`from_user_id`,`to_user_id`,`module`,`tanggal_mulai`,`tanggal_selesai`,`alasan`,`is_active`,`created_by`)
+SELECT 2, 3, NULL, DATE_SUB(@today, INTERVAL 2 DAY), DATE_ADD(@today, INTERVAL 5 DAY),
+       'Dinas luar kota — persetujuan keuangan diwakilkan', 1, 1
+FROM DUAL
+WHERE NOT EXISTS (
+    SELECT 1 FROM `approval_delegations` d
+    WHERE d.from_user_id = 2 AND d.to_user_id = 3 AND d.alasan LIKE 'Dinas luar kota%'
+);
+
+INSERT INTO `approval_delegations` (`from_user_id`,`to_user_id`,`module`,`tanggal_mulai`,`tanggal_selesai`,`alasan`,`is_active`,`created_by`)
+SELECT 1, 2, 'budget', DATE_ADD(@today, INTERVAL 10 DAY), DATE_ADD(@today, INTERVAL 17 DAY),
+       'Cuti tahunan Direktur Utama', 1, 1
+FROM DUAL
+WHERE NOT EXISTS (
+    SELECT 1 FROM `approval_delegations` d
+    WHERE d.from_user_id = 1 AND d.to_user_id = 2 AND d.alasan = 'Cuti tahunan Direktur Utama'
+);
+
 -- ---------------------------------------------------------------------
 -- 7. ASET TETAP
 -- ---------------------------------------------------------------------

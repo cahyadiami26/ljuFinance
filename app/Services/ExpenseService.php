@@ -285,7 +285,7 @@ final class ExpenseService
 
     public static function ajukan(int $id): void
     {
-        $row = Db::one('SELECT status FROM expense_requests WHERE id = ?', [$id]);
+        $row = Db::one('SELECT * FROM expense_requests WHERE id = ?', [$id]);
         if ($row === null) {
             throw new \RuntimeException('Pengajuan biaya tidak ditemukan.');
         }
@@ -293,6 +293,15 @@ final class ExpenseService
             throw new \RuntimeException('Hanya draft yang dapat diajukan.');
         }
         Db::exec('UPDATE expense_requests SET status = ? WHERE id = ?', ['submitted', $id]);
+
+        ApprovalService::daftarkan('expense', $id, [
+            'nomor'      => (string) $row['nomor'],
+            'judul'      => (string) $row['judul'],
+            'amount'     => (float) $row['total'],
+            'bidang_id'  => $row['bidang_id'] ?? null,
+            'divisi_id'  => $row['divisi_id'] ?? null,
+            'project_id' => $row['project_id'] ?? null,
+        ]);
     }
 
     public static function setujui(int $id): void
@@ -307,6 +316,7 @@ final class ExpenseService
         Db::exec('UPDATE expense_requests SET status = ?, approved_by = ?, approved_at = ? WHERE id = ?', [
             'approved', auth_id() ?: null, now(), $id,
         ]);
+        ApprovalService::selesaikanOlehModul('expense', $id, 'approved');
     }
 
     public static function tolak(int $id, string $alasan = ''): void
@@ -319,6 +329,7 @@ final class ExpenseService
             throw new \RuntimeException('Hanya pengajuan yang dapat ditolak.');
         }
         Db::exec('UPDATE expense_requests SET status = ? WHERE id = ?', ['rejected', $id]);
+        ApprovalService::selesaikanOlehModul('expense', $id, 'rejected');
 
         Audit::log('reject', 'expense', [
             'ref_table'   => 'expense_requests',

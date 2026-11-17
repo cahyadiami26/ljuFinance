@@ -158,7 +158,7 @@ final class AdvanceService
 
     public static function ajukan(int $id): void
     {
-        $row = Db::one('SELECT status FROM cash_advances WHERE id = ?', [$id]);
+        $row = Db::one('SELECT * FROM cash_advances WHERE id = ?', [$id]);
         if ($row === null) {
             throw new \RuntimeException('Uang muka tidak ditemukan.');
         }
@@ -166,6 +166,15 @@ final class AdvanceService
             throw new \RuntimeException('Hanya draft yang dapat diajukan.');
         }
         Db::exec('UPDATE cash_advances SET status = ? WHERE id = ?', ['submitted', $id]);
+
+        ApprovalService::daftarkan('cash_advance', $id, [
+            'nomor'      => (string) $row['nomor'],
+            'judul'      => (string) $row['keperluan'],
+            'amount'     => (float) $row['jumlah_diajukan'],
+            'bidang_id'  => $row['bidang_id'] ?? null,
+            'divisi_id'  => $row['divisi_id'] ?? null,
+            'project_id' => $row['project_id'] ?? null,
+        ]);
     }
 
     public static function setujui(int $id, ?float $jumlahDisetujui = null): void
@@ -189,6 +198,7 @@ final class AdvanceService
         Db::exec('UPDATE cash_advances SET status = ?, jumlah_disetujui = ?, approved_by = ?, approved_at = ? WHERE id = ?', [
             'approved', number_format($nilai, 2, '.', ''), auth_id() ?: null, now(), $id,
         ]);
+        ApprovalService::selesaikanOlehModul('cash_advance', $id, 'approved');
     }
 
     public static function tolak(int $id, string $alasan = ''): void
@@ -201,6 +211,7 @@ final class AdvanceService
             throw new \RuntimeException('Hanya pengajuan yang dapat ditolak.');
         }
         Db::exec('UPDATE cash_advances SET status = ? WHERE id = ?', ['rejected', $id]);
+        ApprovalService::selesaikanOlehModul('cash_advance', $id, 'rejected');
 
         Audit::log('reject', 'advance', [
             'ref_table'   => 'cash_advances',

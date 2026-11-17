@@ -206,7 +206,7 @@ final class CashService
 
     public static function ajukan(int $id): void
     {
-        $row = Db::one('SELECT status, periode_id FROM cash_transactions WHERE id = ?', [$id]);
+        $row = Db::one('SELECT * FROM cash_transactions WHERE id = ?', [$id]);
         if ($row === null) {
             throw new \RuntimeException('Transaksi tidak ditemukan.');
         }
@@ -214,6 +214,15 @@ final class CashService
             throw new \RuntimeException('Hanya transaksi draft/ditolak yang dapat diajukan.');
         }
         Db::exec('UPDATE cash_transactions SET status = ? WHERE id = ?', ['submitted', $id]);
+
+        ApprovalService::daftarkan('cash_transaction', $id, [
+            'nomor'      => (string) $row['nomor'],
+            'judul'      => (string) $row['deskripsi'],
+            'amount'     => (float) $row['jumlah'],
+            'bidang_id'  => $row['bidang_id'] ?? null,
+            'divisi_id'  => $row['divisi_id'] ?? null,
+            'project_id' => $row['project_id'] ?? null,
+        ]);
     }
 
     public static function setujui(int $id): void
@@ -228,6 +237,7 @@ final class CashService
         Db::exec('UPDATE cash_transactions SET status = ?, approved_by = ?, approved_at = ? WHERE id = ?', [
             'approved', auth_id() ?: null, now(), $id,
         ]);
+        ApprovalService::selesaikanOlehModul('cash_transaction', $id, 'approved');
     }
 
     public static function tolak(int $id, string $alasan = ''): void
@@ -240,6 +250,7 @@ final class CashService
             throw new \RuntimeException('Hanya transaksi yang diajukan dapat ditolak.');
         }
         Db::exec('UPDATE cash_transactions SET status = ? WHERE id = ?', ['rejected', $id]);
+        ApprovalService::selesaikanOlehModul('cash_transaction', $id, 'rejected');
 
         Audit::log('reject', 'cash', [
             'ref_table'   => 'cash_transactions',

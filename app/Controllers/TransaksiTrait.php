@@ -90,6 +90,16 @@ trait TransaksiTrait
         return Db::all('SELECT id, kode, nama FROM ms_business_units WHERE is_active = 1 ORDER BY nama');
     }
 
+    /** Akun beban (untuk baris RKAP & komitmen pengadaan). */
+    protected function opsiCoaBeban(): array
+    {
+        return Db::all(
+            "SELECT id, kode, nama, tipe FROM coa_accounts
+             WHERE allow_posting = 1 AND is_active = 1 AND tipe = 'beban'
+             ORDER BY kode"
+        );
+    }
+
     /** Akun pendapatan (untuk rincian invoice pelanggan). */
     protected function opsiCoaPendapatan(): array
     {

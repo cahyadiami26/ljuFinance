@@ -139,6 +139,7 @@
     /* ---------------------------------------------- total pengajuan biaya */
     function recalc() {
         recalcInvoice();
+        recalcBudget();
 
         var form = document.getElementById('expense-form');
         if (!form) {
@@ -201,6 +202,24 @@
             if (targets[key] !== undefined) {
                 el.textContent = targets[key];
             }
+        });
+    }
+
+    /* --------------------------------------------- total baris anggaran RKAP */
+    function recalcBudget() {
+        var form = document.getElementById('budget-form');
+        if (!form) {
+            return;
+        }
+
+        var total = 0;
+        form.querySelectorAll('[data-rowset="budget-lines"] [data-row]').forEach(function (row) {
+            var input = row.querySelector('[data-budget-jumlah]');
+            total += toNumber(input ? input.value : 0);
+        });
+
+        form.querySelectorAll('[data-budget-total]').forEach(function (el) {
+            el.textContent = formatRp(total);
         });
     }
 
