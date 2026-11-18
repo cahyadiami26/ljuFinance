@@ -23,10 +23,13 @@ use Lju\Controllers\BudgetController;
 use Lju\Controllers\CoaController;
 use Lju\Controllers\DashboardController;
 use Lju\Controllers\ExpenseController;
+use Lju\Controllers\InventoryController;
 use Lju\Controllers\JournalController;
 use Lju\Controllers\LedgerController;
 use Lju\Controllers\MasterController;
 use Lju\Controllers\PeriodController;
+use Lju\Controllers\ProcurementController;
+use Lju\Controllers\ProjectController;
 use Lju\Controllers\ReportController;
 use Lju\Controllers\ProfileController;
 use Lju\Controllers\ReconciliationController;
@@ -270,6 +273,49 @@ $router->post('tax/{id}/lapor', [TaxController::class, 'lapor'], 'tax.manage');
 $router->post('tax/{id}/void', [TaxController::class, 'void'], 'tax.manage');
 $router->post('tax/{id}/delete', [TaxController::class, 'destroy'], 'tax.manage');
 
+/* ------------------------------------------------- pengadaan & persediaan */
+$router->get('procurement', [ProcurementController::class, 'index'], 'procurement.view');
+$router->get('procurement/create', [ProcurementController::class, 'create'], 'procurement.manage');
+$router->post('procurement', [ProcurementController::class, 'store'], 'procurement.manage');
+$router->get('procurement/{id}/edit', [ProcurementController::class, 'edit'], 'procurement.manage');
+$router->post('procurement/{id}/ajukan', [ProcurementController::class, 'ajukan'], 'procurement.manage');
+$router->post('procurement/{id}/setujui', [ProcurementController::class, 'setujui'], 'procurement.approve');
+$router->post('procurement/{id}/batal', [ProcurementController::class, 'batal'], 'procurement.approve');
+$router->post('procurement/{id}/hapus', [ProcurementController::class, 'hapus'], 'procurement.manage');
+$router->get('procurement/{id}/terima', [ProcurementController::class, 'terimaForm'], 'procurement.manage');
+$router->post('procurement/{id}/terima', [ProcurementController::class, 'terimaStore'], 'procurement.manage');
+$router->post('procurement/{id}/tagih', [ProcurementController::class, 'tagih'], 'procurement.manage');
+$router->post('procurement/{id}', [ProcurementController::class, 'update'], 'procurement.manage');
+$router->get('procurement/{id}', [ProcurementController::class, 'show'], 'procurement.view');
+
+$router->get('inventory', [InventoryController::class, 'index'], 'inventory.view');
+$router->get('inventory/movements', [InventoryController::class, 'movements'], 'inventory.view');
+$router->get('inventory/item/create', [InventoryController::class, 'create'], 'inventory.manage');
+$router->post('inventory/item', [InventoryController::class, 'store'], 'inventory.manage');
+$router->get('inventory/item/{id}/edit', [InventoryController::class, 'edit'], 'inventory.manage');
+$router->get('inventory/item/{id}/masuk', [InventoryController::class, 'masukForm'], 'inventory.manage');
+$router->post('inventory/item/{id}/masuk', [InventoryController::class, 'masukStore'], 'inventory.manage');
+$router->get('inventory/item/{id}/keluar', [InventoryController::class, 'keluarForm'], 'inventory.manage');
+$router->post('inventory/item/{id}/keluar', [InventoryController::class, 'keluarStore'], 'inventory.manage');
+$router->post('inventory/item/{id}', [InventoryController::class, 'update'], 'inventory.manage');
+$router->get('inventory/item/{id}', [InventoryController::class, 'show'], 'inventory.view');
+
+/* ------------------------------------------------------- proyek & kontrak */
+$router->get('project', [ProjectController::class, 'index'], 'project.view');
+$router->get('project/create', [ProjectController::class, 'create'], 'project.manage');
+$router->post('project', [ProjectController::class, 'store'], 'project.manage');
+$router->get('project/contracts', [ProjectController::class, 'contracts'], 'project.view');
+$router->get('project/contract/create', [ProjectController::class, 'contractCreate'], 'project.manage');
+$router->post('project/contract', [ProjectController::class, 'contractStore'], 'project.manage');
+$router->get('project/contract/{id}/edit', [ProjectController::class, 'contractEdit'], 'project.manage');
+$router->post('project/contract/{id}/status', [ProjectController::class, 'contractStatus'], 'project.manage');
+$router->post('project/contract/{id}/tagih', [ProjectController::class, 'tagihTermin'], 'project.manage');
+$router->post('project/contract/{id}', [ProjectController::class, 'contractUpdate'], 'project.manage');
+$router->get('project/contract/{id}', [ProjectController::class, 'contractShow'], 'project.view');
+$router->get('project/{id}/edit', [ProjectController::class, 'edit'], 'project.manage');
+$router->post('project/{id}', [ProjectController::class, 'update'], 'project.manage');
+$router->get('project/{id}', [ProjectController::class, 'show'], 'project.view');
+
 /* ---------------------------------------------------- laporan keuangan */
 $router->get('report', [ReportController::class, 'index'], 'report.view');
 $router->get('report/income', [ReportController::class, 'income'], 'report.view');
@@ -277,5 +323,6 @@ $router->get('report/balance-sheet', [ReportController::class, 'balanceSheet'], 
 $router->get('report/cash-flow', [ReportController::class, 'cashFlow'], 'report.view');
 $router->get('report/equity', [ReportController::class, 'equity'], 'report.view');
 $router->get('report/project', [ReportController::class, 'project'], 'report.view');
+$router->get('report/unit-usaha', [ReportController::class, 'unitUsaha'], 'report.view');
 $router->get('report/print/{jenis}', [ReportController::class, 'print'], 'report.view');
 $router->get('report/export/{jenis}', [ReportController::class, 'export'], 'report.export');

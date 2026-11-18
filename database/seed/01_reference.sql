@@ -65,6 +65,8 @@ SELECT 1, p.permission FROM (
   UNION ALL SELECT 'project.view' UNION ALL SELECT 'project.manage'
   UNION ALL SELECT 'asset.view' UNION ALL SELECT 'asset.manage'
   UNION ALL SELECT 'tax.view' UNION ALL SELECT 'tax.manage'
+  UNION ALL SELECT 'procurement.view' UNION ALL SELECT 'procurement.manage' UNION ALL SELECT 'procurement.approve'
+  UNION ALL SELECT 'inventory.view' UNION ALL SELECT 'inventory.manage'
   UNION ALL SELECT 'approval.view' UNION ALL SELECT 'approval.act'
   UNION ALL SELECT 'user.view' UNION ALL SELECT 'user.manage' UNION ALL SELECT 'role.manage'
   UNION ALL SELECT 'settings.manage' UNION ALL SELECT 'audit.view'
@@ -87,6 +89,7 @@ JOIN (
   UNION ALL SELECT 'dirut','audit.view'       UNION ALL SELECT 'dirut','master.view'
   UNION ALL SELECT 'dirut','coa.view'         UNION ALL SELECT 'dirut','period.view'
   UNION ALL SELECT 'dirut','user.view'
+  UNION ALL SELECT 'dirut','procurement.view'  UNION ALL SELECT 'dirut','inventory.view'
 
   UNION ALL SELECT 'dirops','dashboard.view'  UNION ALL SELECT 'dirops','report.view'
   UNION ALL SELECT 'dirops','report.export'   UNION ALL SELECT 'dirops','journal.view'
@@ -100,6 +103,9 @@ JOIN (
   UNION ALL SELECT 'dirops','tax.view'        UNION ALL SELECT 'dirops','approval.view'
   UNION ALL SELECT 'dirops','approval.act'    UNION ALL SELECT 'dirops','master.view'
   UNION ALL SELECT 'dirops','coa.view'        UNION ALL SELECT 'dirops','period.view'
+  UNION ALL SELECT 'dirops','procurement.view' UNION ALL SELECT 'dirops','procurement.manage'
+  UNION ALL SELECT 'dirops','procurement.approve' UNION ALL SELECT 'dirops','inventory.view'
+  UNION ALL SELECT 'dirops','inventory.manage'
 
   UNION ALL SELECT 'kabid_keuangan','dashboard.view'  UNION ALL SELECT 'kabid_keuangan','report.view'
   UNION ALL SELECT 'kabid_keuangan','report.export'   UNION ALL SELECT 'kabid_keuangan','coa.view'
@@ -124,6 +130,9 @@ JOIN (
   UNION ALL SELECT 'kabid_keuangan','tax.manage'      UNION ALL SELECT 'kabid_keuangan','approval.view'
   UNION ALL SELECT 'kabid_keuangan','approval.act'    UNION ALL SELECT 'kabid_keuangan','user.view'
   UNION ALL SELECT 'kabid_keuangan','audit.view'
+  UNION ALL SELECT 'kabid_keuangan','procurement.view' UNION ALL SELECT 'kabid_keuangan','procurement.manage'
+  UNION ALL SELECT 'kabid_keuangan','procurement.approve' UNION ALL SELECT 'kabid_keuangan','inventory.view'
+  UNION ALL SELECT 'kabid_keuangan','inventory.manage'
 
   UNION ALL SELECT 'staff_accounting','dashboard.view' UNION ALL SELECT 'staff_accounting','report.view'
   UNION ALL SELECT 'staff_accounting','report.export'  UNION ALL SELECT 'staff_accounting','coa.view'
@@ -139,6 +148,8 @@ JOIN (
   UNION ALL SELECT 'staff_accounting','asset.manage'   UNION ALL SELECT 'staff_accounting','tax.view'
   UNION ALL SELECT 'staff_accounting','tax.manage'     UNION ALL SELECT 'staff_accounting','audit.view'
   UNION ALL SELECT 'staff_accounting','approval.view'
+  UNION ALL SELECT 'staff_accounting','procurement.view' UNION ALL SELECT 'staff_accounting','inventory.view'
+  UNION ALL SELECT 'staff_accounting','inventory.manage'
 
   UNION ALL SELECT 'staff_finance','dashboard.view'    UNION ALL SELECT 'staff_finance','report.view'
   UNION ALL SELECT 'staff_finance','report.export'     UNION ALL SELECT 'staff_finance','master.view'
@@ -154,6 +165,8 @@ JOIN (
   UNION ALL SELECT 'staff_finance','ar.manage'         UNION ALL SELECT 'staff_finance','budget.view'
   UNION ALL SELECT 'staff_finance','project.view'      UNION ALL SELECT 'staff_finance','asset.view'
   UNION ALL SELECT 'staff_finance','tax.view'          UNION ALL SELECT 'staff_finance','approval.view'
+  UNION ALL SELECT 'staff_finance','procurement.view' UNION ALL SELECT 'staff_finance','procurement.manage'
+  UNION ALL SELECT 'staff_finance','inventory.view'
 
   UNION ALL SELECT 'kepala_divisi','dashboard.view'    UNION ALL SELECT 'kepala_divisi','report.view'
   UNION ALL SELECT 'kepala_divisi','budget.view'       UNION ALL SELECT 'kepala_divisi','budget.manage'
@@ -161,6 +174,7 @@ JOIN (
   UNION ALL SELECT 'kepala_divisi','expense.view'      UNION ALL SELECT 'kepala_divisi','expense.manage'
   UNION ALL SELECT 'kepala_divisi','advance.view'      UNION ALL SELECT 'kepala_divisi','advance.manage'
   UNION ALL SELECT 'kepala_divisi','master.view'       UNION ALL SELECT 'kepala_divisi','approval.view'
+  UNION ALL SELECT 'kepala_divisi','procurement.view' UNION ALL SELECT 'kepala_divisi','inventory.view'
 
   UNION ALL SELECT 'kepala_bidang','dashboard.view'     UNION ALL SELECT 'kepala_bidang','report.view'
   UNION ALL SELECT 'kepala_bidang','budget.view'        UNION ALL SELECT 'kepala_bidang','budget.manage'
@@ -169,6 +183,7 @@ JOIN (
   UNION ALL SELECT 'kepala_bidang','expense.manage'     UNION ALL SELECT 'kepala_bidang','advance.view'
   UNION ALL SELECT 'kepala_bidang','advance.manage'     UNION ALL SELECT 'kepala_bidang','master.view'
   UNION ALL SELECT 'kepala_bidang','approval.view'      UNION ALL SELECT 'kepala_bidang','approval.act'
+  UNION ALL SELECT 'kepala_bidang','procurement.view' UNION ALL SELECT 'kepala_bidang','inventory.view'
 
   UNION ALL SELECT 'auditor','dashboard.view'    UNION ALL SELECT 'auditor','report.view'
   UNION ALL SELECT 'auditor','report.export'     UNION ALL SELECT 'auditor','journal.view'
@@ -180,6 +195,7 @@ JOIN (
   UNION ALL SELECT 'auditor','master.view'       UNION ALL SELECT 'auditor','coa.view'
   UNION ALL SELECT 'auditor','period.view'       UNION ALL SELECT 'auditor','user.view'
   UNION ALL SELECT 'auditor','approval.view'
+  UNION ALL SELECT 'auditor','procurement.view'  UNION ALL SELECT 'auditor','inventory.view'
 ) m ON m.role_code = r.code;
 
 -- ---------------------------------------------------------------------
@@ -495,7 +511,10 @@ INSERT INTO `doc_sequences` (`code`,`period_key`,`prefix`,`last_number`,`padding
 ('AST',DATE_FORMAT(CURDATE(),'%Y'), CONCAT('AST/',DATE_FORMAT(CURDATE(),'%Y'),'/'),0, 4),
 ('DEP',DATE_FORMAT(CURDATE(),'%Y'), CONCAT('DEP/',DATE_FORMAT(CURDATE(),'%m/%Y'),'/'),0, 4),
 ('TAX',DATE_FORMAT(CURDATE(),'%Y'), CONCAT('TAX/',DATE_FORMAT(CURDATE(),'%m/%Y'),'/'),0, 4),
-('RKAP',DATE_FORMAT(CURDATE(),'%Y'), CONCAT('RKAP/',DATE_FORMAT(CURDATE(),'%Y'),'/'),0, 2)
+('RKAP',DATE_FORMAT(CURDATE(),'%Y'), CONCAT('RKAP/',DATE_FORMAT(CURDATE(),'%Y'),'/'),0, 2),
+('PO', DATE_FORMAT(CURDATE(),'%Y'), CONCAT('PO/',DATE_FORMAT(CURDATE(),'%m/%Y'),'/'), 0, 4),
+('GR', DATE_FORMAT(CURDATE(),'%Y'), CONCAT('GR/',DATE_FORMAT(CURDATE(),'%m/%Y'),'/'), 0, 4),
+('INV',DATE_FORMAT(CURDATE(),'%Y'), CONCAT('INV/',DATE_FORMAT(CURDATE(),'%m/%Y'),'/'),0, 4)
 ON DUPLICATE KEY UPDATE `prefix` = VALUES(`prefix`);
 
 SET FOREIGN_KEY_CHECKS = 1;

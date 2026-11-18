@@ -23,6 +23,7 @@ final class ReportService
         'arus-kas'      => 'Laporan Arus Kas',
         'ekuitas'       => 'Laporan Perubahan Ekuitas',
         'proyek'        => 'Laba Rugi Proyek',
+        'unit-usaha'    => 'Kinerja Unit Usaha',
     ];
 
     public const KATEGORI = [
@@ -108,7 +109,7 @@ final class ReportService
     {
         $sql = '';
         $params = [];
-        foreach (['bidang_id', 'divisi_id', 'project_id'] as $key) {
+        foreach (['bidang_id', 'divisi_id', 'business_unit_id', 'project_id'] as $key) {
             $value = (int) ($filter[$key] ?? 0);
             if ($value > 0) {
                 $sql .= ' AND jl.' . $key . ' = ?';
@@ -220,6 +221,10 @@ final class ReportService
         $jenis = array_key_exists($jenis, self::JENIS) ? $jenis : 'laba-rugi';
         $periode = self::periode($periodeId);
         $rentang = self::rentang($periode, $mode);
+
+        if ($jenis === 'unit-usaha') {
+            return self::unitUsaha($periodeId, $mode, $filter);
+        }
 
         return match ($jenis) {
             'neraca'   => self::neraca($periode, $rentang, $filter),
@@ -373,6 +378,146 @@ final class ReportService
             'margin'      => $margin[0],
             'pendapatan'  => $totalPendapatan[0],
             'beban_total' => $total['harga_pokok'][0] + $total['beban_operasional'][0] + $total['beban_lain'][0] + $total['pajak'][0],
+        ]);
+    }
+
+
+    /* ------------------------------------------------------ UNIT USAHA */
+
+    /**
+     * Konsolidasi laba rugi dan posisi keuangan per unit usaha.
+     *
+     * @return array<string,mixed>
+     */
+    public static function unitUsaha(int $periodeId = 0, string $mode = 'bulan', array $filter = []): array
+    {
+        $periode = self::periode($periodeId);
+        $rentang = self::rentang($periode, $mode);
+        [$dimensi, $params] = self::dimensi($filter);
+
+        $aliran = Db::all(
+            "SELECT jl.business_unit_id,
+                    COALESCE(SUM(CASE WHEN c.tipe = 'pendapatan' THEN jl.kredit - jl.debit ELSE 0 END), 0) AS pendapatan,
+                    COALESCE(SUM(CASE WHEN c.tipe = 'beban' THEN jl.debit - jl.kredit ELSE 0 END), 0) AS beban
+             FROM journal_lines jl
+             JOIN journal_entries je ON je.id = jl.journal_id
+             JOIN coa_accounts c ON c.id = jl.coa_id
+             WHERE je.status = 'posted' AND je.tanggal BETWEEN ? AND ?" . $dimensi . "
+             GROUP BY jl.business_unit_id",
+            array_merge([$rentang['from'], $rentang['to']], $params)
+        );
+
+        $posisi = Db::all(
+            "SELECT jl.business_unit_id,
+                    COALESCE(SUM(CASE WHEN c.tipe = 'aset' THEN jl.debit - jl.kredit ELSE 0 END), 0) AS aset,
+                    COALESCE(SUM(CASE WHEN c.tipe = 'kewajiban' THEN jl.kredit - jl.debit ELSE 0 END), 0) AS kewajiban
+             FROM journal_lines jl
+             JOIN journal_entries je ON je.id = jl.journal_id
+             JOIN coa_accounts c ON c.id = jl.coa_id
+             WHERE je.status = 'posted' AND je.tanggal <= ?" . $dimensi . "
+             GROUP BY jl.business_unit_id",
+            array_merge([$rentang['to']], $params)
+        );
+
+        $units = Db::all('SELECT id, kode, nama FROM ms_business_units ORDER BY kode');
+        $nama = [];
+        foreach ($units as $unit) {
+            $nama[(int) $unit['id']] = (string) $unit['nama'];
+        }
+
+        $barisMap = [];
+        foreach ($aliran as $row) {
+            $id = (int) ($row['business_unit_id'] ?? 0);
+            $barisMap[$id] = [
+                'id'         => $id,
+                'unit'       => $id > 0 ? ($nama[$id] ?? 'Unit #' . $id) : 'Tanpa Unit Usaha',
+                'pendapatan' => (float) $row['pendapatan'],
+                'beban'      => (float) $row['beban'],
+                'aset'       => 0.0,
+                'kewajiban'  => 0.0,
+            ];
+        }
+        foreach ($posisi as $row) {
+            $id = (int) ($row['business_unit_id'] ?? 0);
+            $barisMap[$id] ??= [
+                'id'         => $id,
+                'unit'       => $id > 0 ? ($nama[$id] ?? 'Unit #' . $id) : 'Tanpa Unit Usaha',
+                'pendapatan' => 0.0,
+                'beban'      => 0.0,
+                'aset'       => 0.0,
+                'kewajiban'  => 0.0,
+            ];
+            $barisMap[$id]['aset'] = (float) $row['aset'];
+            $barisMap[$id]['kewajiban'] = (float) $row['kewajiban'];
+        }
+
+        $totalPendapatan = 0.0;
+        $totalBeban = 0.0;
+        $totalAset = 0.0;
+        $totalKewajiban = 0.0;
+        foreach ($barisMap as &$row) {
+            $row['laba'] = $row['pendapatan'] - $row['beban'];
+            $row['margin'] = $row['pendapatan'] > 0 ? ($row['laba'] / $row['pendapatan']) * 100 : 0.0;
+            $totalPendapatan += $row['pendapatan'];
+            $totalBeban += $row['beban'];
+            $totalAset += $row['aset'];
+            $totalKewajiban += $row['kewajiban'];
+        }
+        unset($row);
+
+        foreach ($barisMap as &$row) {
+            $row['kontribusi'] = $totalPendapatan > 0 ? ($row['pendapatan'] / $totalPendapatan) * 100 : 0.0;
+        }
+        unset($row);
+
+        usort($barisMap, static fn (array $a, array $b): int => $b['pendapatan'] <=> $a['pendapatan']);
+
+        $rows = [];
+        foreach ($barisMap as $row) {
+            $rows[] = self::baris('data', $row['unit'], [
+                $row['pendapatan'], $row['beban'], $row['laba'], $row['margin'], $row['aset'], $row['kewajiban'],
+            ], [
+                'kode'   => $row['id'] > 0 ? 'BU-' . str_pad((string) $row['id'], 2, '0', STR_PAD_LEFT) : '—',
+                'level'  => 1,
+                'persen' => $row['kontribusi'],
+            ]);
+        }
+
+        $rows[] = self::baris('total', 'TOTAL KONSOLIDASI', [
+            $totalPendapatan, $totalBeban, $totalPendapatan - $totalBeban,
+            $totalPendapatan > 0 ? (($totalPendapatan - $totalBeban) / $totalPendapatan) * 100 : 0.0,
+            $totalAset, $totalKewajiban,
+        ]);
+
+        $laba = $totalPendapatan - $totalBeban;
+
+        $kpi = [
+            ['label' => 'Unit Usaha', 'nilai' => count($units), 'tipe' => 'angka', 'hint' => 'Unit aktif'],
+            ['label' => 'Pendapatan Konsolidasi', 'nilai' => $totalPendapatan, 'tipe' => 'uang', 'hint' => $rentang['label']],
+            ['label' => 'Laba Konsolidasi', 'nilai' => $laba, 'tipe' => 'uang', 'tone' => $laba >= 0 ? 'up' : 'down', 'hint' => self::pctLabel($totalPendapatan > 0 ? ($laba / $totalPendapatan) * 100 : 0) . ' margin'],
+            ['label' => 'Total Aset', 'nilai' => $totalAset, 'tipe' => 'uang', 'hint' => 'Per ' . date('d M Y', strtotime($rentang['to']))],
+        ];
+
+        return self::dataset('unit-usaha', $periode, $rentang, [
+            ['label' => 'Unit Usaha', 'align' => 'left', 'lebar' => 26],
+            ['label' => 'Pendapatan', 'align' => 'right', 'lebar' => 14],
+            ['label' => 'Beban', 'align' => 'right', 'lebar' => 14],
+            ['label' => 'Laba', 'align' => 'right', 'lebar' => 13],
+            ['label' => 'Margin', 'align' => 'right', 'lebar' => 10],
+            ['label' => 'Aset', 'align' => 'right', 'lebar' => 12],
+            ['label' => 'Kewajiban', 'align' => 'right', 'lebar' => 11],
+        ], $rows, $kpi, [
+            'Setiap baris jurnal posted dapat ditandai unit usaha; transaksi tanpa penanda disajikan sebagai Tanpa Unit Usaha.',
+            'Laba konsolidasi dihitung dari seluruh jurnal posted pada rentang tanggal tanpa eliminasi antar-unit.',
+            'Angka aset dan kewajiban memakai saldo kumulatif sampai tanggal akhir periode.',
+        ], [
+            'total_pendapatan' => $totalPendapatan,
+            'total_beban'      => $totalBeban,
+            'laba'             => $laba,
+            'total_aset'       => $totalAset,
+            'total_kewajiban'  => $totalKewajiban,
+            'jumlah_unit'      => count($units),
+            'baris_unit'       => $barisMap,
         ]);
     }
 

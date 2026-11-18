@@ -286,6 +286,8 @@ CREATE TABLE IF NOT EXISTS `ms_contracts` (
   `ppn_persen`    DECIMAL(5,2) NOT NULL DEFAULT 11,
   `status`        ENUM('draft','aktif','selesai','batal') NOT NULL DEFAULT 'draft',
   `keterangan`    VARCHAR(255) NULL,
+  `created_by`    INT UNSIGNED NULL,
+  `updated_by`    INT UNSIGNED NULL,
   `created_at`    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at`    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),

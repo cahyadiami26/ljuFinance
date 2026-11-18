@@ -171,6 +171,13 @@ final class Db
     public static function transaction(callable $callback): mixed
     {
         $pdo = self::pdo();
+
+        // Transaksi bersarang memakai transaksi luar yang sudah aktif; rollback
+        // pada transaksi luar otomatis membatalkan seluruh perubahan di dalamnya.
+        if ($pdo->inTransaction()) {
+            return $callback();
+        }
+
         $pdo->beginTransaction();
         try {
             $result = $callback();

@@ -15,8 +15,8 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 | 4 | Hutang & Piutang | ✅ Selesai |
 | 5 | Anggaran & Approval Center | ✅ Selesai |
 | 6 | Aset Tetap & Perpajakan | ✅ Selesai |
-| 7 | Pelaporan Keuangan & PDF | ⬜ Belum |
-| 8 | Integrasi & Hardening | ⬜ Belum |
+| 7 | Pelaporan Keuangan & PDF | ✅ Selesai |
+| 8 | Integrasi & Hardening | ✅ Selesai |
 
 > **Pratinjau desain statis:** folder `preview/` berisi HTML hasil render nyata dari view PHP
 > (layout, partial, dan CSS yang sama) dengan data contoh: `dashboard`, `login`, `journal-index`,
@@ -26,8 +26,12 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 > `ar-index`, `ar-form`, `ar-show`, `revenue-index`, `revenue-form`, `revenue-show`,
 > `budget-index`, `budget-form`, `budget-show`, `budget-monitoring`, `budget-commitments`,
 > `approval-index`, `approval-show`, `approval-delegations`, `asset-index`, `asset-form`, `asset-show`,
-> `asset-depreciation`, `tax-index`, `tax-form`, `tax-show`, `tax-report`. Berguna untuk meninjau
-> tampilan tanpa server PHP/MySQL.
+> `asset-depreciation`, `tax-index`, `tax-form`, `tax-show`, `tax-report`, `report-index`, `report-income`,
+> `report-balance-sheet`, `report-cash-flow`, `report-equity`, `report-project`, `report-unit-usaha`, `report-print`,
+> `project-index`, `project-show`, `project-form`, `project-contracts`, `project-contract-form`, `project-contract-show`,
+> `inventory-index`, `inventory-show`, `inventory-form`, `inventory-movements`, `inventory-masuk`, `inventory-keluar`,
+> `procurement-index`, `procurement-form`, `procurement-show`, `procurement-terima`. Total 69 halaman. Berguna untuk
+> meninjau tampilan tanpa server PHP/MySQL.
 
 ---
 
@@ -158,6 +162,21 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 - **Ekspor & cetak**: unduhan **PDF** (penulis bawaan tanpa Dompdf), **XLSX**, dan **CSV** dengan audit
   log, serta halaman cetak A4 berkop lengkap dengan catatan dan tiga kolom tanda tangan.
 
+**Pengadaan, persediaan & proyek (Tahap 8)**
+
+- **Purchase order**: PO multi-baris untuk barang persediaan maupun jasa, dimensi proyek/unit/bidang/divisi/
+  cost center, alur draft → diajukan → disetujui → diterima sebagian → selesai, serta pembatalan beralasan.
+- **Penerimaan barang**: GR per PO menambah stok, memperbarui harga rata-rata bergerak, dan menyinkronkan
+  status PO; baris jasa tidak menahan penyelesaian.
+- **Tagihan vendor**: tarik tagihan sekali per PO menjadi draft AP sesuai qty diterima, dengan tautan balik
+  `ap_invoice_id` dan komitmen anggaran otomatis (`budget_commitments`).
+- **Persediaan**: master barang & gudang, kartu stok, penerimaan manual, pengeluaran dengan jurnal
+  **D beban / K persediaan**, peringatan stok minimum, dan penomoran `INV`.
+- **Proyek & kontrak**: portofolio dengan laba/margin/progres, kontrak bertermin, penagihan termin menjadi
+  draft AR, komposisi biaya, dan riwayat pengakuan pendapatan.
+- **Laporan unit usaha**: konsolidasi pendapatan, beban, laba, aset, dan kewajiban per unit beserta
+  kontribusi; filter unit tersedia di seluruh laporan keuangan.
+
 **Administrasi sistem**
 
 - Pengguna & hak akses (9 role, permission granular `modul.aksi`).
@@ -216,6 +235,10 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
    Database yang dipasang **sebelum** Tahap 7 perlu menjalankan
    `database/migrations/2026-11-18_tahap7_report.sql` agar permission `report.view`/`report.export`
    dan setting kop/tanda tangan laporan tersedia (idempotent, tanpa tabel baru).
+
+   Database yang dipasang **sebelum** Tahap 8 perlu menjalankan
+   `database/migrations/2026-11-18_tahap8_integration.sql` agar tabel pengadaan/persediaan, permission
+   `procurement.*`/`inventory.*`, prefix `PO`/`GR`/`INV`, dan kolom audit kontrak tersedia (idempotent).
 
 4. **Jalankan installer** dengan token (default ada di `config/config.php` → `security.install_token`):
 
@@ -292,7 +315,7 @@ ljuFinance/
 │   ├── js/journal.js          # editor baris jurnal, total & indikator keseimbangan
 │   └── js/transaksi.js        # baris dinamis kas/uang muka/biaya/rekonsiliasi + total & pajak
 ├── database/
-│   ├── schema/                # 53 tabel, 7 file
+│   ├── schema/                # 60 tabel, 8 file
 │   ├── seed/                  # 01_reference.sql, 02_demo.sql
 │   └── migrations/            # patch idempotent untuk database yang sudah terpasang
 ├── preview/                   # HTML statis pratinjau desain
@@ -320,7 +343,7 @@ Sembilan role aplikasi: `super_admin`, `dirut`, `dirops`, `kabid_keuangan`, `sta
 ## 7. Alur Kerja & Konvensi
 
 - **Nomor dokumen** dibangkitkan `NumberingService` dari `doc_sequences`
-  (prefix `JU, KK, KM, TRF, CA, EXP, AP, APP, AR, ARP, AST, DEP, TAX, RKAP`).
+  (prefix `JU, KK, KM, TRF, CA, EXP, AP, APP, AR, ARP, AST, DEP, TAX, RKAP, REV, PO, GR, INV`).
 - **Uang** disimpan `DECIMAL(18,2)` dan ditampilkan `rupiah()`; input mata uang diformat di klien.
 - **Waktu** disimpan UTC, ditampilkan Asia/Jakarta.
 - **Audit** dicatat `Audit::log()` untuk semua aksi tulis (modul, aksi, ref, nilai lama/baru, IP).
@@ -423,6 +446,21 @@ Sembilan role aplikasi: `super_admin`, `dirut`, `dirops`, `kabid_keuangan`, `sta
     kembali ke angka penuh.
 38. Klik **PDF** → file `laporan-*.pdf` terunduh dan dapat dibuka (kop, tabel, catatan, tanda tangan);
     ulangi untuk **Excel** dan **CSV**, lalu buka **Cetak** dan simpan sebagai PDF dari browser.
+
+**Tahap 8 — integrasi & hardening**
+
+39. Buka **Pengadaan & Persediaan → Purchase Order** → buat PO barang + jasa → **Ajukan** → setujui dengan
+    akun berpermission `procurement.approve`; periksa **Komitmen PO** pada modul anggaran bertambah.
+40. Buka detail PO → **Terima Barang** → isi qty sebagian → status menjadi *Diterima Sebagian*, stok barang
+    bertambah pada **Persediaan**, dan kartu stok memuat mutasi masuk.
+41. Setelah seluruh qty barang diterima → status PO *Selesai* → **Tarik Tagihan AP** → draft tagihan terbuka;
+    coba tarik ulang → ditolak.
+42. Buka **Persediaan → Barang Keluar** → isi qty melebihi stok → ditolak; isi qty valid → jurnal
+    **D beban / K persediaan** terbentuk dan saldo kartu stok berkurang.
+43. Buka **Proyek & Kontrak → Portofolio** → periksa laba/margin/progres proyek → buka **Kontrak & Termin** →
+    aktifkan kontrak → **Tagih Termin** → draft invoice AR terbuka dengan `termin_ke` terisi.
+44. Buka **Laporan Keuangan → Kinerja Unit Usaha** → periksa kontribusi tiap unit dan filter unit pada
+    laporan lain; angka konsolidasi harus sama dengan total laba rugi.
 
 ---
 

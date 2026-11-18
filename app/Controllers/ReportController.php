@@ -76,6 +76,41 @@ final class ReportController extends BaseController
         $this->tampil('proyek', 'pages/report/project');
     }
 
+    public function unitUsaha(): void
+    {
+        $this->requireCan('report.view');
+
+        $periodeId = (int) input('periode', 0);
+        $mode = (string) input('mode', 'bulan');
+        $filter = [
+            'bidang_id'        => (int) input('bidang', 0),
+            'divisi_id'        => (int) input('divisi', 0),
+            'business_unit_id' => (int) input('unit', 0),
+            'project_id'       => (int) input('project', 0),
+        ];
+
+        $laporan = ReportService::unitUsaha($periodeId, $mode, $filter);
+        $laporan['entitas'] = $this->entitas();
+
+        $this->page('pages/report/unit-usaha', [
+            'pageTitle'    => (string) $laporan['judul'],
+            'pageSubtitle' => 'Periode ' . (string) ($laporan['periode']['nama'] ?? '') . ' · ' . (string) $laporan['rentang']['label'],
+            'breadcrumbs'  => [
+                ['label' => 'Laporan Keuangan', 'url' => url('report')],
+                ['label' => (string) $laporan['judul'], 'url' => null],
+            ],
+            'pageActions'  => $this->aksiHalaman('unit-usaha', $periodeId, $mode, $filter),
+            'laporan'      => $laporan,
+            'periodeList'  => $this->opsiPeriode(),
+            'periodeId'    => (int) ($laporan['periode']['id'] ?? 0),
+            'mode'         => (string) ($laporan['rentang']['mode'] ?? $mode),
+            'filter'       => $filter,
+            'filterList'   => $this->filterList(),
+            'canExport'    => can('report.export'),
+            'rasio'        => [],
+        ]);
+    }
+
     public function print(string $jenis): void
     {
         $this->requireCan('report.view');
@@ -133,9 +168,10 @@ final class ReportController extends BaseController
         $periodeId = (int) input('periode', 0);
         $mode = (string) input('mode', 'bulan');
         $filter = [
-            'bidang_id'  => (int) input('bidang', 0),
-            'divisi_id'  => (int) input('divisi', 0),
-            'project_id' => (int) input('project', 0),
+            'bidang_id'        => (int) input('bidang', 0),
+            'divisi_id'        => (int) input('divisi', 0),
+            'business_unit_id' => (int) input('unit', 0),
+            'project_id'       => (int) input('project', 0),
         ];
 
         $laporan = ReportService::laporan($jenis, $periodeId, $mode, $filter);
@@ -154,11 +190,7 @@ final class ReportController extends BaseController
             'periodeId'    => (int) ($laporan['periode']['id'] ?? 0),
             'mode'         => (string) ($laporan['rentang']['mode'] ?? $mode),
             'filter'       => $filter,
-            'filterList'   => [
-                'bidang'  => Db::all('SELECT id, nama FROM ms_bidang ORDER BY nama'),
-                'divisi'  => Db::all('SELECT id, nama FROM ms_divisi ORDER BY nama'),
-                'project' => Db::all('SELECT id, nama FROM ms_projects ORDER BY nama'),
-            ],
+            'filterList'   => $this->filterList(),
             'canExport'    => can('report.export'),
             'rasio'        => in_array($jenis, ['laba-rugi', 'neraca'], true)
                 ? ReportService::rasio($periodeId, array_filter($filter))
@@ -166,6 +198,17 @@ final class ReportController extends BaseController
         ];
 
         return [$laporan, $params];
+    }
+
+    /** @return array<string,array<int,array<string,mixed>>> */
+    private function filterList(): array
+    {
+        return [
+            'bidang'        => Db::all('SELECT id, nama FROM ms_bidang ORDER BY nama'),
+            'divisi'        => Db::all('SELECT id, nama FROM ms_divisi ORDER BY nama'),
+            'business_unit' => Db::all('SELECT id, nama FROM ms_business_units ORDER BY kode'),
+            'project'       => Db::all('SELECT id, nama FROM ms_projects ORDER BY nama'),
+        ];
     }
 
     private function tampil(string $jenis, string $view): void
@@ -182,6 +225,7 @@ final class ReportController extends BaseController
             'mode'    => $mode,
             'bidang'  => $filter['bidang_id'] ?: null,
             'divisi'  => $filter['divisi_id'] ?: null,
+            'unit'    => $filter['business_unit_id'] ?: null,
             'project' => $filter['project_id'] ?: null,
         ]);
 

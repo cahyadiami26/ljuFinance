@@ -168,7 +168,12 @@ setting aset/pajak (`asset_auto_depreciate`, `asset_depreciation_day`, `asset_mi
 Pelaporan keuangan memakai `report.view` dan `report.export`. Database yang dipasang sebelum Tahap 7
 perlu menjalankan `database/migrations/2026-11-18_tahap7_report.sql` agar kedua permission dan setting
 kop/tanda tangan (`pdf_paper`, `report_footer_note`, `report_sign1_*` … `report_sign3_*`) tersedia.
-Tidak ada tabel baru pada tahap ini.
+
+Pengadaan, persediaan, proyek, dan kontrak memakai `procurement.view/manage/approve` serta
+`inventory.view/manage`; laporan unit usaha memakai `report.view` yang sudah ada. Database yang dipasang
+sebelum Tahap 8 perlu menjalankan `database/migrations/2026-11-18_tahap8_integration.sql` agar tujuh tabel
+baru, kolom audit kontrak (`created_by`/`updated_by`), permission, prefix `PO`/`GR`/`INV`, dan gudang awal
+tersedia (idempotent).
 
 **Approval engine** mendukung: approve, return-for-revision, reject-with-reason, delegasi,
 penggantian pejabat (delegation berlaku per modul & rentang tanggal), riwayat persetujuan,
@@ -178,7 +183,7 @@ notifikasi (in-app + antrean email), serta matriks **nominal × unit organisasi 
 
 ## 7. Skema Database (ringkas)
 
-Total **53 tabel**, dibagi 7 domain file. Semua tabel memakai `engine=InnoDB`, `utf8mb4`.
+Total **60 tabel**, dibagi 8 domain file. Semua tabel memakai `engine=InnoDB`, `utf8mb4`.
 
 | Domain | File | Tabel |
 |--------|------|-------|
@@ -189,6 +194,7 @@ Total **53 tabel**, dibagi 7 domain file. Semua tabel memakai `engine=InnoDB`, `
 | Anggaran | `05_budget.sql` | `budgets`, `budget_lines`, `budget_commitments` |
 | Aset & pajak | `06_asset_tax.sql` | `asset_categories`, `fixed_assets`, `asset_depreciations`, `asset_mutations`, `tax_types`, `tax_documents`, `tax_reports` |
 | Approval | `07_approval.sql` | `approval_flows`, `approval_requests`, `approval_actions`, `approval_delegations` |
+| Pengadaan & persediaan | `08_integration.sql` | `warehouses`, `inventory_items`, `inventory_movements`, `purchase_orders`, `purchase_order_items`, `goods_receipts`, `goods_receipt_items` |
 
 **Dimensi transaksi** (kolom berulang di `journal_lines` dan tabel transaksi):
 `fiscal_year`, `periode_id`, `bidang_id`, `divisi_id`, `business_unit_id`, `project_id`,
@@ -335,11 +341,34 @@ berpindah ke laba ditahan tanpa mengubah total ekuitas. Rekonsiliasi arus kas da
 bila ada jurnal tidak seimbang atau akun kas yang belum ditandai `is_kas_bank`; selisih tersebut
 ditampilkan eksplisit, bukan disembunyikan.
 
+### Implementasi (Tahap 8 — selesai)
+
+| Komponen | Perilaku |
+|----------|----------|
+| `ProjectService` | portofolio proyek menghitung nilai kontrak, pendapatan diakui (`revenue_recognitions` posted), pendapatan & beban dari dimensi `journal_lines.project_id`, laba, margin, progres, dan sisa kontrak; `portfolio()`, `find()`, `contracts()`, `contract()`, `terms()`, `recognitions()`, `ringkasan()` |
+| Kontrak | `ms_contracts` + `ms_contract_terms` dikelola dari UI (nomor unik, proyek, pemberi kerja, nilai, masa berlaku, PPN, status `draft/aktif/selesai/batal`); termin disimpan berurutan dengan persentase dan nilai; saat kontrak diubah, status termin yang sudah ada dipertahankan agar tidak kembali menjadi `belum` |
+| Penagihan termin | `tagihTermin()` hanya untuk kontrak `aktif/selesai`, termin `belum`, dan belum pernah ditagih; membuat **draft invoice AR** (satu baris pendapatan + PPN dari `ppn_persen` kontrak) melalui `ArService`, lalu menandai termin `ditagih` dan menautkan invoice lewat `contract_id` + `termin_ke` |
+| `InventoryService` | master barang dengan akun persediaan & akun beban, gudang, kartu stok, serta peringatan stok minimum; `catatMasuk()` memakai **rata-rata bergerak** (stok × harga lama + qty × harga baru) tanpa jurnal (jurnal pembelian dibuat saat AP diposting); `catatKeluar()` memvalidasi stok & akun beban, lalu membentuk jurnal **D beban / K persediaan** (`sumber='persediaan'`, prefix `INV`) dan baris mutasi |
+| `ProcurementService` | PO multi-baris (barang persediaan atau jasa non-stok) dengan dimensi proyek/unit/bidang/divisi/cost center; alur `draft → diajukan → disetujui → sebagian → selesai` dan `batal`; hanya draft yang dapat diubah/dihapus; persetujuan dan pembatalan memakai permission `procurement.approve` |
+| Penerimaan barang | `terima()` membuat `goods_receipts` + `goods_receipt_items`, menambah `diterima_qty` per baris PO, memanggil `InventoryService::catatMasuk()` untuk setiap barang, lalu menyinkronkan status PO (`sebagian`/`selesai`); baris jasa tidak menahan penyelesaian PO |
+| Tagihan vendor | `tarikTagihan()` membuat **draft AP** dari qty yang sudah diterima (baris jasa ditagih penuh), memakai termin vendor, proyek, dan dimensi PO; `purchase_orders.ap_invoice_id` mencegah tagihan ganda dan menautkan PO ke modul Hutang |
+| Komitmen anggaran | setiap pengajuan/persetujuan/penerimaan/pembatalan PO melakukan upsert `budget_commitments` (kunci `nomor_po`) dengan nilai subtotal sebelum PPN dan status `open/sebagian/closed/cancelled`, sehingga monitoring anggaran menampilkan komitmen tanpa input ganda |
+| Laporan unit usaha | `ReportService::unitUsaha()` mengonsolidasikan pendapatan, beban, laba, margin, aset, dan kewajiban per `business_unit_id`, menyajikan kontribusi terhadap pendapatan konsolidasi serta baris `Tanpa Unit Usaha`; filter unit juga tersedia di seluruh laporan keuangan |
+| UI | `project/index` (KPI, filter unit, tabel progres), `project/show` (profitabilitas, kontrak, tagihan, komposisi biaya, pengakuan pendapatan), `project/form`, `project/contracts`, `project/contract-form` (termin dinamis + hitung nilai dari persentase), `project/contract-show` (aksi status & tagih termin), `inventory/index`, `inventory/show` (kartu stok), `inventory/form`, `inventory/movements`, `inventory/masuk`, `inventory/keluar`, `procurement/index`, `procurement/form` (baris dinamis + total PPN), `procurement/show`, `procurement/terima`, `report/unit-usaha` |
+| Penomoran | prefix `PO`, `GR`, dan `INV` melanjutkan `doc_sequences` |
+
+Catatan: jurnal pembelian tidak dibuat saat PO disetujui karena belum ada dokumen tagihan; jurnal baru
+terbentuk ketika AP diposting (modul Hutang). Penerimaan barang hanya mengubah kuantitas dan harga
+rata-rata persediaan. Pengeluaran barang memakai harga rata-rata saat transaksi, sehingga koreksi harga
+setelah pengeluaran tidak mengubah jurnal yang sudah posted. Eliminasi transaksi antar-unit belum
+dilakukan pada laporan unit usaha; angka konsolidasi adalah penjumlahan seluruh baris jurnal posted.
+Hard stop anggaran masih bersifat kebijakan dan belum memblokir posting.
+
 Catatan: status dokumen modul **tidak diubah** oleh lapisan approval — Approval Center hanya
 mencerminkan dan menyinkronkan status yang sama (`submitted/approved/rejected/draft`). Perhitungan
 realisasi memakai jurnal posted, bukan cache `account_period_balances`, sehingga konsisten dengan
 buku besar. Hard stop anggaran (`budget_hard_stop`) masih bersifat kebijakan: nilainya tersedia di
-Pengaturan dan ditampilkan pada halaman monitoring, penerapan blokir posting menyusul di Tahap 8.
+Pengaturan dan ditampilkan pada halaman monitoring, tetapi belum memblokir posting jurnal.
 
 ---
 
@@ -351,7 +380,7 @@ Tabel `doc_sequences` (kolom unik `kode` + `period_key`) di-increment di dalam t
 
 Prefix awal: `JU` (jurnal umum), `KK` (kas keluar), `KM` (kas masuk), `TRF`, `CA` (uang muka),
 `EXP` (biaya), `AP` (tagihan), `APP` (pembayaran hutang), `AR` (invoice), `ARP` (penerimaan),
-`AST`, `DEP`, `TAX`, `RKAP`, `REV`.
+`AST`, `DEP`, `TAX`, `RKAP`, `REV`, `PO` (purchase order), `GR` (penerimaan barang), `INV` (mutasi persediaan).
 
 ---
 
@@ -485,10 +514,20 @@ Legenda: ✅ selesai · 🚧 berjalan · ⬜ belum
 - **Ekspor & cetak**: PDF bawaan (tanpa Dompdf), XLSX, CSV, dan halaman cetak A4 dengan kop, catatan,
   serta blok tanda tangan.
 
-### Tahap 8 — Integrasi & Hardening ⬜
-Project accounting (kontrak, termin, pendapatan diakui, laba/rugi proyek), revenue recognition,
-integrasi procurement & inventory, multi business unit reporting, pengujian menyeluruh,
-dokumentasi pengguna, hardening keamanan & backup.
+### Tahap 8 — Integrasi & Hardening ✅
+- **Project accounting**: portofolio proyek, kontrak berversi termin, penagihan termin menjadi draft AR,
+  pendapatan diakui, laba/rugi dan margin proyek, komposisi biaya, serta riwayat pengakuan pendapatan.
+- **Procurement**: purchase order multi-baris (barang/jasa) dengan alur persetujuan, penerimaan barang
+  (GR), penarikan tagihan AP, dan sinkronisasi komitmen anggaran.
+- **Inventory**: master barang & gudang, rata-rata bergerak, kartu stok, penerimaan manual, pengeluaran
+  dengan jurnal otomatis, serta peringatan stok minimum.
+- **Multi unit reporting**: laporan kinerja unit usaha (pendapatan, beban, laba, aset, kewajiban,
+  kontribusi) dan filter unit pada seluruh laporan keuangan.
+- **Hardening**: validasi stok/akun, pencegahan tagihan ganda, audit log seluruh aksi pengadaan/persediaan,
+  preview statis 69 halaman, dan migrasi idempotent.
+
+Sisa pekerjaan lanjutan (di luar lingkup tahap ini): eliminasi antar-unit, blokir keras anggaran,
+integrasi e-Faktur langsung, dan prosedur backup otomatis.
 
 ---
 
@@ -596,3 +635,17 @@ Detail lengkap ada di `readme.md`.
 - [ ] Ekspor CSV/XLSX/PDF memerlukan `report.export`, tercatat di audit log, dan PDF dapat dibuka dengan jumlah halaman benar.
 - [ ] Halaman cetak menyembunyikan navigasi, menampilkan kop perusahaan, catatan, dan tiga kolom tanda tangan.
 - [ ] Tidak ada dependensi Dompdf/vendor: PDF dihasilkan oleh `Lju\Core\Pdf`.
+
+**Khusus integrasi & hardening (Tahap 8)**
+
+- [ ] PO draft dapat diubah/hapus; setelah diajukan hanya dapat disetujui (permission `procurement.approve`) atau dibatalkan.
+- [ ] Persetujuan PO membuat/memperbarui komitmen anggaran dengan nilai subtotal dan status `open`.
+- [ ] Penerimaan barang tidak boleh melebihi sisa qty PO dan menolak baris non-stok; status PO berubah menjadi `sebagian` lalu `selesai`.
+- [ ] Penerimaan menambah stok serta memperbarui harga rata-rata barang persediaan.
+- [ ] Pengeluaran barang melebihi stok ditolak; pengeluaran valid membentuk jurnal **D beban / K persediaan** dan kartu stok.
+- [ ] Barang tanpa akun beban tidak dapat dikeluarkan.
+- [ ] Tagihan AP hanya dapat ditarik sekali per PO dan nilainya mengikuti qty diterima (jasa ditagih penuh).
+- [ ] Termin hanya dapat ditagih pada kontrak aktif, satu kali, dan menghasilkan draft invoice AR tertaut `contract_id` + `termin_ke`.
+- [ ] Mengubah kontrak tidak mengembalikan status termin yang sudah ditagih menjadi `belum`.
+- [ ] Laporan unit usaha menjumlah ke total laporan keuangan dan menampilkan kontribusi tiap unit.
+- [ ] Seluruh aksi PO/GR/persediaan/kontrak tercatat pada audit log dengan referensi dokumen.

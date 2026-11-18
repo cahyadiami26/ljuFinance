@@ -89,6 +89,27 @@ return [
     ],
     [
         'type'  => 'group',
+        'label' => 'Pengadaan & Persediaan',
+        'icon'  => 'package',
+        'stage' => 8,
+        'items' => [
+            ['label' => 'Purchase Order', 'route' => 'procurement', 'icon' => 'truck', 'permission' => 'procurement.view'],
+            ['label' => 'Persediaan', 'route' => 'inventory', 'icon' => 'package', 'permission' => 'inventory.view'],
+            ['label' => 'Kartu Stok', 'route' => 'inventory/movements', 'icon' => 'history', 'permission' => 'inventory.view'],
+        ],
+    ],
+    [
+        'type'  => 'group',
+        'label' => 'Proyek & Kontrak',
+        'icon'  => 'briefcase',
+        'stage' => 8,
+        'items' => [
+            ['label' => 'Portofolio Proyek', 'route' => 'project', 'icon' => 'briefcase', 'permission' => 'project.view'],
+            ['label' => 'Kontrak & Termin', 'route' => 'project/contracts', 'icon' => 'file', 'permission' => 'project.view'],
+        ],
+    ],
+    [
+        'type'  => 'group',
         'label' => 'Laporan Keuangan',
         'icon'  => 'report',
         'stage' => 7,
@@ -99,6 +120,7 @@ return [
             ['label' => 'Arus Kas', 'route' => 'report/cash-flow', 'icon' => 'wallet', 'permission' => 'report.view'],
             ['label' => 'Perubahan Ekuitas', 'route' => 'report/equity', 'icon' => 'layers', 'permission' => 'report.view'],
             ['label' => 'Laba Rugi Proyek', 'route' => 'report/project', 'icon' => 'briefcase', 'permission' => 'report.view'],
+            ['label' => 'Kinerja Unit Usaha', 'route' => 'report/unit-usaha', 'icon' => 'building', 'permission' => 'report.view'],
         ],
     ],
     [

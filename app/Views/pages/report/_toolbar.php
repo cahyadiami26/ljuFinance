@@ -40,6 +40,13 @@
         <?php endforeach; ?>
     </select>
 
+    <select class="filter-select" name="unit" data-autosubmit>
+        <option value="">Semua unit usaha</option>
+        <?php foreach ($filterList['business_unit'] as $item): ?>
+            <option value="<?= (int) $item['id'] ?>" <?= (int) ($filter['business_unit_id'] ?? 0) === (int) $item['id'] ? 'selected' : '' ?>><?= e((string) $item['nama']) ?></option>
+        <?php endforeach; ?>
+    </select>
+
     <select class="filter-select" name="project" data-autosubmit>
         <option value="">Semua proyek</option>
         <?php foreach ($filterList['project'] as $item): ?>
