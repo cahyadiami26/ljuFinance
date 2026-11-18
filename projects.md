@@ -175,6 +175,10 @@ sebelum Tahap 8 perlu menjalankan `database/migrations/2026-11-18_tahap8_integra
 baru, kolom audit kontrak (`created_by`/`updated_by`), permission, prefix `PO`/`GR`/`INV`, dan gudang awal
 tersedia (idempotent).
 
+Tahap 9 tidak menambah tabel. Database yang dipasang sebelum Tahap 9 perlu menjalankan
+`database/migrations/2026-11-18_tahap9_hardening.sql` agar setting `backup_retention_days` dan
+`budget_hard_stop` tersedia (idempotent).
+
 **Approval engine** mendukung: approve, return-for-revision, reject-with-reason, delegasi,
 penggantian pejabat (delegation berlaku per modul & rentang tanggal), riwayat persetujuan,
 notifikasi (in-app + antrean email), serta matriks **nominal × unit organisasi × level**.
@@ -362,13 +366,32 @@ terbentuk ketika AP diposting (modul Hutang). Penerimaan barang hanya mengubah k
 rata-rata persediaan. Pengeluaran barang memakai harga rata-rata saat transaksi, sehingga koreksi harga
 setelah pengeluaran tidak mengubah jurnal yang sudah posted. Eliminasi transaksi antar-unit belum
 dilakukan pada laporan unit usaha; angka konsolidasi adalah penjumlahan seluruh baris jurnal posted.
-Hard stop anggaran masih bersifat kebijakan dan belum memblokir posting.
+Hard stop anggaran baru diterapkan pada Tahap 9.
+
+### Implementasi (Tahap 9 — selesai)
+
+| Komponen | Perilaku |
+|----------|----------|
+| Hard stop anggaran | `BudgetService::periksaPelanggaran()` memeriksa setiap baris **beban** (debit bersih) terhadap pagu RKAP aktif per akun + divisi memakai `cekBatasAnggaran()`; `JournalService` memanggilnya sebelum jurnal otomatis disimpan dan sebelum jurnal manual diposting, tetapi hanya bila setting `budget_hard_stop = 1` |
+| Pesan penolakan | menyebut kode/nama akun, pagu, realisasi berjalan, dan nilai transaksi; maksimal tiga baris ditampilkan agar pesan tetap terbaca, sisanya diringkas jumlahnya |
+| Cakupan | pendapatan, aset, kewajiban, dan ekuitas tidak diperiksa; jurnal tutup buku yang menulis langsung ke `journal_entries` tidak terpengaruh; realisasi memakai jurnal posted tahun berjalan |
+| `BackupService` | dump SQL mandiri (header, `SET FOREIGN_KEY_CHECKS=0`, `DROP TABLE IF EXISTS`, `SHOW CREATE TABLE`, seluruh baris) ke `storage/backups`; penamaan `lju-finance-YYYYmmdd-HHMMSS.sql`, penulisan per 200 baris agar hemat memori, dan pembersihan otomatis berdasarkan `backup_retention_days` |
+| UI cadangan | `system/backup` menampilkan ringkasan jumlah/ukuran/cadangan terakhir, form pembuatan dengan catatan, panduan pemulihan, serta tabel unduh/hapus; seluruh aksi memerlukan `settings.manage` dan tercatat di audit log |
+| Unduhan aman | file `.sql` diblokir `.htaccess` dan hanya dapat diunduh melalui controller yang memvalidasi pola nama file; respons memakai `Content-Disposition: attachment` dan `Cache-Control: no-store` |
+| CLI/cron | `bin/backup.php` mem-bootstrap aplikasi tanpa sesi, membuat cadangan, menulis ringkasan ke stdout, dan mengembalikan exit code 0/1 agar cocok untuk cron dan monitoring |
+| Dokumentasi | `docs/panduan-pengguna.md` memuat alur harian, pengadaan, persediaan, proyek/kontrak, hard stop, tutup buku, serta prosedur cadangan/pemulihan |
+
+Catatan: hard stop membandingkan **realisasi jurnal posted** dengan pagu, bukan komitmen PO; komitmen
+tetap dipantau terpisah pada halaman monitoring. Cadangan dibuat secara sinkron melalui UI, sehingga
+database sangat besar sebaiknya memakai cron pada jam sepi. Pemulihan tidak dijalankan dari aplikasi
+demi keamanan; prosedurnya didokumentasikan untuk DBA.
 
 Catatan: status dokumen modul **tidak diubah** oleh lapisan approval — Approval Center hanya
 mencerminkan dan menyinkronkan status yang sama (`submitted/approved/rejected/draft`). Perhitungan
 realisasi memakai jurnal posted, bukan cache `account_period_balances`, sehingga konsisten dengan
-buku besar. Hard stop anggaran (`budget_hard_stop`) masih bersifat kebijakan: nilainya tersedia di
-Pengaturan dan ditampilkan pada halaman monitoring, tetapi belum memblokir posting jurnal.
+buku besar. Hard stop anggaran (`budget_hard_stop`) kini diterapkan pada jurnal otomatis dan posting
+jurnal manual setelah Tahap 9; bila dimatikan, nilainya tetap ditampilkan pada halaman monitoring sebagai
+peringatan.
 
 ---
 
@@ -526,8 +549,15 @@ Legenda: ✅ selesai · 🚧 berjalan · ⬜ belum
 - **Hardening**: validasi stok/akun, pencegahan tagihan ganda, audit log seluruh aksi pengadaan/persediaan,
   preview statis 69 halaman, dan migrasi idempotent.
 
-Sisa pekerjaan lanjutan (di luar lingkup tahap ini): eliminasi antar-unit, blokir keras anggaran,
-integrasi e-Faktur langsung, dan prosedur backup otomatis.
+Sisa pekerjaan lanjutan (di luar lingkup tahap ini): eliminasi antar-unit dan integrasi e-Faktur langsung.
+
+### Tahap 9 — Hardening Lanjutan & Kesiapan Operasional ✅
+- **Hard stop anggaran**: posting jurnal otomatis/manual ditolak bila nilai beban melebihi pagu RKAP aktif,
+  dengan pesan yang menyebut akun, pagu, realisasi, dan nilai transaksi.
+- **Cadangan database**: pembuatan, unduhan aman, penghapusan, retensi otomatis, dan mode CLI untuk cron.
+- **Dokumentasi pengguna**: panduan operasional harian hingga prosedur pemulihan di `docs/panduan-pengguna.md`.
+- **Audit & keamanan**: seluruh aksi cadangan tercatat, file `.sql` tidak dapat diakses langsung, dan
+  konfigurasi cookie sesi serta header keamanan tetap berlaku.
 
 ---
 
@@ -649,3 +679,14 @@ Detail lengkap ada di `readme.md`.
 - [ ] Mengubah kontrak tidak mengembalikan status termin yang sudah ditagih menjadi `belum`.
 - [ ] Laporan unit usaha menjumlah ke total laporan keuangan dan menampilkan kontribusi tiap unit.
 - [ ] Seluruh aksi PO/GR/persediaan/kontrak tercatat pada audit log dengan referensi dokumen.
+
+**Khusus hardening lanjutan (Tahap 9)**
+
+- [ ] Dengan `budget_hard_stop` aktif, posting jurnal manual yang melebihi pagu beban ditolak dan pesannya menyebut akun, pagu, serta realisasi.
+- [ ] Jurnal otomatis (AP/AR/kas/persediaan) juga ditolak bila melewati pagu beban; transaksi pendapatan/aset tetap dapat diposting.
+- [ ] Dengan `budget_hard_stop` nonaktif, posting berjalan normal dan monitoring tetap menampilkan status *over*.
+- [ ] Cadangan baru berisi seluruh tabel dan data; file dapat diunduh, dibuka sebagai teks SQL, dan tidak dapat diakses melalui URL langsung.
+- [ ] Nama file di luar pola `lju-finance-*.sql` ditolak saat unduh/hapus.
+- [ ] Cadangan lebih lama dari `backup_retention_days` terhapus otomatis saat cadangan baru dibuat.
+- [ ] `php bin/backup.php` berjalan dari cron, menulis ringkasan, dan mengembalikan exit code 0.
+- [ ] Setiap pembuatan/unduhan/penghapusan cadangan tercatat pada audit log.

@@ -17,6 +17,7 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 | 6 | Aset Tetap & Perpajakan | ✅ Selesai |
 | 7 | Pelaporan Keuangan & PDF | ✅ Selesai |
 | 8 | Integrasi & Hardening | ✅ Selesai |
+| 9 | Hardening Lanjutan & Operasional | ✅ Selesai |
 
 > **Pratinjau desain statis:** folder `preview/` berisi HTML hasil render nyata dari view PHP
 > (layout, partial, dan CSS yang sama) dengan data contoh: `dashboard`, `login`, `journal-index`,
@@ -30,7 +31,7 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 > `report-balance-sheet`, `report-cash-flow`, `report-equity`, `report-project`, `report-unit-usaha`, `report-print`,
 > `project-index`, `project-show`, `project-form`, `project-contracts`, `project-contract-form`, `project-contract-show`,
 > `inventory-index`, `inventory-show`, `inventory-form`, `inventory-movements`, `inventory-masuk`, `inventory-keluar`,
-> `procurement-index`, `procurement-form`, `procurement-show`, `procurement-terima`. Total 69 halaman. Berguna untuk
+> `procurement-index`, `procurement-form`, `procurement-show`, `procurement-terima`, `system-backup`. Total 70 halaman. Berguna untuk
 > meninjau tampilan tanpa server PHP/MySQL.
 
 ---
@@ -177,6 +178,15 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 - **Laporan unit usaha**: konsolidasi pendapatan, beban, laba, aset, dan kewajiban per unit beserta
   kontribusi; filter unit tersedia di seluruh laporan keuangan.
 
+**Hardening & operasional (Tahap 9)**
+
+- **Hard stop anggaran**: bila diaktifkan, jurnal otomatis dan posting manual ditolak ketika nilai beban
+  melebihi pagu RKAP aktif; pesan menyebut akun, pagu, realisasi, dan nilai transaksi.
+- **Cadangan database**: buat, unduh, dan hapus dari **System Admin → Cadangan Database**; retensi otomatis
+  (default 14 hari), file SQL mandiri, serta skrip `bin/backup.php` untuk cron.
+- **Dokumentasi pengguna**: `docs/panduan-pengguna.md` mencakup alur harian, pengadaan, persediaan,
+  proyek/kontrak, hard stop, tutup buku, dan prosedur pemulihan.
+
 **Administrasi sistem**
 
 - Pengguna & hak akses (9 role, permission granular `modul.aksi`).
@@ -239,6 +249,10 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
    Database yang dipasang **sebelum** Tahap 8 perlu menjalankan
    `database/migrations/2026-11-18_tahap8_integration.sql` agar tabel pengadaan/persediaan, permission
    `procurement.*`/`inventory.*`, prefix `PO`/`GR`/`INV`, dan kolom audit kontrak tersedia (idempotent).
+
+   Database yang dipasang **sebelum** Tahap 9 perlu menjalankan
+   `database/migrations/2026-11-18_tahap9_hardening.sql` agar setting retensi cadangan dan hard stop
+   anggaran tersedia (idempotent, tanpa tabel baru).
 
 4. **Jalankan installer** dengan token (default ada di `config/config.php` → `security.install_token`):
 
@@ -318,6 +332,8 @@ ljuFinance/
 │   ├── schema/                # 60 tabel, 8 file
 │   ├── seed/                  # 01_reference.sql, 02_demo.sql
 │   └── migrations/            # patch idempotent untuk database yang sudah terpasang
+├── bin/                       # skrip CLI (backup.php untuk cron)
+├── docs/                      # panduan pengguna
 ├── preview/                   # HTML statis pratinjau desain
 ├── storage/                   # log & ekspor (tidak di-commit)
 ├── uploads/                   # lampiran (tidak di-commit)
@@ -461,6 +477,16 @@ Sembilan role aplikasi: `super_admin`, `dirut`, `dirops`, `kabid_keuangan`, `sta
     aktifkan kontrak → **Tagih Termin** → draft invoice AR terbuka dengan `termin_ke` terisi.
 44. Buka **Laporan Keuangan → Kinerja Unit Usaha** → periksa kontribusi tiap unit dan filter unit pada
     laporan lain; angka konsolidasi harus sama dengan total laba rugi.
+
+**Tahap 9 — hardening lanjutan & operasional**
+
+45. Aktifkan **Pengaturan → Blokir transaksi bila melebihi pagu**, lalu ajukan jurnal beban yang melewati
+    pagu → posting ditolak dengan pesan akun/pagu/realisasi; nonaktifkan kembali untuk melanjutkan.
+46. Buka **System Admin → Cadangan Database → Buat Cadangan Sekarang** → file muncul di riwayat →
+    unduh dan pastikan isinya berisi `CREATE TABLE` serta `INSERT`; coba akses URL file langsung → ditolak.
+47. Jalankan `php bin/backup.php` dari terminal/cron → ringkasan tercetak dan exit code 0; periksa file baru
+    pada folder `storage/backups`.
+48. Baca `docs/panduan-pengguna.md` dan lakukan uji pemulihan di server staging sebelum go-live.
 
 ---
 

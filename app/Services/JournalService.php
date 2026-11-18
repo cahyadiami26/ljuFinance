@@ -363,6 +363,8 @@ final class JournalService
                 throw new \RuntimeException('Nilai jurnal otomatis harus lebih besar dari nol.');
             }
 
+            self::periksaHardStop($lines, $tanggal);
+
             $tipe = (string) ($header['tipe'] ?? 'otomatis');
             $journalId = Db::insert('journal_entries', [
                 'nomor'        => NumberingService::next((string) ($header['kode_dokumen'] ?? self::kodeDokumen($tipe)), $tanggal),
@@ -471,6 +473,28 @@ final class JournalService
         });
     }
 
+    /**
+     * Blokir posting bila pagu RKAP aktif terlampaui (setting `budget_hard_stop`).
+     *
+     * @param array<int,array<string,mixed>> $lines
+     */
+    private static function periksaHardStop(array $lines, string $tanggal): void
+    {
+        if ((string) setting('budget_hard_stop', '0') !== '1') {
+            return;
+        }
+
+        $pelanggaran = BudgetService::periksaPelanggaran($lines, $tanggal);
+        if ($pelanggaran === []) {
+            return;
+        }
+
+        throw new \RuntimeException(
+            'Posting diblokir oleh hard stop anggaran: ' . implode('; ', array_slice($pelanggaran, 0, 3))
+                . (count($pelanggaran) > 3 ? ' dan ' . (count($pelanggaran) - 3) . ' baris lain.' : '.')
+        );
+    }
+
     public static function posting(int $id): void
     {
         Db::transaction(static function () use ($id): void {
@@ -487,6 +511,8 @@ final class JournalService
             if (abs((float) $journal['total_debit'] - (float) $journal['total_kredit']) > 0.005) {
                 throw new \RuntimeException('Jurnal tidak seimbang, posting dibatalkan.');
             }
+
+            self::periksaHardStop(self::lines($id), (string) $journal['tanggal']);
 
             self::ubahStatus($id, 'posted', ['posted_by' => auth_id() ?: null, 'posted_at' => now()]);
             self::rebuildYear((int) $journal['fiscal_year']);

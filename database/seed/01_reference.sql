@@ -29,7 +29,8 @@ INSERT INTO `app_settings` (`setting_key`,`setting_value`,`group_name`,`label`,`
 ('journal_require_attachment','0','akuntansi','Wajib lampiran bukti pada jurnal','boolean',41),
 ('lock_after_close','1','akuntansi','Kunci periode setelah tutup buku','boolean',42),
 ('pdf_paper','A4','laporan','Ukuran kertas PDF','select',50),
-('app_version','1.0.0','sistem','Versi aplikasi','text',60)
+('app_version','1.0.0','sistem','Versi aplikasi','text',60),
+('backup_retention_days','14','sistem','Retensi cadangan database (hari)','number',61)
 ON DUPLICATE KEY UPDATE `label` = VALUES(`label`), `group_name` = VALUES(`group_name`);
 
 -- ---------------------------------------------------------------------

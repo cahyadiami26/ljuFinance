@@ -19,6 +19,7 @@ use Lju\Controllers\AuditController;
 use Lju\Controllers\CashController;
 use Lju\Controllers\ClosingController;
 use Lju\Controllers\AuthController;
+use Lju\Controllers\BackupController;
 use Lju\Controllers\BudgetController;
 use Lju\Controllers\CoaController;
 use Lju\Controllers\DashboardController;
@@ -85,6 +86,10 @@ $router->post('master/{resource}/{id}/toggle', [MasterController::class, 'toggle
 $router->get('system/audit', [AuditController::class, 'index'], 'audit.view');
 $router->get('system/settings', [SettingController::class, 'index'], 'settings.manage');
 $router->post('system/settings', [SettingController::class, 'update'], 'settings.manage');
+$router->get('system/backup', [BackupController::class, 'index'], 'settings.manage');
+$router->post('system/backup', [BackupController::class, 'create'], 'settings.manage');
+$router->get('system/backup/{file}/download', [BackupController::class, 'download'], 'settings.manage');
+$router->post('system/backup/{file}/delete', [BackupController::class, 'delete'], 'settings.manage');
 
 /* ------------------------------------------- modul tahap berikutnya (placeholder) */
 /* -------------------------------------------------------- akuntansi inti */

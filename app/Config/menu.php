@@ -140,6 +140,7 @@ return [
             ['label' => 'Role & Permission', 'route' => 'master/role', 'icon' => 'shield', 'permission' => 'role.manage'],
             ['label' => 'Audit Trail', 'route' => 'system/audit', 'icon' => 'history', 'permission' => 'audit.view'],
             ['label' => 'Pengaturan', 'route' => 'system/settings', 'icon' => 'sliders', 'permission' => 'settings.manage'],
+            ['label' => 'Cadangan Database', 'route' => 'system/backup', 'icon' => 'database', 'permission' => 'settings.manage'],
         ],
     ],
 ];

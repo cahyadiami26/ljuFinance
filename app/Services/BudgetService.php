@@ -1023,4 +1023,53 @@ final class BudgetService
             'tambahan'   => $tambahan,
         ];
     }
+
+    /**
+     * Daftar pelanggaran hard stop untuk sekumpulan baris jurnal.
+     *
+     * Hanya baris beban (debit bersih) yang diperiksa terhadap pagu RKAP aktif.
+     * Baris pendapatan, aset, kewajiban, dan ekuitas diabaikan.
+     *
+     * @param array<int,array<string,mixed>> $lines
+     * @return array<int,string> pesan pelanggaran (kosong = lolos)
+     */
+    public static function periksaPelanggaran(array $lines, string $tanggal): array
+    {
+        $tahun = (int) date('Y', strtotime($tanggal));
+        if ($tahun <= 0 || self::aktif($tahun) === null) {
+            return [];
+        }
+
+        $hasil = [];
+        foreach ($lines as $line) {
+            $nilai = (float) ($line['debit'] ?? 0) - (float) ($line['kredit'] ?? 0);
+            $coaId = (int) ($line['coa_id'] ?? 0);
+            if ($nilai <= 0.005 || $coaId <= 0) {
+                continue;
+            }
+
+            $coa = Db::one('SELECT kode, nama, tipe FROM coa_accounts WHERE id = ?', [$coaId]);
+            if ($coa === null || (string) $coa['tipe'] !== 'beban') {
+                continue;
+            }
+
+            $divisiId = (int) ($line['divisi_id'] ?? 0) ?: null;
+            $pelanggaran = self::cekBatasAnggaran($coaId, $divisiId, $tahun, $nilai);
+            if ($pelanggaran === null) {
+                continue;
+            }
+
+            $hasil[] = sprintf(
+                '%s %s melebihi pagu %s (realisasi %s + transaksi %s)',
+                (string) $coa['kode'],
+                (string) $coa['nama'],
+                rupiah((float) $pelanggaran['pagu']),
+                rupiah((float) $pelanggaran['realisasi']),
+                rupiah((float) $pelanggaran['tambahan'])
+            );
+        }
+
+        return $hasil;
+    }
+
 }
