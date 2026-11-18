@@ -47,15 +47,15 @@ JOIN (
 ) m ON m.role_code = r.code;
 
 /* ------------------------------------------------------------------- setting */
-INSERT INTO `app_settings` (`setting_key`, `setting_value`, `setting_group`, `label`, `tipe`, `urutan`)
+INSERT INTO `app_settings` (`setting_key`, `setting_value`, `group_name`, `label`, `input_type`, `sort_order`)
 SELECT 'budget_alert_percent', '80', 'anggaran', 'Ambang peringatan anggaran (%)', 'number', 30
 FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM `app_settings` WHERE `setting_key` = 'budget_alert_percent');
 
-INSERT INTO `app_settings` (`setting_key`, `setting_value`, `setting_group`, `label`, `tipe`, `urutan`)
+INSERT INTO `app_settings` (`setting_key`, `setting_value`, `group_name`, `label`, `input_type`, `sort_order`)
 SELECT 'budget_hard_stop', '0', 'anggaran', 'Blokir transaksi bila melebihi pagu', 'boolean', 31
 FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM `app_settings` WHERE `setting_key` = 'budget_hard_stop');
 
-INSERT INTO `app_settings` (`setting_key`, `setting_value`, `setting_group`, `label`, `tipe`, `urutan`)
+INSERT INTO `app_settings` (`setting_key`, `setting_value`, `group_name`, `label`, `input_type`, `sort_order`)
 SELECT 'approval_sla_hours', '24', 'approval', 'SLA persetujuan (jam)', 'number', 40
 FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM `app_settings` WHERE `setting_key` = 'approval_sla_hours');
 

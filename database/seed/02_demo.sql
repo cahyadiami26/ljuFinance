@@ -229,7 +229,26 @@ INSERT INTO `fixed_assets` (`kode`,`nama`,`category_id`,`tanggal_perolehan`,`har
 ('AST/2023/0003','Excavator Komatsu PC200',3,DATE_SUB(@today,INTERVAL 28 MONTH),2350000000.00,235000000.00,96,617187500.00,1496875000.00,'Site Way Sekampung',1,4,'aktif'),
 ('AST/2024/0011','Server & Infrastruktur Data Center',3,DATE_SUB(@today,INTERVAL 14 MONTH),780000000.00,0,96,113750000.00,666250000.00,'Ruang Server',5,8,'aktif'),
 ('AST/2024/0012','Furnitur & Inventaris Kantor Lantai 2',4,DATE_SUB(@today,INTERVAL 10 MONTH),340000000.00,0,48,70833333.00,269166667.00,'Kantor Pusat',4,1,'aktif'),
-('AST/2022/0007','Tanah Gudang Pergudangan Natar',5,DATE_SUB(@today,INTERVAL 48 MONTH),6500000000.00,0,0,0.00,6500000000.00,'Natar, Lampung Selatan',2,2,'aktif');
+('AST/2022/0007','Tanah Gudang Pergudangan Natar',5,DATE_SUB(@today,INTERVAL 48 MONTH),6500000000.00,0,0,0.00,6500000000.00,'Natar, Lampung Selatan',2,2,'aktif')
+ON DUPLICATE KEY UPDATE `nilai_buku` = VALUES(`nilai_buku`);
+
+-- Kartu mutasi: perolehan tiap aset + satu perpindahan lokasi.
+DELETE FROM `asset_mutations`;
+INSERT INTO `asset_mutations` (`asset_id`,`tipe`,`tanggal`,`keterangan`,`nilai`,`dari_lokasi`,`ke_lokasi`) VALUES
+(1,'perolehan',DATE_SUB(@today,INTERVAL 36 MONTH),'Perolehan gedung kantor pusat',18000000000.00,NULL,'Bandar Lampung'),
+(2,'perolehan',DATE_SUB(@today,INTERVAL 30 MONTH),'Pembelian kendaraan operasional',520000000.00,NULL,'Pool Kendaraan'),
+(3,'perolehan',DATE_SUB(@today,INTERVAL 28 MONTH),'Perolehan alat berat via PT Sinar Teknik',2350000000.00,NULL,'Gudang Natar'),
+(3,'mutasi_lokasi',DATE_SUB(@today,INTERVAL 10 MONTH),'Pemindahan untuk pekerjaan pipa induk',0.00,'Gudang Natar','Site Way Sekampung'),
+(4,'perolehan',DATE_SUB(@today,INTERVAL 14 MONTH),'Pengadaan server & jaringan',780000000.00,NULL,'Ruang Server'),
+(5,'perolehan',DATE_SUB(@today,INTERVAL 10 MONTH),'Pengadaan furnitur kantor',340000000.00,NULL,'Kantor Pusat'),
+(6,'perolehan',DATE_SUB(@today,INTERVAL 48 MONTH),'Pembelian tanah gudang',6500000000.00,NULL,'Natar, Lampung Selatan');
+
+-- Penyusutan periode sebelumnya (sudah diposting) untuk dua aset contoh.
+INSERT INTO `asset_depreciations` (`asset_id`,`periode_id`,`tanggal`,`penyusutan`,`akumulasi`,`nilai_buku`,`status`) VALUES
+(1,@periode,LAST_DAY(DATE_SUB(@today, INTERVAL 1 MONTH)),62500000.00,2700000000.00,15300000000.00,'posted'),
+(3,@periode,LAST_DAY(DATE_SUB(@today, INTERVAL 1 MONTH)),18359375.00,617187500.00,1496875000.00,'posted'),
+(5,@periode,LAST_DAY(DATE_SUB(@today, INTERVAL 1 MONTH)),7083333.00,70833333.00,269166667.00,'posted')
+ON DUPLICATE KEY UPDATE `penyusutan` = VALUES(`penyusutan`);
 
 -- ---------------------------------------------------------------------
 -- 8. PAJAK

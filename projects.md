@@ -160,6 +160,11 @@ dipasang sebelum Tahap 5 perlu menjalankan `database/migrations/2026-11-17_tahap
 agar permission, setting (`budget_alert_percent`, `budget_hard_stop`, `approval_sla_hours`), alur
 `AF-BUD-*`, dan prefix `RKAP` tersedia.
 
+Aset tetap & perpajakan memakai `asset.view/manage` dan `tax.view/manage`. Database yang dipasang
+sebelum Tahap 6 perlu menjalankan `database/migrations/2026-11-18_tahap6_asset_tax.sql` agar permission,
+setting aset/pajak (`asset_auto_depreciate`, `asset_depreciation_day`, `asset_min_capitalize`,
+`tax_ppn_rate`, `tax_filing_due_day`), dan prefix `AST`/`DEP`/`TAX` tersedia.
+
 **Approval engine** mendukung: approve, return-for-revision, reject-with-reason, delegasi,
 penggantian pejabat (delegation berlaku per modul & rentang tanggal), riwayat persetujuan,
 notifikasi (in-app + antrean email), serta matriks **nominal × unit organisasi × level**.
@@ -280,6 +285,26 @@ tidak perlu job harian; nilai `overdue` pada data demo tetap didukung. `revenue_
 | Integrasi modul | jurnal, kas/bank, uang muka, pengajuan biaya, tagihan AP, invoice AR, pengakuan pendapatan, dan RKAP memanggil hook Approval Center pada saat diajukan/disetujui/ditolak; kegagalan antrean tidak memblokir transaksi |
 | UI | `budget/index` (ringkasan versi & komitmen), `budget/form` (editor baris + total otomatis), `budget/show` (monitoring per akun + matriks 12 bulan + komitmen), `budget/monitoring` (serapan, per divisi, cost/profit center, daftar baris), `budget/commitments` (form PO + ubah status), `approval/index` (KPI SLA, filter modul/status/terlambat), `approval/show` (aksi + riwayat), `approval/delegations` |
 | Penomoran | `RKAP` melanjutkan `doc_sequences`; revisi memakai prefix `RKAP-REV` |
+
+### Implementasi (Tahap 6 — selesai)
+
+| Komponen | Perilaku |
+|----------|----------|
+| `AssetService` | kartu inventaris `fixed_assets` dengan kode otomatis `AST/<tahun>/NNNN`, kategori menentukan umur & metode, umur default dari kategori bila dikosongkan, status `draft → aktif → nonaktif → dijual/dihapus`; aktivasi mencatat jurnal **D akun aset / K bank** (atau **K Utang Usaha**) dan menautkan `journal_id` ke kartu serta mutasi perolehan |
+| Penyusutan | empat metode: garis lurus `(harga−residu)/umur`, saldo menurun ganda `(harga−akumulasi)×2/umur`, jumlah angka tahun `dasar×(umur−n+1)/Σ`, unit produksi (fallback garis lurus); penyusutan dimulai **bulan berikutnya** setelah perolehan, berhenti di umur ekonomis atau saat nilai buku = residu; nilai dibulatkan 2 desimal dan dibatasi sisa yang dapat disusutkan |
+| Alur penyusutan | `rencanaPenyusutan()` menghitung tanpa menyimpan (beserta alasan bila dilewati), `prosesPenyusutan()` menyimpan draft unik per `asset_id + periode_id`, `postingPenyusutan()` membuat **satu jurnal agregat per periode** dengan baris dikelompokkan per akun beban/akumulasi kategori (`sumber='aset'`, `kode_dokumen='DEP'`) lalu memperbarui `akumulasi_penyusutan` dan `nilai_buku` tiap aset; draft dapat dihapus selama belum diposting |
+| Mutasi & pelepasan | `asset_mutations` mencatat perolehan, mutasi lokasi, penjualan, penghapusan, dan revaluasi; penjualan **D Bank + D Akumulasi / K Aset / ± Laba (4-2200) atau Rugi (5-3900)**, penghapusan **D Akumulasi + D Rugi / K Aset**; status aset menjadi `dijual`/`dihapus` dan histori tetap tersimpan |
+| `TaxService` | dokumen pajak `faktur_keluaran`, `faktur_masukan`, `bukti_potong`, `ssp`, `lain`; tarif otomatis dari `tax_types`, nilai pajak dihitung dari DPP × tarif bila kosong, periode akuntansi ditentukan dari tanggal, nomor `TAX/<MM>/<YYYY>/NNNN` bila dikosongkan, status `draft → posted → reported` dengan `void` untuk pembatalan |
+| Penyetoran & pelaporan | `setor()` (khusus SSP) mencatat jurnal **D akun pajak (`tax_types.coa_keluaran_id` / fallback utang PPh) / K bank** dan mengubah status menjadi `posted`; `lapor()` menandai `reported`, `void()` membatalkan dokumen draft, `hapus()` hanya untuk draft tanpa jurnal |
+| Rekap & SPT | `rekap()` mengelompokkan dokumen per tipe dan per jenis pajak (dokumen void diabaikan), `generateReport()` menghitung **SPT PPN** (keluaran − masukan) serta PPh 21/23/4(2)/badan dari bukti potong & SSP, lalu melakukan upsert `tax_reports` per `periode_id + jenis`; status SPT `draft → final → dilaporkan` beserta tanggal lapor dan referensi |
+| e-Faktur | `efaktur()` menampilkan faktur keluaran periode terpilih dan `efakturCsv()` mengunduh CSV siap impor (`FK;NPWP;Nama;Tanggal;DPP;Tarif;PPN;Referensi`) |
+| UI | `asset/index` (strip nilai perolehan/akumulasi/nilai buku, distribusi per kategori, filter kategori/status), `asset/form` (umur & metode otomatis dari kategori), `asset/show` (KPI, riwayat penyusutan, timeline mutasi, panel aktivasi/mutasi/penjualan/penghapusan), `asset/depreciation` (rencana, draft, posting, hapus draft), `tax/index` (ringkasan PPN & PPh periode), `tax/form`, `tax/show` (setor SSP, lapor, void), `tax/report` (rekap per tipe/jenis, status SPT, data e-Faktur) |
+| Penomoran | `AST`, `DEP`, dan `TAX` melanjutkan `doc_sequences` |
+
+Catatan: dokumen pajak dari AP/AR/biaya menautkan `ref_module`/`ref_id` sebagai kunci rekonsiliasi, tetapi
+belum ada pencocokan otomatis baris jurnal ↔ dokumen pajak. e-Faktur dihasilkan sebagai CSV, bukan
+integrasi langsung ke aplikasi DJP. Penjualan/penghapusan aset belum memakai Approval Center karena
+`approval_flows` belum memiliki modul aset.
 
 Catatan: status dokumen modul **tidak diubah** oleh lapisan approval — Approval Center hanya
 mencerminkan dan menyinkronkan status yang sama (`submitted/approved/rejected/draft`). Perhitungan
@@ -413,10 +438,14 @@ Legenda: ✅ selesai · 🚧 berjalan · ⬜ belum
   otorisasi pejabat per level, notifikasi in-app, riwayat aksi, dan statistik ketepatan waktu.
 - **Delegasi & penggantian pejabat**: pelimpahan per modul dan rentang tanggal, dapat ditutup manual.
 
-### Tahap 6 — Aset Tetap & Perpajakan ⬜
-Aset tetap (kode inventaris, perolehan, lokasi, penanggung jawab, penyusutan otomatis garis lurus/saldo
-menurun, mutasi, penjualan/penghapusan, nilai buku), pajak (PPN, PPh 21/22/23/4(2), bukti potong,
-rekap bulanan, arsip, rekonsiliasi, persiapan e-Faktur/DJP).
+### Tahap 6 — Aset Tetap & Perpajakan ✅
+- **Kartu inventaris**: kode otomatis, kategori dengan umur/metode/akun bawaan, lokasi & penanggung jawab,
+  dimensi bidang/divisi/proyek, alur draft → aktif (jurnal perolehan) → nonaktif/dijual/dihapus.
+- **Penyusutan**: garis lurus, saldo menurun ganda, jumlah angka tahun, unit produksi (fallback garis lurus);
+  dimulai bulan berikutnya, draft per periode, posting jurnal agregat per kategori, pembaruan nilai buku.
+- **Mutasi & pelepasan**: mutasi lokasi bertimeline, penjualan dengan laba/rugi otomatis, penghapusan aset.
+- **Perpajakan**: faktur keluaran/masukan, bukti potong, SSP, penyetoran pajak, rekap PPN & PPh bulanan,
+  SPT per jenis dengan status pelaporan, arsip dokumen, serta ekspor CSV e-Faktur untuk DJP.
 
 ### Tahap 7 — Pelaporan Keuangan & PDF ⬜
 Reporting engine + domPDF (instalasi manual), seluruh laporan wajib, ekspor XLSX/CSV/cetak,
@@ -501,3 +530,20 @@ Detail lengkap ada di `readme.md`.
 - [ ] Keputusan final tidak mengubah status posted/void dokumen sumber; hanya status persetujuan modul.
 - [ ] Delegasi hanya berlaku pada rentang tanggal dan modul yang dipilih, dan dapat dinonaktifkan.
 - [ ] Setiap aksi approval tercatat pada `approval_actions` beserta catatan dan waktu.
+
+**Khusus aset tetap & perpajakan (Tahap 6)**
+
+- [ ] Kode inventaris otomatis `AST/<tahun>/NNNN` dan kode manual yang duplikat ditolak.
+- [ ] Aset draft tidak dapat disusutkan; aktivasi mencatat jurnal **D akun aset / K bank** (atau K utang usaha).
+- [ ] Penyusutan dimulai bulan berikutnya setelah perolehan, bukan bulan perolehan.
+- [ ] Garis lurus, saldo menurun ganda, dan jumlah angka tahun menghasilkan nilai yang berbeda sesuai rumus.
+- [ ] Nilai penyusutan tidak pernah membuat akumulasi melebihi `harga − residu`; tanah (umur 0) dilewati.
+- [ ] Draft penyusutan unik per aset + periode; posting hanya untuk draft dan menolak periode tertutup.
+- [ ] Posting membuat jurnal **seimbang** (`D beban = K akumulasi`) dan memperbarui nilai buku tiap aset.
+- [ ] Penjualan di atas nilai buku menghasilkan **laba** `4-2200`, di bawah nilai buku menghasilkan **rugi** `5-3900`.
+- [ ] Penghapusan wajib alasan dan tidak mengubah `journal_id` jurnal lain.
+- [ ] Dokumen pajak memakai tarif dari `tax_types` bila tarif kosong dan menghitung nilai pajak dari DPP.
+- [ ] Penyetoran SSP mencatat **D utang pajak / K bank** dan hanya dapat dilakukan sekali.
+- [ ] Rekap PPN = pajak keluaran − pajak masukan; dokumen `void` tidak dihitung.
+- [ ] `tax_reports` melakukan upsert per `periode_id + jenis` (tidak membuat duplikat saat hitung ulang).
+- [ ] CSV e-Faktur hanya memuat faktur keluaran periode terpilih dan memakai pemisah titik koma.

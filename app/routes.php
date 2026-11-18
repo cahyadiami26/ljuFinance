@@ -12,6 +12,7 @@
 use Lju\Controllers\AdvanceController;
 use Lju\Controllers\ApController;
 use Lju\Controllers\ApprovalController;
+use Lju\Controllers\AssetController;
 use Lju\Controllers\ArController;
 use Lju\Controllers\ArController;
 use Lju\Controllers\AuditController;
@@ -31,6 +32,7 @@ use Lju\Controllers\ProfileController;
 use Lju\Controllers\ReconciliationController;
 use Lju\Controllers\RevenueController;
 use Lju\Controllers\RoleController;
+use Lju\Controllers\TaxController;
 use Lju\Controllers\SettingController;
 use Lju\Controllers\TrialBalanceController;
 use Lju\Controllers\UserController;
@@ -231,6 +233,40 @@ $router->post('approval/delegations/{id}/close', [ApprovalController::class, 'de
 $router->get('approval/{id}', [ApprovalController::class, 'show'], 'approval.view');
 $router->post('approval/{id}/act', [ApprovalController::class, 'act'], 'approval.act');
 $router->post('approval/{id}/cancel', [ApprovalController::class, 'cancel'], 'approval.act');
-$router->get('asset', [PlaceholderController::class, 'show'], 'asset.view');
-$router->get('tax', [PlaceholderController::class, 'show'], 'tax.view');
+/* --------------------------------------------------------------- aset tetap */
+$router->get('asset', [AssetController::class, 'index'], 'asset.view');
+$router->get('asset/create', [AssetController::class, 'create'], 'asset.manage');
+$router->post('asset', [AssetController::class, 'store'], 'asset.manage');
+
+$router->get('asset/depreciation', [AssetController::class, 'depreciation'], 'asset.view');
+$router->post('asset/depreciation', [AssetController::class, 'depreciationStore'], 'asset.manage');
+$router->post('asset/depreciation/post', [AssetController::class, 'depreciationPost'], 'asset.manage');
+$router->post('asset/depreciation/clear', [AssetController::class, 'depreciationClear'], 'asset.manage');
+
+$router->get('asset/{id}', [AssetController::class, 'show'], 'asset.view');
+$router->get('asset/{id}/edit', [AssetController::class, 'edit'], 'asset.manage');
+$router->post('asset/{id}', [AssetController::class, 'update'], 'asset.manage');
+$router->post('asset/{id}/activate', [AssetController::class, 'activate'], 'asset.manage');
+$router->post('asset/{id}/deactivate', [AssetController::class, 'deactivate'], 'asset.manage');
+$router->post('asset/{id}/location', [AssetController::class, 'location'], 'asset.manage');
+$router->post('asset/{id}/sell', [AssetController::class, 'sell'], 'asset.manage');
+$router->post('asset/{id}/dispose', [AssetController::class, 'dispose'], 'asset.manage');
+$router->post('asset/{id}/delete', [AssetController::class, 'destroy'], 'asset.manage');
+
+/* --------------------------------------------------------------- perpajakan */
+$router->get('tax', [TaxController::class, 'index'], 'tax.view');
+$router->get('tax/create', [TaxController::class, 'create'], 'tax.manage');
+$router->post('tax', [TaxController::class, 'store'], 'tax.manage');
+$router->get('tax/report', [TaxController::class, 'report'], 'tax.view');
+$router->post('tax/report/generate', [TaxController::class, 'reportGenerate'], 'tax.manage');
+$router->post('tax/report/status', [TaxController::class, 'reportStatus'], 'tax.manage');
+$router->get('tax/efaktur', [TaxController::class, 'efaktur'], 'tax.view');
+$router->get('tax/{id}', [TaxController::class, 'show'], 'tax.view');
+$router->get('tax/{id}/edit', [TaxController::class, 'edit'], 'tax.manage');
+$router->post('tax/{id}', [TaxController::class, 'update'], 'tax.manage');
+$router->post('tax/{id}/post', [TaxController::class, 'posting'], 'tax.manage');
+$router->post('tax/{id}/setor', [TaxController::class, 'setor'], 'tax.manage');
+$router->post('tax/{id}/lapor', [TaxController::class, 'lapor'], 'tax.manage');
+$router->post('tax/{id}/void', [TaxController::class, 'void'], 'tax.manage');
+$router->post('tax/{id}/delete', [TaxController::class, 'destroy'], 'tax.manage');
 $router->get('report', [PlaceholderController::class, 'show'], 'report.view');

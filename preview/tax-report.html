@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Rekap Pajak Bulanan · LJU Finance</title>
+    <link rel="icon" href="https://dms.lju.co.id/assets/img/logo.png">
+    <link rel="stylesheet" href="../assets/css/app.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo">
+            <span class="fallback">LJU</span>
+            <img src="https://dms.lju.co.id/assets/img/logo.png" alt="LJU" onerror="this.style.display='none'">
+        </div>
+        <div class="brand-text">
+            <div class="brand-name">LJU Finance</div>
+            <div class="brand-sub">FMS Enterprise</div>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+                                                    <a class="nav-item active"
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></span>
+                    <span class="nav-label">Dashboard</span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8.5" ry="3"/><path d="M3.5 5v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3V5"/><path d="M3.5 11v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3v-6"/></svg></span>
+                        <span class="nav-label">Master Data</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Chart of Accounts</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Bidang &amp; Divisi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Cost Center</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Unit Usaha</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Vendor &amp; Customer</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Proyek</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekening Bank</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Periode Akuntansi</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></span>
+                        <span class="nav-label">Anggaran &amp; Pengendalian</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">RKAP &amp; Versi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Monitoring Realisasi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Komitmen PO</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H19a2 2 0 0 1 2 2v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17V8.5Z"/><path d="M3 9h14"/><path d="M16.5 12.5h3"/></svg></span>
+                        <span class="nav-label">Kas &amp; Bank</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Kas &amp; Bank</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Uang Muka</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengajuan Biaya</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekonsiliasi Bank</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M6 20h12"/><path d="m12 7-6 3 3 5 3-5Z"/><path d="m12 7 6 3-3 5-3-5Z"/></svg></span>
+                        <span class="nav-label">Hutang &amp; Piutang</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Hutang Usaha (AP)</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Piutang Usaha (AR)</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengakuan Pendapatan</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5Z"/></svg></span>
+                        <span class="nav-label">Accounting</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Jurnal Umum</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Buku Besar</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Neraca Saldo</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Tutup Buku</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 12 3.5l9 5v7l-9 5-9-5v-7Z"/><path d="M3 8.5 12 13.5l9-5M12 13.5V21"/></svg></span>
+                        <span class="nav-label">Aset Tetap</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Daftar Aset</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Penyusutan</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg></span>
+                        <span class="nav-label">Perpajakan</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Dokumen Pajak</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekap SPT</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span>
+                    <span class="nav-label">Financial Reports</span>
+                                            <span class="nav-dot" title="Dijadwalkan pada tahap 7"></span>
+                                    </a>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="8.5 12.5 11 15 15.5 9.5"/></svg></span>
+                    <span class="nav-label">Approval Center</span>
+                                            <span class="nav-badge">5</span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.5 14.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.3 1Z"/></svg></span>
+                        <span class="nav-label">System Admin</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengguna &amp; Hak Akses</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Role &amp; Permission</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Audit Trail</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengaturan</span>
+                            </a>
+                                            </div>
+                </details>
+                        </nav>
+
+    <div class="sidebar-foot">
+        <span>v1.0.0 Enterprise</span>
+        <span class="foot-status"><span class="dot"></span>Online</span>
+    </div>
+</aside>
+
+    <div class="main">
+        <header class="topbar">
+    <div class="topbar-left">
+        <button class="icon-btn sidebar-toggle" type="button" data-sidebar-toggle aria-label="Buka menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>        </button>
+
+        <div class="product">
+            <strong>LJU Finance</strong>
+            <span>Finance</span>
+        </div>
+
+        <div class="crumbs">
+                                                                <span class="">Perpajakan</span>
+                                            <span class="sep">›</span>                                    <span class="current">Rekap SPT</span>
+                                    </div>
+    </div>
+
+    <form class="topbar-search" method="get" action="#" role="search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>        <input type="search" name="q" placeholder="Cari akun, COA, voucher…" value="" aria-label="Pencarian">
+        <kbd>⌘K</kbd>
+    </form>
+
+    <div class="topbar-actions">
+        <div class="chip chip--period" title="Periode akuntansi aktif">
+            <span class="chip-top">TA 2026</span>
+            <span class="chip-bottom">Nov 2026 · Open</span>
+        </div>
+
+        <span class="chip"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="5.5" ry="2.6"/><path d="M3.5 7v3.5c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6V7"/><path d="M14.5 12.4c2.7.2 4.8 1.3 4.8 2.6 0 1.4-2.5 2.6-5.5 2.6-2.3 0-4.3-.8-5.1-1.8"/><path d="M14.5 12.4v3.5"/></svg> IDR</span>
+
+        <a class="btn btn--primary" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Transaksi Baru
+        </a>
+
+        <a class="icon-btn" href="#" aria-label="Notifikasi">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10.5 20a2 2 0 0 0 3 0"/></svg>            <span class="dot-badge"></span>        </a>
+
+        <a class="profile" href="#" aria-label="Profil">
+            <span class="avatar">
+                                <span>BH</span>
+            </span>
+            <span class="profile-meta">
+                <span class="profile-name">Bambang Hartono</span>
+                <span class="profile-role">Direktur Utama</span>
+            </span>
+        </a>
+    </div>
+</header>
+
+        <main class="content">
+            
+                            <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Rekap Pajak Bulanan</h1>
+                                                    <div class="page-sub">Rekapitulasi PPN, PPh dipotong, dan status pelaporan SPT per periode.</div>
+                                                                    </div>
+                                            <div class="page-actions"><a class="btn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="20" y1="12" x2="5" y2="12"/><polyline points="11 6 5 12 11 18"/></svg> Dokumen Pajak</a></div>
+                                    </div>
+            
+            <form class="toolbar mb-16" method="get" action="#">
+    <input type="hidden" name="r" value="tax/report">
+    <select class="filter-select" name="periode" data-autosubmit>
+                    <option value="60" selected>
+                November 2026 · open            </option>
+                    <option value="59" >
+                Oktober 2026 · closed            </option>
+                    <option value="58" >
+                September 2026 · closed            </option>
+                    <option value="57" >
+                Agustus 2026 · closed            </option>
+                    <option value="56" >
+                Juli 2026 · closed            </option>
+                    <option value="55" >
+                Juni 2026 · closed            </option>
+            </select>
+    <button class="btn" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></svg> Terapkan</button>
+    <span class="spacer"></span>
+    <a class="btn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg> Dokumen Pajak</a>
+    <a class="btn btn--primary" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><polyline points="7 11 12 16 17 11"/><path d="M5 20h14"/></svg> Unduh e-Faktur CSV</a>
+</form>
+
+    <div class="summary-strip mb-16" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+        <div class="summary-item">
+            <div class="summary-label">PPN Keluaran</div>
+            <div class="summary-value">Rp 76.670.000</div>
+            <div class="tiny muted">DPP Rp 697,00 jt</div>
+        </div>
+        <div class="summary-item">
+            <div class="summary-label">PPN Masukan</div>
+            <div class="summary-value">Rp 16.940.000</div>
+            <div class="tiny muted">Kredit pajak</div>
+        </div>
+        <div class="summary-item">
+            <div class="summary-label">PPN Kurang Bayar</div>
+            <div class="summary-value summary-value--down">Rp 59.730.000</div>
+            <div class="tiny muted">Keluaran − masukan</div>
+        </div>
+        <div class="summary-item">
+            <div class="summary-label">Total PPh</div>
+            <div class="summary-value">Rp 60.450.000</div>
+            <div class="tiny muted">Bukti potong &amp; SSP</div>
+        </div>
+    </div>
+
+    <div class="grid-main mb-16">
+        <div class="card card--flush">
+            <div class="card-head">
+                <div>
+                    <h2 class="card-title">Rekap per Tipe Dokumen</h2>
+                    <div class="card-sub">November 2026 · dokumen void tidak dihitung</div>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tipe</th>
+                            <th class="num" style="width:70px">Dok</th>
+                            <th class="num" style="width:150px">DPP</th>
+                            <th class="num" style="width:140px">Pajak</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                                                <tr>
+                                <td class="small">Faktur Keluaran</td>
+                                <td class="num small">2</td>
+                                <td class="num">Rp 697.000.000</td>
+                                <td class="num strong">Rp 76.670.000</td>
+                            </tr>
+                                                                                <tr>
+                                <td class="small">Faktur Masukan</td>
+                                <td class="num small">1</td>
+                                <td class="num">Rp 154.000.000</td>
+                                <td class="num strong">Rp 16.940.000</td>
+                            </tr>
+                                                                                <tr>
+                                <td class="small">Bukti Potong</td>
+                                <td class="num small">1</td>
+                                <td class="num">Rp 85.000.000</td>
+                                <td class="num strong">Rp 1.700.000</td>
+                            </tr>
+                                                                                <tr>
+                                <td class="small">SSP / Penyetoran</td>
+                                <td class="num small">2</td>
+                                <td class="num">Rp 0</td>
+                                <td class="num strong">Rp 58.750.000</td>
+                            </tr>
+                                                                                <tr>
+                                <td class="small">Dokumen Lain</td>
+                                <td class="num small">0</td>
+                                <td class="num">Rp 0</td>
+                                <td class="num strong">Rp 0</td>
+                            </tr>
+                                            </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card card--flush">
+            <div class="card-head">
+                <div>
+                    <h2 class="card-title">Rekap per Jenis Pajak</h2>
+                    <div class="card-sub">Termasuk jenis tanpa dokumen pada periode ini</div>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Jenis</th>
+                            <th class="num" style="width:60px">Tarif</th>
+                            <th class="num" style="width:140px">DPP</th>
+                            <th class="num" style="width:130px">Pajak</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                    <tr>
+                                <td class="small">
+                                    PPN                                    <div class="tiny muted">PPN 11%</div>
+                                </td>
+                                <td class="num small">11,00%</td>
+                                <td class="num">Rp 851.000.000</td>
+                                <td class="num strong">Rp 93.610.000</td>
+                            </tr>
+                                                    <tr>
+                                <td class="small">
+                                    PPH21                                    <div class="tiny muted">PPh 21 Karyawan</div>
+                                </td>
+                                <td class="num small">5,00%</td>
+                                <td class="num">Rp 0</td>
+                                <td class="num strong">Rp 18.750.000</td>
+                            </tr>
+                                                    <tr>
+                                <td class="small">
+                                    PPH22                                    <div class="tiny muted">PPh 22 Pembelian</div>
+                                </td>
+                                <td class="num small">1,50%</td>
+                                <td class="num">Rp 0</td>
+                                <td class="num strong">Rp 0</td>
+                            </tr>
+                                                    <tr>
+                                <td class="small">
+                                    PPH23                                    <div class="tiny muted">PPh 23 Jasa</div>
+                                </td>
+                                <td class="num small">2,00%</td>
+                                <td class="num">Rp 85.000.000</td>
+                                <td class="num strong">Rp 1.700.000</td>
+                            </tr>
+                                                    <tr>
+                                <td class="small">
+                                    PPH4-2                                    <div class="tiny muted">PPh 4 ayat 2</div>
+                                </td>
+                                <td class="num small">10,00%</td>
+                                <td class="num">Rp 0</td>
+                                <td class="num strong">Rp 0</td>
+                            </tr>
+                                                    <tr>
+                                <td class="small">
+                                    PPH-FINAL                                    <div class="tiny muted">PPh Final UMKM</div>
+                                </td>
+                                <td class="num small">0,50%</td>
+                                <td class="num">Rp 0</td>
+                                <td class="num strong">Rp 0</td>
+                            </tr>
+                                            </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card--flush mb-16">
+        <div class="card-head">
+            <div>
+                <h2 class="card-title">SPT Periode November 2026</h2>
+                <div class="card-sub">Hitung ulang rekap, lalu tandai status pelaporan</div>
+            </div>
+                            <form class="row" method="post" action="#" style="gap:6px">
+                    <input type="hidden" name="_token" value="b6df1ae7c26b33395f18eda01bf336af2afdb607588149a0443559b6f4b429d2">                    <input type="hidden" name="periode_id" value="60">
+                    <select class="select select--sm" name="jenis" style="width:150px">
+                                                    <option value="ppn">SPT PPN</option>
+                                                    <option value="pph21">SPT PPh 21</option>
+                                                    <option value="pph23">SPT PPh 23</option>
+                                                    <option value="pph4_2">SPT PPh 4(2)</option>
+                                                    <option value="pph_badan">PPh Badan</option>
+                                            </select>
+                    <button class="btn btn--sm btn--primary" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h4"/></svg> Hitung Rekap</button>
+                </form>
+                    </div>
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width:180px">Jenis SPT</th>
+                        <th class="num" style="width:140px">DPP</th>
+                        <th class="num" style="width:135px">Pajak</th>
+                        <th class="num" style="width:135px">Kredit</th>
+                        <th class="num" style="width:140px">Kurang Bayar</th>
+                        <th style="width:100px">Status</th>
+                        <th style="width:150px">Tgl Lapor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                                                    <tr>
+                            <td class="small strong">SPT PPN</td>
+                            <td class="num">Rp 697.000.000</td>
+                            <td class="num">Rp 76.670.000</td>
+                            <td class="num">Rp 16.940.000</td>
+                            <td class="num strong">Rp 59.730.000</td>
+                            <td>
+                                                                    <span class="badge badge--sukses">Final</span>                                                            </td>
+                            <td>
+                                                                    <form method="post" action="#" class="row" style="gap:4px">
+                                        <input type="hidden" name="_token" value="b6df1ae7c26b33395f18eda01bf336af2afdb607588149a0443559b6f4b429d2">                                        <input type="hidden" name="id" value="11">
+                                        <input type="hidden" name="periode_id" value="60">
+                                        <select class="select select--sm" name="status" style="width:92px">
+                                                                                            <option value="draft" >Draft</option>
+                                                                                            <option value="final" selected>Final</option>
+                                                                                            <option value="dilaporkan" >Lapor</option>
+                                                                                    </select>
+                                        <input class="input input--sm" type="date" name="tanggal_lapor" style="width:120px"
+                                               value="">
+                                        <button class="btn btn--sm" type="submit" title="Simpan status"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6"/></svg></button>
+                                    </form>
+                                                            </td>
+                        </tr>
+                                                                    <tr>
+                            <td class="small strong">SPT PPh 21</td>
+                            <td class="num">Rp 0</td>
+                            <td class="num">Rp 18.750.000</td>
+                            <td class="num">Rp 0</td>
+                            <td class="num strong">Rp 18.750.000</td>
+                            <td>
+                                                                    <span class="badge badge--info">Dilaporkan</span>                                                            </td>
+                            <td>
+                                                                    <form method="post" action="#" class="row" style="gap:4px">
+                                        <input type="hidden" name="_token" value="b6df1ae7c26b33395f18eda01bf336af2afdb607588149a0443559b6f4b429d2">                                        <input type="hidden" name="id" value="12">
+                                        <input type="hidden" name="periode_id" value="60">
+                                        <select class="select select--sm" name="status" style="width:92px">
+                                                                                            <option value="draft" >Draft</option>
+                                                                                            <option value="final" >Final</option>
+                                                                                            <option value="dilaporkan" selected>Lapor</option>
+                                                                                    </select>
+                                        <input class="input input--sm" type="date" name="tanggal_lapor" style="width:120px"
+                                               value="2026-11-16">
+                                        <button class="btn btn--sm" type="submit" title="Simpan status"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6"/></svg></button>
+                                    </form>
+                                                            </td>
+                        </tr>
+                                                                    <tr>
+                            <td class="small strong">SPT PPh 23</td>
+                            <td class="num">Rp 85.000.000</td>
+                            <td class="num">Rp 1.700.000</td>
+                            <td class="num">Rp 0</td>
+                            <td class="num strong">Rp 1.700.000</td>
+                            <td>
+                                                                    <span class="badge badge--netral">Draft</span>                                                            </td>
+                            <td>
+                                                                    <form method="post" action="#" class="row" style="gap:4px">
+                                        <input type="hidden" name="_token" value="b6df1ae7c26b33395f18eda01bf336af2afdb607588149a0443559b6f4b429d2">                                        <input type="hidden" name="id" value="13">
+                                        <input type="hidden" name="periode_id" value="60">
+                                        <select class="select select--sm" name="status" style="width:92px">
+                                                                                            <option value="draft" selected>Draft</option>
+                                                                                            <option value="final" >Final</option>
+                                                                                            <option value="dilaporkan" >Lapor</option>
+                                                                                    </select>
+                                        <input class="input input--sm" type="date" name="tanggal_lapor" style="width:120px"
+                                               value="">
+                                        <button class="btn btn--sm" type="submit" title="Simpan status"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6"/></svg></button>
+                                    </form>
+                                                            </td>
+                        </tr>
+                                                                    <tr>
+                            <td class="small strong">SPT PPh 4(2)</td>
+                            <td class="num"><span class="muted">—</span></td>
+                            <td class="num"><span class="muted">—</span></td>
+                            <td class="num"><span class="muted">—</span></td>
+                            <td class="num strong"><span class="muted">—</span></td>
+                            <td>
+                                                                    <span class="badge badge--netral">Belum dihitung</span>
+                                                            </td>
+                            <td>
+                                                                    <span class="small muted">—</span>
+                                                            </td>
+                        </tr>
+                                                                    <tr>
+                            <td class="small strong">PPh Badan</td>
+                            <td class="num"><span class="muted">—</span></td>
+                            <td class="num"><span class="muted">—</span></td>
+                            <td class="num"><span class="muted">—</span></td>
+                            <td class="num strong"><span class="muted">—</span></td>
+                            <td>
+                                                                    <span class="badge badge--netral">Belum dihitung</span>
+                                                            </td>
+                            <td>
+                                                                    <span class="small muted">—</span>
+                                                            </td>
+                        </tr>
+                                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card card--flush">
+        <div class="card-head">
+            <div>
+                <h2 class="card-title">Data e-Faktur Keluaran</h2>
+                <div class="card-sub">2 faktur siap diimpor ke aplikasi e-Faktur DJP</div>
+            </div>
+            <a class="btn btn--sm" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><polyline points="7 11 12 16 17 11"/><path d="M5 20h14"/></svg> Unduh CSV</a>
+        </div>
+                    <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width:180px">Nomor Faktur</th>
+                            <th>Partner</th>
+                            <th style="width:150px">NPWP</th>
+                            <th style="width:105px">Tanggal</th>
+                            <th class="num" style="width:140px">DPP</th>
+                            <th class="num" style="width:90px">Tarif</th>
+                            <th class="num" style="width:130px">PPN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                    <tr>
+                                <td class="mono small">010.000-26.00000001</td>
+                                <td class="small">PT Sinar Teknik Nusantara</td>
+                                <td class="mono small">01.234.567.8-901.000</td>
+                                <td class="small">03 Nov 2026</td>
+                                <td class="num">Rp 485.000.000</td>
+                                <td class="num small">11,00%</td>
+                                <td class="num strong">Rp 53.350.000</td>
+                            </tr>
+                                                    <tr>
+                                <td class="mono small">020.000-26.00000002</td>
+                                <td class="small">CV Mitra Pipa Sejahtera</td>
+                                <td class="mono small">02.345.678.9-012.000</td>
+                                <td class="small">08 Nov 2026</td>
+                                <td class="num">Rp 212.000.000</td>
+                                <td class="num small">11,00%</td>
+                                <td class="num strong">Rp 23.320.000</td>
+                            </tr>
+                                            </tbody>
+                </table>
+            </div>
+            </div>
+        </main>
+
+        <div class="footer-bar">
+            <span>&copy; 2026 PT. Lampung Jasa Utama · LJU Finance v1.0.0</span>
+            <span>Zona waktu Asia/Jakarta · Data per 18 Nov 2026 02:17 WIB</span>
+        </div>
+    </div>
+</div>
+<div class="sidebar-backdrop" data-sidebar-close></div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

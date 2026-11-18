@@ -177,4 +177,24 @@ final class AccountMap
         }
         return $id;
     }
+
+    /** Akun laba penjualan aset tetap (4-2200 → fallback 4-2xxx). */
+    public static function labaPenjualanAset(): int
+    {
+        $id = self::byKode('4-2200') ?? self::firstPosting('4-2');
+        if ($id === null) {
+            throw new \RuntimeException('Akun COA laba penjualan aset (4-2200) tidak ditemukan.');
+        }
+        return $id;
+    }
+
+    /** Akun rugi penjualan/penghapusan aset (5-3900 → fallback 5-3xxx). */
+    public static function rugiPenjualanAset(): int
+    {
+        $id = self::byKode('5-3900') ?? self::firstPosting('5-3');
+        if ($id === null) {
+            throw new \RuntimeException('Akun COA rugi penjualan aset (5-3900) tidak ditemukan.');
+        }
+        return $id;
+    }
 }

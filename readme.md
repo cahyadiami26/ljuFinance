@@ -13,8 +13,8 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 | 2 | Akuntansi Inti (jurnal, posting, tutup buku) | ✅ Selesai |
 | 3 | Kas & Bank, Uang Muka, Biaya | ✅ Selesai |
 | 4 | Hutang & Piutang | ✅ Selesai |
-| 5 | Anggaran & Approval Center | ⬜ Belum |
-| 6 | Aset Tetap & Perpajakan | ⬜ Belum |
+| 5 | Anggaran & Approval Center | ✅ Selesai |
+| 6 | Aset Tetap & Perpajakan | ✅ Selesai |
 | 7 | Pelaporan Keuangan & PDF | ⬜ Belum |
 | 8 | Integrasi & Hardening | ⬜ Belum |
 
@@ -25,8 +25,9 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 > `expense-show`, `recon-index`, `recon-form`, `recon-show`, `ap-index`, `ap-form`, `ap-show`,
 > `ar-index`, `ar-form`, `ar-show`, `revenue-index`, `revenue-form`, `revenue-show`,
 > `budget-index`, `budget-form`, `budget-show`, `budget-monitoring`, `budget-commitments`,
-> `approval-index`, `approval-show`, `approval-delegations`. Berguna untuk meninjau tampilan tanpa
-> server PHP/MySQL.
+> `approval-index`, `approval-show`, `approval-delegations`, `asset-index`, `asset-form`, `asset-show`,
+> `asset-depreciation`, `tax-index`, `tax-form`, `tax-show`, `tax-report`. Berguna untuk meninjau
+> tampilan tanpa server PHP/MySQL.
 
 ---
 
@@ -125,6 +126,25 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
   per modul & rentang tanggal.
 - Status dokumen modul tidak berubah oleh Approval Center; posting/void tetap hanya dari modul asal.
 
+**Aset tetap & perpajakan (Tahap 6)**
+
+- **Kartu inventaris aset**: kode otomatis `AST/<tahun>/NNNN`, kategori menentukan umur ekonomis, metode
+  penyusutan, dan akun COA; lokasi, penanggung jawab, invoice, serta dimensi bidang/divisi/proyek.
+  Alur draft → **aktifkan** (jurnal **D akun aset / K bank** atau **K Utang Usaha**) → nonaktif/dijual/dihapus.
+- **Penyusutan otomatis**: garis lurus, saldo menurun ganda, jumlah angka tahun, dan unit produksi (fallback
+  garis lurus). Penyusutan dimulai bulan berikutnya setelah perolehan, berhenti di akhir umur ekonomis atau
+  saat nilai buku = nilai residu. Hitung → simpan draft → **posting** menghasilkan satu jurnal agregat per
+  kategori (**D Beban Penyusutan / K Akumulasi Penyusutan**) dan memperbarui nilai buku seluruh aset.
+- **Mutasi & pelepasan**: perpindahan lokasi bertimeline, **penjualan** (D Bank + D Akumulasi / K Aset dan
+  laba `4-2200` atau rugi `5-3900`), serta penghapusan aset dengan alasan.
+- **Dokumen pajak**: faktur keluaran/masukan, bukti potong, SSP, dan dokumen lain dengan tarif otomatis dari
+  master jenis pajak, DPP, nilai pajak, NPWP, partner, dan tautan `ref_module`/`ref_id` ke AP/AR/biaya.
+  SSP dapat disetorkan (**D utang pajak / K bank**) lalu ditandai dilaporkan atau di-void.
+- **Rekap & SPT**: rekap bulanan per tipe dan per jenis pajak, perhitungan **SPT PPN** (keluaran − masukan)
+  serta PPh 21/23/4(2)/badan, status `draft/final/dilaporkan` dengan tanggal lapor dan referensi.
+- **e-Faktur**: daftar faktur keluaran periode terpilih dan unduhan CSV `FK;NPWP;Nama;Tanggal;DPP;Tarif;PPN;Referensi`
+  siap diimpor ke aplikasi e-Faktur DJP.
+
 **Administrasi sistem**
 
 - Pengguna & hak akses (9 role, permission granular `modul.aksi`).
@@ -175,6 +195,10 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
    `database/migrations/2026-11-17_tahap5_budget_approval.sql` agar permission
    `budget.*`/`approval.*`, setting ambang anggaran, alur `AF-BUD-*`, dan prefix `RKAP` tersedia
    (idempotent).
+
+   Database yang dipasang **sebelum** Tahap 6 perlu menjalankan
+   `database/migrations/2026-11-18_tahap6_asset_tax.sql` agar permission `asset.*`/`tax.*`, setting
+   aset & pajak, dan prefix `AST`/`DEP`/`TAX` tersedia (idempotent).
 
 4. **Jalankan installer** dengan token (default ada di `config/config.php` → `security.install_token`):
 
@@ -352,6 +376,21 @@ Sembilan role aplikasi: `super_admin`, `dirut`, `dirops`, `kabid_keuangan`, `sta
     setujui level 1 → level naik; selesaikan level terakhir → dokumen modul ikut berstatus disetujui.
     Coba **delegasikan** ke pejabat lain lalu proses dari akun penerima delegasi, dan tolak permintaan
     dengan catatan → riwayat aksi tercatat.
+
+**Tahap 6 — aset tetap & pajak**
+
+29. **Aset Tetap → Aset Baru**: pilih kategori (umur & metode terisi otomatis), isi harga perolehan →
+    simpan → aset berstatus draft dengan kode `AST/…`; klik **Aktifkan** dengan rekening bank →
+    jurnal **D akun aset / K bank** terbentuk dan kartu mutasi perolehan tertaut ke jurnal.
+30. **Aset Tetap → Penyusutan**: pilih periode terbuka → periksa rencana per aset (yang dilewati menampilkan
+    alasan) → **Simpan Draft** → **Posting Jurnal** → satu jurnal `DEP` terbentuk per kategori dan nilai buku
+    aset berkurang; coba posting ulang → ditolak karena draft sudah habis.
+31. Dari detail aset, catat **mutasi lokasi**, lalu **penjualan** di atas nilai buku → jurnal memuat laba
+    `4-2200`; coba harga di bawah nilai buku → jurnal memuat rugi `5-3900`. **Penghapusan** memakai alasan wajib.
+32. **Perpajakan → Dokumen Baru**: pilih jenis PPN (tarif 11% otomatis) dan isi DPP → nilai pajak terhitung
+    otomatis → simpan. Buat **SSP** lalu **Setor** dengan rekening bank → status `posted` dan jurnal pajak
+    terbentuk. Buka **Rekap SPT** → **Hitung Rekap** PPN → angka kurang bayar = keluaran − masukan, ubah status
+    menjadi `final`/`dilaporkan`, lalu **Unduh e-Faktur CSV** dan periksa isinya.
 
 ---
 

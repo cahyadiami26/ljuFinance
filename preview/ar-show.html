@@ -161,18 +161,40 @@
                             </a>
                                             </div>
                 </details>
-                                                                <a class="nav-item "
-                   href="#">
-                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 12 3.5l9 5v7l-9 5-9-5v-7Z"/><path d="M3 8.5 12 13.5l9-5M12 13.5V21"/></svg></span>
-                    <span class="nav-label">Fixed Asset</span>
-                                            <span class="nav-dot" title="Dijadwalkan pada tahap 6"></span>
-                                    </a>
-                                                                <a class="nav-item "
-                   href="#">
-                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg></span>
-                    <span class="nav-label">Tax Management</span>
-                                            <span class="nav-dot" title="Dijadwalkan pada tahap 6"></span>
-                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 12 3.5l9 5v7l-9 5-9-5v-7Z"/><path d="M3 8.5 12 13.5l9-5M12 13.5V21"/></svg></span>
+                        <span class="nav-label">Aset Tetap</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Daftar Aset</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Penyusutan</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg></span>
+                        <span class="nav-label">Perpajakan</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Dokumen Pajak</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekap SPT</span>
+                            </a>
+                                            </div>
+                </details>
                                                                 <a class="nav-item "
                    href="#">
                     <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span>
@@ -333,7 +355,7 @@
         </div>
         <div class="card-body">
             <form method="post" action="#" class="form-grid" data-confirm="Catat penerimaan piutang dan posting jurnal?">
-                <input type="hidden" name="_token" value="64a18755e22f0e58b51358e30dc0bc6ae59221c2193dead39cf096d43d8568b7">                <div class="field">
+                <input type="hidden" name="_token" value="743a7040575c7c52041f8dc507a1d37ed39bd8cfb26ad8603412834f0c6b49e5">                <div class="field">
                     <label class="field-label" for="pay-bank">Rekening Penerimaan</label>
                     <select class="select" id="pay-bank" name="bank_account_id" required>
                         <option value="">— pilih rekening —</option>
@@ -347,7 +369,7 @@
                 </div>
                 <div class="field">
                     <label class="field-label" for="pay-tanggal">Tanggal Terima</label>
-                    <input class="input" type="date" id="pay-tanggal" name="tanggal" value="2026-11-17" required>
+                    <input class="input" type="date" id="pay-tanggal" name="tanggal" value="2026-11-18" required>
                 </div>
                 <div class="field">
                     <label class="field-label" for="pay-jumlah">Jumlah Diterima</label>
@@ -494,7 +516,7 @@
 
         <div class="footer-bar">
             <span>&copy; 2026 PT. Lampung Jasa Utama · LJU Finance v1.0.0</span>
-            <span>Zona waktu Asia/Jakarta · Data per 17 Nov 2026 07:24 WIB</span>
+            <span>Zona waktu Asia/Jakarta · Data per 18 Nov 2026 02:17 WIB</span>
         </div>
     </div>
 </div>

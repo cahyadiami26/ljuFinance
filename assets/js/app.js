@@ -99,6 +99,75 @@
         });
     });
 
+    /* ------------------------- aset: umur & metode ikut kategori ---- */
+    function angka(value) {
+        var digits = String(value || '').replace(/[^\d]/g, '');
+        return digits === '' ? 0 : parseInt(digits, 10);
+    }
+
+    var kategoriAset = document.querySelector('[data-asset-kategori]');
+    if (kategoriAset) {
+        var inputUmur = document.querySelector('[data-asset-umur]');
+        var labelMetode = document.querySelector('[data-asset-metode]');
+
+        var syncKategori = function () {
+            var opsi = kategoriAset.options[kategoriAset.selectedIndex];
+            if (!opsi) {
+                return;
+            }
+            var umur = parseInt(opsi.getAttribute('data-umur') || '0', 10);
+            var metode = opsi.getAttribute('data-metode') || '';
+            if (inputUmur && !inputUmur.dataset.touched && umur > 0) {
+                inputUmur.value = umur;
+            }
+            if (labelMetode) {
+                labelMetode.textContent = metode !== '' ? 'Metode penyusutan: ' + metode : 'Metode mengikuti kategori.';
+            }
+        };
+
+        if (inputUmur) {
+            inputUmur.addEventListener('input', function () {
+                inputUmur.dataset.touched = '1';
+            });
+        }
+        kategoriAset.addEventListener('change', function () {
+            if (inputUmur) {
+                inputUmur.dataset.touched = '';
+            }
+            syncKategori();
+        });
+        syncKategori();
+    }
+
+    /* ------------------- pajak: tarif & nilai pajak otomatis -------- */
+    var jenisPajak = document.querySelector('[data-tax-type]');
+    var inputDpp = document.querySelector('[data-tax-dpp]');
+    var inputTarif = document.querySelector('[data-tax-tarif]');
+    var inputNilai = document.querySelector('[data-tax-nilai]');
+
+    if (jenisPajak && inputDpp && inputTarif) {
+        var hitungNilai = function () {
+            if (!inputNilai) {
+                return;
+            }
+            var nilai = Math.round(angka(inputDpp.value) * (parseFloat(inputTarif.value || '0') / 100));
+            inputNilai.value = nilai > 0 ? nilai.toLocaleString('id-ID') : '';
+        };
+
+        jenisPajak.addEventListener('change', function () {
+            var opsi = jenisPajak.options[jenisPajak.selectedIndex];
+            var tarif = opsi ? parseFloat(opsi.getAttribute('data-tarif') || '0') : 0;
+            if (tarif > 0) {
+                inputTarif.value = tarif;
+            }
+            hitungNilai();
+        });
+
+        [inputDpp, inputTarif].forEach(function (input) {
+            input.addEventListener('input', hitungNilai);
+        });
+    }
+
     /* ------------------------------------------ overlay loading submit */
     document.addEventListener('submit', function (event) {
         var form = event.target;

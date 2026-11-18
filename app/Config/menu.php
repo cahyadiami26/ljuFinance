@@ -70,20 +70,22 @@ return [
         ],
     ],
     [
-        'type'  => 'link',
-        'label' => 'Fixed Asset',
-        'route' => 'asset',
+        'type'  => 'group',
+        'label' => 'Aset Tetap',
         'icon'  => 'asset',
-        'permission' => 'asset.view',
-        'stage' => 6,
+        'items' => [
+            ['label' => 'Daftar Aset', 'route' => 'asset', 'icon' => 'asset', 'permission' => 'asset.view'],
+            ['label' => 'Penyusutan', 'route' => 'asset/depreciation', 'icon' => 'trending-down', 'permission' => 'asset.view'],
+        ],
     ],
     [
-        'type'  => 'link',
-        'label' => 'Tax Management',
-        'route' => 'tax',
+        'type'  => 'group',
+        'label' => 'Perpajakan',
         'icon'  => 'receipt',
-        'permission' => 'tax.view',
-        'stage' => 6,
+        'items' => [
+            ['label' => 'Dokumen Pajak', 'route' => 'tax', 'icon' => 'receipt', 'permission' => 'tax.view'],
+            ['label' => 'Rekap SPT', 'route' => 'tax/report', 'icon' => 'report', 'permission' => 'tax.view'],
+        ],
     ],
     [
         'type'  => 'link',
