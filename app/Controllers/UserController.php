@@ -45,7 +45,7 @@ final class UserController extends BaseController
                     (SELECT GROUP_CONCAT(r.name ORDER BY r.level SEPARATOR ', ')
                      FROM app_user_roles ur JOIN app_roles r ON r.id = ur.role_id
                      WHERE ur.user_id = u.id) AS role_names,
-                    (SELECT GROUP_CONCAT(r.code) FROM app_user_roles ur2 JOIN app_roles r2
+                    (SELECT GROUP_CONCAT(r2.code) FROM app_user_roles ur2 JOIN app_roles r2
                      WHERE ur2.user_id = u.id AND r2.id = ur2.role_id) AS role_codes,
                     d.nama AS divisi_nama, b.nama AS bidang_nama
              FROM app_users u
