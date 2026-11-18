@@ -14,7 +14,6 @@ use Lju\Controllers\ApController;
 use Lju\Controllers\ApprovalController;
 use Lju\Controllers\AssetController;
 use Lju\Controllers\ArController;
-use Lju\Controllers\ArController;
 use Lju\Controllers\AuditController;
 use Lju\Controllers\CashController;
 use Lju\Controllers\ClosingController;
