@@ -32,6 +32,15 @@
     </form>
 
     <span class="spacer"></span>
+    <?php if ($canManage): ?>
+        <form method="post" action="<?= e(url('master/user/sync')) ?>"
+              data-confirm="Tarik data pengguna terbaru dari tabel users portal SSO? Role aplikasi dan relasi bidang/divisi yang sudah diisi tidak diubah.">
+            <?= csrf_field() ?>
+            <button class="btn btn--primary btn--sm" type="submit">
+                <?= icon('refresh', 14) ?> Sinkronkan dari SSO
+            </button>
+        </form>
+    <?php endif; ?>
     <span class="pill"><?= (int) $paginator->total ?> pengguna</span>
 </div>
 

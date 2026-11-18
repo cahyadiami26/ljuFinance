@@ -31,7 +31,7 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 > `report-balance-sheet`, `report-cash-flow`, `report-equity`, `report-project`, `report-unit-usaha`, `report-print`,
 > `project-index`, `project-show`, `project-form`, `project-contracts`, `project-contract-form`, `project-contract-show`,
 > `inventory-index`, `inventory-show`, `inventory-form`, `inventory-movements`, `inventory-masuk`, `inventory-keluar`,
-> `procurement-index`, `procurement-form`, `procurement-show`, `procurement-terima`, `system-backup`. Total 70 halaman. Berguna untuk
+> `procurement-index`, `procurement-form`, `procurement-show`, `procurement-terima`, `system-backup`, `user-index`. Total 71 halaman. Berguna untuk
 > meninjau tampilan tanpa server PHP/MySQL.
 
 ---
@@ -190,6 +190,8 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 **Administrasi sistem**
 
 - Pengguna & hak akses (9 role, permission granular `modul.aksi`).
+- **Sinkronisasi massal pengguna** dari tabel `users` portal SSO melalui tombol
+  **Sinkronkan dari SSO** pada halaman Pengguna; role dan relasi bidang/divisi lokal tidak diubah.
 - Matriks permission per role (Role & Permission).
 - Audit trail dengan filter modul/aksi/tanggal dan diff nilai lama/baru.
 - Pengaturan aplikasi per grup, profil pengguna + sinkronisasi ulang SSO.
@@ -487,6 +489,8 @@ Sembilan role aplikasi: `super_admin`, `dirut`, `dirops`, `kabid_keuangan`, `sta
 47. Jalankan `php bin/backup.php` dari terminal/cron → ringkasan tercetak dan exit code 0; periksa file baru
     pada folder `storage/backups`.
 48. Baca `docs/panduan-pengguna.md` dan lakukan uji pemulihan di server staging sebelum go-live.
+49. Buka **System Admin → Pengguna & Hak Akses → Sinkronkan dari SSO** → jumlah pengguna baru/diperbarui
+    tampil pada flash message; role yang sudah ditetapkan tetap sama dan tercatat di audit log.
 
 ---
 

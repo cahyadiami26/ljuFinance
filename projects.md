@@ -380,6 +380,7 @@ Hard stop anggaran baru diterapkan pada Tahap 9.
 | Unduhan aman | file `.sql` diblokir `.htaccess` dan hanya dapat diunduh melalui controller yang memvalidasi pola nama file; respons memakai `Content-Disposition: attachment` dan `Cache-Control: no-store` |
 | CLI/cron | `bin/backup.php` mem-bootstrap aplikasi tanpa sesi, membuat cadangan, menulis ringkasan ke stdout, dan mengembalikan exit code 0/1 agar cocok untuk cron dan monitoring |
 | Dokumentasi | `docs/panduan-pengguna.md` memuat alur harian, pengadaan, persediaan, proyek/kontrak, hard stop, tutup buku, serta prosedur cadangan/pemulihan |
+| Sinkronisasi pengguna | `UserSyncService::sinkronkan()` membaca tabel `users` portal SSO (kolom dideteksi otomatis via `SHOW COLUMNS`), melakukan upsert massal ke `app_users`, melengkapi relasi bidang/divisi yang masih kosong, dan melaporkan jumlah baru/diperbarui/dilewati/gagal; tombol **Sinkronkan dari SSO** tersedia pada halaman Pengguna untuk pemegang `user.manage` |
 
 Catatan: hard stop membandingkan **realisasi jurnal posted** dengan pagu, bukan komitmen PO; komitmen
 tetap dipantau terpisah pada halaman monitoring. Cadangan dibuat secara sinkron melalui UI, sehingga
@@ -558,6 +559,8 @@ Sisa pekerjaan lanjutan (di luar lingkup tahap ini): eliminasi antar-unit dan in
 - **Dokumentasi pengguna**: panduan operasional harian hingga prosedur pemulihan di `docs/panduan-pengguna.md`.
 - **Audit & keamanan**: seluruh aksi cadangan tercatat, file `.sql` tidak dapat diakses langsung, dan
   konfigurasi cookie sesi serta header keamanan tetap berlaku.
+- **Sinkronisasi pengguna massal**: tombol **Sinkronkan dari SSO** menarik seluruh pengguna dari tabel
+  `users` portal ke `app_users` tanpa menimpa role atau relasi organisasi yang sudah diisi lokal.
 
 ---
 
@@ -690,3 +693,7 @@ Detail lengkap ada di `readme.md`.
 - [ ] Cadangan lebih lama dari `backup_retention_days` terhapus otomatis saat cadangan baru dibuat.
 - [ ] `php bin/backup.php` berjalan dari cron, menulis ringkasan, dan mengembalikan exit code 0.
 - [ ] Setiap pembuatan/unduhan/penghapusan cadangan tercatat pada audit log.
+- [ ] Tombol **Sinkronkan dari SSO** pada halaman Pengguna menambah/memperbarui pengguna dari tabel `users`
+      dan menampilkan ringkasan hasil; role yang sudah ada tidak berubah.
+- [ ] Bila database portal tidak dapat diakses, pesan kesalahan menjelaskan konfigurasi `sso.db`/kredensial
+      tanpa menampilkan stack trace.

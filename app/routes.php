@@ -66,6 +66,7 @@ $router->get('master/period', [PeriodController::class, 'index'], 'period.view')
 $router->post('master/period/{id}/status', [PeriodController::class, 'updateStatus'], 'period.manage');
 
 $router->get('master/user', [UserController::class, 'index'], 'user.view');
+$router->post('master/user/sync', [UserController::class, 'sync'], 'user.manage');
 $router->get('master/user/{id}/edit', [UserController::class, 'edit'], 'user.manage');
 $router->post('master/user/{id}/role', [UserController::class, 'updateRole'], 'user.manage');
 $router->post('master/user/{id}/toggle', [UserController::class, 'toggle'], 'user.manage');

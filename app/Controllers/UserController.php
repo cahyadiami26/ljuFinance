@@ -8,6 +8,7 @@ use Lju\Core\App;
 use Lju\Core\Audit;
 use Lju\Core\Db;
 use Lju\Core\Paginator;
+use Lju\Services\UserSyncService;
 
 /**
  * Pengguna aplikasi & penetapan role (hak akses) lokal.
@@ -156,6 +157,47 @@ final class UserController extends BaseController
 
         flash_success('Status pengguna diperbarui.');
         back('master/user');
+    }
+
+
+    /**
+     * Tarik seluruh pengguna dari tabel `users` portal SSO.
+     */
+    public function sync(): void
+    {
+        $this->requireCan('user.manage');
+
+        try {
+            $hasil = UserSyncService::sinkronkan();
+        } catch (\Throwable $e) {
+            flash_error('Sinkronisasi pengguna gagal: ' . $e->getMessage());
+            redirect('master/user');
+        }
+
+        Audit::log('sync', 'user', [
+            'ref_table'   => 'app_users',
+            'description' => 'Sinkronisasi pengguna dari portal SSO: '
+                . $hasil['baru'] . ' baru, ' . $hasil['diperbarui'] . ' diperbarui, '
+                . $hasil['dilewati'] . ' dilewati, ' . $hasil['gagal'] . ' gagal',
+            'new'         => $hasil,
+        ]);
+
+        $ringkas = $hasil['baru'] . ' pengguna baru, ' . $hasil['diperbarui'] . ' diperbarui'
+            . ($hasil['dilewati'] > 0 ? ', ' . $hasil['dilewati'] . ' dilewati' : '')
+            . ($hasil['dipetakan'] > 0 ? ', ' . $hasil['dipetakan'] . ' relasi bidang/divisi dilengkapi' : '');
+
+        if ($hasil['gagal'] > 0) {
+            flash_error(
+                'Sinkronisasi selesai dengan ' . $hasil['gagal'] . ' kegagalan (' . $ringkas . '). '
+                . implode(' ', $hasil['kesalahan'])
+            );
+        } elseif ($hasil['total'] === 0) {
+            flash_success('Tabel `' . $hasil['source'] . '` tidak berisi data pengguna.');
+        } else {
+            flash_success('Sinkronisasi pengguna selesai: ' . $ringkas . ' dalam ' . $hasil['durasi'] . ' detik.');
+        }
+
+        redirect('master/user');
     }
 
     private function findOrFail(int $id): array

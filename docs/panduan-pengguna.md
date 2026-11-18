@@ -21,6 +21,19 @@ Panduan ringkas untuk pengguna harian. Dokumentasi arsitektur dan skema ada di
 Hak akses bersifat granular (`modul.aksi`). Bila tombol tidak muncul, hubungi admin —
 jangan memakai akun orang lain.
 
+### Menarik data pengguna dari portal SSO
+
+Pengguna baru biasanya muncul otomatis saat pertama kali login. Untuk mengisi seluruh daftar sekaligus:
+
+1. Buka **System Admin → Pengguna & Hak Akses**.
+2. Klik **Sinkronkan dari SSO** di kanan atas daftar.
+3. Konfirmasi; sistem membaca tabel `users` pada database portal dan memperbarui `app_users`.
+4. Ringkasan jumlah pengguna baru, diperbarui, dilewati, dan gagal tampil di atas halaman.
+
+Yang **tidak** diubah oleh sinkronisasi: role aplikasi, bidang/divisi yang sudah diisi manual, dan
+riwayat login. Bila muncul pesan database portal tidak dapat diakses, minta admin memeriksa
+`sso.db` dan kredensial database pada `config/config.local.php`.
+
 ---
 
 ## 2. Alur harian yang disarankan
