@@ -47,6 +47,7 @@ if (!function_exists('icon')) {
                 'bell'      => '<path d="M18 8a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10.5 20a2 2 0 0 0 3 0"/>',
                 'plus'      => '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
                 'download'  => '<path d="M12 3v12"/><polyline points="7 11 12 16 17 11"/><path d="M5 20h14"/>',
+                'printer'   => '<path d="M7 8V3h10v5"/><rect x="4" y="8" width="16" height="8" rx="2"/><path d="M7 16h10v5H7v-5Z"/><circle cx="17" cy="11" r=".8"/>',
                 'refresh'   => '<path d="M3 12a9 9 0 0 1 15.3-6.4L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.3 6.4L3 16"/><path d="M3 21v-5h5"/>',
                 'chevron-down' => '<polyline points="6 9 12 15 18 9"/>',
                 'chevron-right'=> '<polyline points="9 6 15 12 9 18"/>',

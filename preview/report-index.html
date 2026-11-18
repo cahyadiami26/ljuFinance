@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Laporan Keuangan · LJU Finance</title>
+    <link rel="icon" href="https://dms.lju.co.id/assets/img/logo.png">
+    <link rel="stylesheet" href="../assets/css/app.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo">
+            <span class="fallback">LJU</span>
+            <img src="https://dms.lju.co.id/assets/img/logo.png" alt="LJU" onerror="this.style.display='none'">
+        </div>
+        <div class="brand-text">
+            <div class="brand-name">LJU Finance</div>
+            <div class="brand-sub">FMS Enterprise</div>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+                                                    <a class="nav-item active"
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></span>
+                    <span class="nav-label">Dashboard</span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8.5" ry="3"/><path d="M3.5 5v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3V5"/><path d="M3.5 11v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3v-6"/></svg></span>
+                        <span class="nav-label">Master Data</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Chart of Accounts</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Bidang &amp; Divisi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Cost Center</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Unit Usaha</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Vendor &amp; Customer</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Proyek</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekening Bank</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Periode Akuntansi</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></span>
+                        <span class="nav-label">Anggaran &amp; Pengendalian</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">RKAP &amp; Versi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Monitoring Realisasi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Komitmen PO</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H19a2 2 0 0 1 2 2v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17V8.5Z"/><path d="M3 9h14"/><path d="M16.5 12.5h3"/></svg></span>
+                        <span class="nav-label">Kas &amp; Bank</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Kas &amp; Bank</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Uang Muka</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengajuan Biaya</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekonsiliasi Bank</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M6 20h12"/><path d="m12 7-6 3 3 5 3-5Z"/><path d="m12 7 6 3-3 5-3-5Z"/></svg></span>
+                        <span class="nav-label">Hutang &amp; Piutang</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Hutang Usaha (AP)</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Piutang Usaha (AR)</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengakuan Pendapatan</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5Z"/></svg></span>
+                        <span class="nav-label">Accounting</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Jurnal Umum</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Buku Besar</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Neraca Saldo</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Tutup Buku</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 12 3.5l9 5v7l-9 5-9-5v-7Z"/><path d="M3 8.5 12 13.5l9-5M12 13.5V21"/></svg></span>
+                        <span class="nav-label">Aset Tetap</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Daftar Aset</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Penyusutan</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg></span>
+                        <span class="nav-label">Perpajakan</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Dokumen Pajak</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekap SPT</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span>
+                        <span class="nav-label">Laporan Keuangan</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Ringkasan Laporan</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Laba Rugi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Neraca</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Arus Kas</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Perubahan Ekuitas</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Laba Rugi Proyek</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="8.5 12.5 11 15 15.5 9.5"/></svg></span>
+                    <span class="nav-label">Approval Center</span>
+                                            <span class="nav-badge">5</span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.5 14.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.3 1Z"/></svg></span>
+                        <span class="nav-label">System Admin</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengguna &amp; Hak Akses</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Role &amp; Permission</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Audit Trail</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengaturan</span>
+                            </a>
+                                            </div>
+                </details>
+                        </nav>
+
+    <div class="sidebar-foot">
+        <span>v1.0.0 Enterprise</span>
+        <span class="foot-status"><span class="dot"></span>Online</span>
+    </div>
+</aside>
+
+    <div class="main">
+        <header class="topbar">
+    <div class="topbar-left">
+        <button class="icon-btn sidebar-toggle" type="button" data-sidebar-toggle aria-label="Buka menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>        </button>
+
+        <div class="product">
+            <strong>LJU Finance</strong>
+            <span>Finance</span>
+        </div>
+
+        <div class="crumbs">
+                                                                <span class="">Laporan Keuangan</span>
+                                            <span class="sep">›</span>                                    <span class="current">Ringkasan</span>
+                                    </div>
+    </div>
+
+    <form class="topbar-search" method="get" action="#" role="search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>        <input type="search" name="q" placeholder="Cari akun, COA, voucher…" value="" aria-label="Pencarian">
+        <kbd>⌘K</kbd>
+    </form>
+
+    <div class="topbar-actions">
+        <div class="chip chip--period" title="Periode akuntansi aktif">
+            <span class="chip-top">TA 2026</span>
+            <span class="chip-bottom">Nov 2026 · Open</span>
+        </div>
+
+        <span class="chip"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="5.5" ry="2.6"/><path d="M3.5 7v3.5c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6V7"/><path d="M14.5 12.4c2.7.2 4.8 1.3 4.8 2.6 0 1.4-2.5 2.6-5.5 2.6-2.3 0-4.3-.8-5.1-1.8"/><path d="M14.5 12.4v3.5"/></svg> IDR</span>
+
+        <a class="btn btn--primary" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Transaksi Baru
+        </a>
+
+        <a class="icon-btn" href="#" aria-label="Notifikasi">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10.5 20a2 2 0 0 0 3 0"/></svg>            <span class="dot-badge"></span>        </a>
+
+        <a class="profile" href="#" aria-label="Profil">
+            <span class="avatar">
+                                <span>BH</span>
+            </span>
+            <span class="profile-meta">
+                <span class="profile-name">Bambang Hartono</span>
+                <span class="profile-role">Direktur Utama</span>
+            </span>
+        </a>
+    </div>
+</header>
+
+        <main class="content">
+            
+                            <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Laporan Keuangan</h1>
+                                                    <div class="page-sub">Neraca, laba rugi, arus kas, perubahan ekuitas, dan laba rugi proyek.</div>
+                                                                    </div>
+                                            <div class="page-actions"><a class="btn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M6 20h12"/><path d="m12 7-6 3 3 5 3-5Z"/><path d="m12 7 6 3-3 5-3-5Z"/></svg> Neraca Saldo</a></div>
+                                    </div>
+            
+            <form class="toolbar mb-16" method="get" action="#">
+    <input type="hidden" name="r" value="report">
+    <select class="filter-select" name="periode" data-autosubmit>
+                    <option value="61" selected>
+                November 2026 · open            </option>
+                    <option value="60" >
+                Oktober 2026 · closed            </option>
+                    <option value="59" >
+                September 2026 · closed            </option>
+                    <option value="58" >
+                Agustus 2026 · closed            </option>
+                    <option value="57" >
+                Juli 2026 · closed            </option>
+                    <option value="56" >
+                Juni 2026 · closed            </option>
+            </select>
+    <button class="btn" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></svg> Terapkan</button>
+    <span class="spacer"></span>
+    <span class="pill">01 Nov 2026 – 30 Nov 2026</span>
+</form>
+
+<div class="summary-strip mb-16" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+    <div class="summary-item">
+        <div class="summary-label">Total Aset</div>
+        <div class="summary-value">Rp 17.128.000.000</div>
+        <div class="tiny muted">Per 30 Nov 2026</div>
+    </div>
+    <div class="summary-item">
+        <div class="summary-label">Pendapatan Periode</div>
+        <div class="summary-value">Rp 4.850.000.000</div>
+        <div class="tiny muted">Dibanding periode sebelumnya</div>
+    </div>
+    <div class="summary-item">
+        <div class="summary-label">Laba Bersih</div>
+        <div class="summary-value summary-value--up">Rp 720.000.000</div>
+        <div class="tiny muted">Net margin 14,9%</div>
+    </div>
+    <div class="summary-item">
+        <div class="summary-label">Kas &amp; Bank</div>
+        <div class="summary-value">Rp 1.620.000.000</div>
+        <div class="tiny muted">Neto periode -Rp 230.000.000</div>
+    </div>
+</div>
+
+<div class="grid-main mb-16">
+    <div class="card card--flush">
+        <div class="card-head">
+            <div>
+                <h2 class="card-title">Tren Pendapatan vs Beban</h2>
+                <div class="card-sub">Enam bulan terakhir dari jurnal posted</div>
+            </div>
+            <div class="chart-legend">
+                <span><i class="legend-dot legend-dot--rev"></i> Pendapatan</span>
+                <span><i class="legend-dot legend-dot--exp"></i> Beban</span>
+            </div>
+        </div>
+        <div class="card-body">
+                            <div class="trend-chart">
+                                                                    <div class="trend-col">
+                            <div class="trend-bars">
+                                <span class="trend-bar trend-bar--rev" style="height:89px" title="Pendapatan Rp 3.610.000.000"></span>
+                                <span class="trend-bar trend-bar--exp" style="height:74px" title="Beban Rp 3.010.000.000"></span>
+                            </div>
+                            <div class="trend-label">Jun 26</div>
+                            <div class="trend-value trend--up">
+                                Rp 600,00 jt                            </div>
+                        </div>
+                                                                    <div class="trend-col">
+                            <div class="trend-bars">
+                                <span class="trend-bar trend-bar--rev" style="height:96px" title="Pendapatan Rp 3.890.000.000"></span>
+                                <span class="trend-bar trend-bar--exp" style="height:78px" title="Beban Rp 3.160.000.000"></span>
+                            </div>
+                            <div class="trend-label">Jul 26</div>
+                            <div class="trend-value trend--up">
+                                Rp 730,00 jt                            </div>
+                        </div>
+                                                                    <div class="trend-col">
+                            <div class="trend-bars">
+                                <span class="trend-bar trend-bar--rev" style="height:93px" title="Pendapatan Rp 3.740.000.000"></span>
+                                <span class="trend-bar trend-bar--exp" style="height:76px" title="Beban Rp 3.090.000.000"></span>
+                            </div>
+                            <div class="trend-label">Agu 26</div>
+                            <div class="trend-value trend--up">
+                                Rp 650,00 jt                            </div>
+                        </div>
+                                                                    <div class="trend-col">
+                            <div class="trend-bars">
+                                <span class="trend-bar trend-bar--rev" style="height:102px" title="Pendapatan Rp 4.120.000.000"></span>
+                                <span class="trend-bar trend-bar--exp" style="height:83px" title="Beban Rp 3.360.000.000"></span>
+                            </div>
+                            <div class="trend-label">Sep 26</div>
+                            <div class="trend-value trend--up">
+                                Rp 760,00 jt                            </div>
+                        </div>
+                                                                    <div class="trend-col">
+                            <div class="trend-bars">
+                                <span class="trend-bar trend-bar--rev" style="height:109px" title="Pendapatan Rp 4.420.000.000"></span>
+                                <span class="trend-bar trend-bar--exp" style="height:89px" title="Beban Rp 3.610.000.000"></span>
+                            </div>
+                            <div class="trend-label">Okt 26</div>
+                            <div class="trend-value trend--up">
+                                Rp 810,00 jt                            </div>
+                        </div>
+                                                                    <div class="trend-col">
+                            <div class="trend-bars">
+                                <span class="trend-bar trend-bar--rev" style="height:120px" title="Pendapatan Rp 4.850.000.000"></span>
+                                <span class="trend-bar trend-bar--exp" style="height:100px" title="Beban Rp 4.040.000.000"></span>
+                            </div>
+                            <div class="trend-label">Nov 26</div>
+                            <div class="trend-value trend--up">
+                                Rp 810,00 jt                            </div>
+                        </div>
+                                    </div>
+                    </div>
+    </div>
+
+    <div class="card">
+        <div class="card-head">
+            <h2 class="card-title">Perbandingan Bulan Ini</h2>
+        </div>
+        <div class="card-body">
+            <dl class="kv">
+                <dt>Pendapatan</dt>
+                <dd class="row" style="justify-content:space-between">
+                    <span>Rp 4.850.000.000</span>
+                                        <span class="trend trend--up">9,7%</span>
+                </dd>
+                <dt>Beban</dt>
+                <dd class="row" style="justify-content:space-between">
+                    <span>Rp 4.040.000.000</span>
+                                        <span class="trend trend--down">11,9%</span>
+                </dd>
+                <dt>Laba Bersih</dt>
+                <dd class="row" style="justify-content:space-between">
+                    <span class="strong">Rp 810.000.000</span>
+                                        <span class="trend trend--up">0,0%</span>
+                </dd>
+            </dl>
+            <div class="notice notice--info mt-12">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="8" r=".7"/></svg>                <div class="tiny">Perbandingan memakai periode bulan sebelumnya dengan panjang hari setara.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-head mb-12">
+    <div>
+        <h2 class="card-title">Laporan Wajib</h2>
+        <div class="card-sub">Semua laporan dihitung dari jurnal posted dan dapat dicetak / diekspor.</div>
+    </div>
+</div>
+
+<div class="report-grid mb-16">
+            <a class="report-card" href="#">
+            <div class="report-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></div>
+            <div class="report-card-body">
+                <div class="report-card-title">Laporan Laba Rugi</div>
+                <div class="report-card-desc">Pendapatan, beban, laba kotor, dan laba bersih beserta pembanding periode sebelumnya.</div>
+            </div>
+            <div class="report-card-meta">
+                <span class="tiny muted">Pendapatan</span>
+                                    <span class="small strong">Rp 4,85 M</span>
+                            </div>
+            <span class="report-card-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+        </a>
+            <a class="report-card" href="#">
+            <div class="report-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M6 20h12"/><path d="m12 7-6 3 3 5 3-5Z"/><path d="m12 7 6 3-3 5-3-5Z"/></svg></div>
+            <div class="report-card-body">
+                <div class="report-card-title">Neraca</div>
+                <div class="report-card-desc">Posisi aset, kewajiban, dan ekuitas pada tanggal laporan beserta rasio likuiditas.</div>
+            </div>
+            <div class="report-card-meta">
+                <span class="tiny muted">Total aset</span>
+                                    <span class="small strong">Rp 17,13 M</span>
+                            </div>
+            <span class="report-card-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+        </a>
+            <a class="report-card" href="#">
+            <div class="report-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H19a2 2 0 0 1 2 2v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17V8.5Z"/><path d="M3 9h14"/><path d="M16.5 12.5h3"/></svg></div>
+            <div class="report-card-body">
+                <div class="report-card-title">Laporan Arus Kas</div>
+                <div class="report-card-desc">Arus kas operasi, investasi, dan pendanaan serta rekonsiliasi metode tidak langsung.</div>
+            </div>
+            <div class="report-card-meta">
+                <span class="tiny muted">Kas neto</span>
+                                    <span class="small strong">-Rp 230,00 jt</span>
+                            </div>
+            <span class="report-card-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+        </a>
+            <a class="report-card" href="#">
+            <div class="report-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/></svg></div>
+            <div class="report-card-body">
+                <div class="report-card-title">Laporan Perubahan Ekuitas</div>
+                <div class="report-card-desc">Perubahan ekuitas pemilik: saldo awal, laba periode, setoran/prive, dan saldo akhir.</div>
+            </div>
+            <div class="report-card-meta">
+                <span class="tiny muted">Ekuitas akhir</span>
+                                    <span class="small strong">Rp 11,25 M</span>
+                            </div>
+            <span class="report-card-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+        </a>
+            <a class="report-card" href="#">
+            <div class="report-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="7.5" width="19" height="12" rx="2.5"/><path d="M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5"/><path d="M2.5 12.5h19"/></svg></div>
+            <div class="report-card-body">
+                <div class="report-card-title">Laba Rugi Proyek</div>
+                <div class="report-card-desc">Pendapatan dan beban per proyek beserta laba dan margin proyek pada periode.</div>
+            </div>
+            <div class="report-card-meta">
+                <span class="tiny muted">Per proyek</span>
+                                    <span class="small strong">Lihat rincian</span>
+                            </div>
+            <span class="report-card-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+        </a>
+    </div>
+
+<div class="grid-main">
+    <div class="card card--flush">
+        <div class="card-head">
+            <div>
+                <h2 class="card-title">Rasio Keuangan</h2>
+                <div class="card-sub">Dihitung dari neraca &amp; laba rugi periode terpilih</div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Rasio</th>
+                        <th style="width:120px">Nilai</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                            <tr>
+                            <td class="small strong">Rasio Lancar</td>
+                            <td>
+                                <span class="badge badge--sukses">
+                                    3,02×                                </span>
+                            </td>
+                            <td class="tiny muted">Aset lancar / kewajiban lancar</td>
+                        </tr>
+                                            <tr>
+                            <td class="small strong">Rasio Kas</td>
+                            <td>
+                                <span class="badge badge--sukses">
+                                    1,59×                                </span>
+                            </td>
+                            <td class="tiny muted">Kas &amp; bank / kewajiban lancar</td>
+                        </tr>
+                                            <tr>
+                            <td class="small strong">Debt to Equity</td>
+                            <td>
+                                <span class="badge badge--sukses">
+                                    0,52×                                </span>
+                            </td>
+                            <td class="tiny muted">Total kewajiban / total ekuitas</td>
+                        </tr>
+                                            <tr>
+                            <td class="small strong">Net Profit Margin</td>
+                            <td>
+                                <span class="badge badge--sukses">
+                                    14,9%                                </span>
+                            </td>
+                            <td class="tiny muted">Laba bersih / pendapatan</td>
+                        </tr>
+                                            <tr>
+                            <td class="small strong">Return on Assets</td>
+                            <td>
+                                <span class="badge badge--sukses">
+                                    4,2%                                </span>
+                            </td>
+                            <td class="tiny muted">Laba bersih disetahunkan / total aset</td>
+                        </tr>
+                                            <tr>
+                            <td class="small strong">Return on Equity</td>
+                            <td>
+                                <span class="badge badge--sukses">
+                                    6,4%                                </span>
+                            </td>
+                            <td class="tiny muted">Laba bersih disetahunkan / total ekuitas</td>
+                        </tr>
+                                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-head">
+            <h2 class="card-title">Akses Cepat</h2>
+        </div>
+        <div class="card-body">
+            <div class="quick-links">
+                <a class="quick-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M6 20h12"/><path d="m12 7-6 3 3 5 3-5Z"/><path d="m12 7 6 3-3 5-3-5Z"/></svg><span>Neraca Saldo</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></a>
+                <a class="quick-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5Z"/></svg><span>Buku Besar</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></a>
+                <a class="quick-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg><span>Realisasi Anggaran</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></a>
+                <a class="quick-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 12 3.5l9 5v7l-9 5-9-5v-7Z"/><path d="M3 8.5 12 13.5l9-5M12 13.5V21"/></svg><span>Daftar Aset Tetap</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></a>
+                <a class="quick-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg><span>Rekap Pajak</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></a>
+                <a class="quick-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="20" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg><span>Aging Piutang</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></a>
+                <a class="quick-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="4" x2="12" y2="19"/><polyline points="6 13 12 19 18 13"/></svg><span>Aging Hutang</span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></a>
+            </div>
+        </div>
+    </div>
+</div>
+        </main>
+
+        <div class="footer-bar">
+            <span>&copy; 2026 PT. Lampung Jasa Utama · LJU Finance v1.0.0</span>
+            <span>Zona waktu Asia/Jakarta · Data per 18 Nov 2026 02:34 WIB</span>
+        </div>
+    </div>
+</div>
+<div class="sidebar-backdrop" data-sidebar-close></div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

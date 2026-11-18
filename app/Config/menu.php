@@ -88,12 +88,18 @@ return [
         ],
     ],
     [
-        'type'  => 'link',
-        'label' => 'Financial Reports',
-        'route' => 'report',
+        'type'  => 'group',
+        'label' => 'Laporan Keuangan',
         'icon'  => 'report',
-        'permission' => 'report.view',
         'stage' => 7,
+        'items' => [
+            ['label' => 'Ringkasan Laporan', 'route' => 'report', 'icon' => 'chart', 'permission' => 'report.view'],
+            ['label' => 'Laba Rugi', 'route' => 'report/income', 'icon' => 'chart', 'permission' => 'report.view'],
+            ['label' => 'Neraca', 'route' => 'report/balance-sheet', 'icon' => 'scale', 'permission' => 'report.view'],
+            ['label' => 'Arus Kas', 'route' => 'report/cash-flow', 'icon' => 'wallet', 'permission' => 'report.view'],
+            ['label' => 'Perubahan Ekuitas', 'route' => 'report/equity', 'icon' => 'layers', 'permission' => 'report.view'],
+            ['label' => 'Laba Rugi Proyek', 'route' => 'report/project', 'icon' => 'briefcase', 'permission' => 'report.view'],
+        ],
     ],
     [
         'type'  => 'link',

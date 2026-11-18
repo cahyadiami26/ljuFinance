@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Laporan Laba Rugi · LJU Finance</title>
+    <link rel="icon" href="https://dms.lju.co.id/assets/img/logo.png">
+    <link rel="stylesheet" href="../assets/css/app.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-logo">
+            <span class="fallback">LJU</span>
+            <img src="https://dms.lju.co.id/assets/img/logo.png" alt="LJU" onerror="this.style.display='none'">
+        </div>
+        <div class="brand-text">
+            <div class="brand-name">LJU Finance</div>
+            <div class="brand-sub">FMS Enterprise</div>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+                                                    <a class="nav-item active"
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></span>
+                    <span class="nav-label">Dashboard</span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8.5" ry="3"/><path d="M3.5 5v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3V5"/><path d="M3.5 11v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3v-6"/></svg></span>
+                        <span class="nav-label">Master Data</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Chart of Accounts</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Bidang &amp; Divisi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Cost Center</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Unit Usaha</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Vendor &amp; Customer</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Proyek</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekening Bank</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Periode Akuntansi</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></span>
+                        <span class="nav-label">Anggaran &amp; Pengendalian</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">RKAP &amp; Versi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Monitoring Realisasi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Komitmen PO</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H19a2 2 0 0 1 2 2v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17V8.5Z"/><path d="M3 9h14"/><path d="M16.5 12.5h3"/></svg></span>
+                        <span class="nav-label">Kas &amp; Bank</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Kas &amp; Bank</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Uang Muka</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengajuan Biaya</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekonsiliasi Bank</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M6 20h12"/><path d="m12 7-6 3 3 5 3-5Z"/><path d="m12 7 6 3-3 5-3-5Z"/></svg></span>
+                        <span class="nav-label">Hutang &amp; Piutang</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Hutang Usaha (AP)</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Piutang Usaha (AR)</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengakuan Pendapatan</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5Z"/></svg></span>
+                        <span class="nav-label">Accounting</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Jurnal Umum</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Buku Besar</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Neraca Saldo</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Tutup Buku</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 12 3.5l9 5v7l-9 5-9-5v-7Z"/><path d="M3 8.5 12 13.5l9-5M12 13.5V21"/></svg></span>
+                        <span class="nav-label">Aset Tetap</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Daftar Aset</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Penyusutan</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg></span>
+                        <span class="nav-label">Perpajakan</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Dokumen Pajak</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Rekap SPT</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span>
+                        <span class="nav-label">Laporan Keuangan</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Ringkasan Laporan</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Laba Rugi</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Neraca</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Arus Kas</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Perubahan Ekuitas</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Laba Rugi Proyek</span>
+                            </a>
+                                            </div>
+                </details>
+                                                                <a class="nav-item "
+                   href="#">
+                    <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="8.5 12.5 11 15 15.5 9.5"/></svg></span>
+                    <span class="nav-label">Approval Center</span>
+                                            <span class="nav-badge">5</span>
+                                    </a>
+                                                                <details class="nav-group" >
+                    <summary>
+                        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.5 14.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.3 1Z"/></svg></span>
+                        <span class="nav-label">System Admin</span>
+                        <span class="nav-chevron"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg></span>
+                    </summary>
+                    <div class="nav-items">
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengguna &amp; Hak Akses</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Role &amp; Permission</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Audit Trail</span>
+                            </a>
+                                                    <a class="nav-item "
+                               href="#">
+                                <span class="nav-label">Pengaturan</span>
+                            </a>
+                                            </div>
+                </details>
+                        </nav>
+
+    <div class="sidebar-foot">
+        <span>v1.0.0 Enterprise</span>
+        <span class="foot-status"><span class="dot"></span>Online</span>
+    </div>
+</aside>
+
+    <div class="main">
+        <header class="topbar">
+    <div class="topbar-left">
+        <button class="icon-btn sidebar-toggle" type="button" data-sidebar-toggle aria-label="Buka menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>        </button>
+
+        <div class="product">
+            <strong>LJU Finance</strong>
+            <span>Finance</span>
+        </div>
+
+        <div class="crumbs">
+                                                                <a href="#">Laporan Keuangan</a>
+                                            <span class="sep">›</span>                                    <span class="current">Laba Rugi</span>
+                                    </div>
+    </div>
+
+    <form class="topbar-search" method="get" action="#" role="search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>        <input type="search" name="q" placeholder="Cari akun, COA, voucher…" value="" aria-label="Pencarian">
+        <kbd>⌘K</kbd>
+    </form>
+
+    <div class="topbar-actions">
+        <div class="chip chip--period" title="Periode akuntansi aktif">
+            <span class="chip-top">TA 2026</span>
+            <span class="chip-bottom">Nov 2026 · Open</span>
+        </div>
+
+        <span class="chip"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="9" cy="7" rx="5.5" ry="2.6"/><path d="M3.5 7v3.5c0 1.4 2.5 2.6 5.5 2.6s5.5-1.2 5.5-2.6V7"/><path d="M14.5 12.4c2.7.2 4.8 1.3 4.8 2.6 0 1.4-2.5 2.6-5.5 2.6-2.3 0-4.3-.8-5.1-1.8"/><path d="M14.5 12.4v3.5"/></svg> IDR</span>
+
+        <a class="btn btn--primary" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Transaksi Baru
+        </a>
+
+        <a class="icon-btn" href="#" aria-label="Notifikasi">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10.5 20a2 2 0 0 0 3 0"/></svg>            <span class="dot-badge"></span>        </a>
+
+        <a class="profile" href="#" aria-label="Profil">
+            <span class="avatar">
+                                <span>BH</span>
+            </span>
+            <span class="profile-meta">
+                <span class="profile-name">Bambang Hartono</span>
+                <span class="profile-role">Direktur Utama</span>
+            </span>
+        </a>
+    </div>
+</header>
+
+        <main class="content">
+            
+                            <div class="page-head">
+                    <div>
+                        <h1 class="page-title">Laporan Laba Rugi</h1>
+                                                    <div class="page-sub">Periode November 2026 · 01 Nov 2026 – 30 Nov 2026</div>
+                                                                    </div>
+                                            <div class="page-actions"><a class="btn" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 8V3h10v5"/><rect x="4" y="8" width="16" height="8" rx="2"/><path d="M7 16h10v5H7v-5Z"/><circle cx="17" cy="11" r=".8"/></svg> Cetak</a></div>
+                                    </div>
+            
+            <form class="toolbar mb-16" method="get" action="#">
+    <input type="hidden" name="r" value="report/income">
+    <select class="filter-select" name="periode" data-autosubmit>
+                    <option value="61" selected>
+                November 2026 · open            </option>
+                    <option value="60" >
+                Oktober 2026 · closed            </option>
+                    <option value="59" >
+                September 2026 · closed            </option>
+                    <option value="58" >
+                Agustus 2026 · closed            </option>
+                    <option value="57" >
+                Juli 2026 · closed            </option>
+                    <option value="56" >
+                Juni 2026 · closed            </option>
+            </select>
+
+    <select class="filter-select" name="mode" data-autosubmit>
+        <option value="bulan" selected>Bulanan</option>
+        <option value="ytd" >s.d. tahun berjalan</option>
+    </select>
+
+    <select class="filter-select" name="bidang" data-autosubmit>
+        <option value="">Semua bidang</option>
+                    <option value="1" >Bidang Operasi</option>
+                    <option value="2" >Bidang Keuangan</option>
+            </select>
+
+    <select class="filter-select" name="divisi" data-autosubmit>
+        <option value="">Semua divisi</option>
+                    <option value="1" >Divisi Produksi</option>
+                    <option value="2" >Divisi Keuangan</option>
+            </select>
+
+    <select class="filter-select" name="project" data-autosubmit>
+        <option value="">Semua proyek</option>
+                    <option value="1" >Peningkatan Jaringan Kota</option>
+                    <option value="2" >Rehabilitasi IPA Way Ratai</option>
+            </select>
+
+    <button class="btn" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></svg> Terapkan</button>
+    <span class="spacer"></span>
+</form>
+
+<div class="summary-strip mb-16" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+                    <div class="summary-item">
+            <div class="summary-label">Total Pendapatan</div>
+            <div class="summary-value ">
+                Rp 4.850.000.000            </div>
+            <div class="tiny muted">Periode ini</div>
+        </div>
+                    <div class="summary-item">
+            <div class="summary-label">Laba Kotor</div>
+            <div class="summary-value ">
+                Rp 2.180.000.000            </div>
+            <div class="tiny muted">44,95% dari pendapatan</div>
+        </div>
+                    <div class="summary-item">
+            <div class="summary-label">Laba Bersih</div>
+            <div class="summary-value summary-value--up">
+                Rp 720.000.000            </div>
+            <div class="tiny muted">14,85% net margin</div>
+        </div>
+                    <div class="summary-item">
+            <div class="summary-label">Perubahan Laba</div>
+            <div class="summary-value summary-value--up">
+                32,8%            </div>
+            <div class="tiny muted">vs 01 Okt 2026 – 31 Okt 2026</div>
+        </div>
+    </div>
+
+<div class="rpt-sheet">
+    <div class="rpt-head">
+        <div>
+            <div class="rpt-company">PT. Lampung Jasa Utama</div>
+            <div class="rpt-company-meta">
+                Jl. Pangeran Antasari No. 42, Bandar Lampung 35141                                    · NPWP 01.234.567.8-321.000                            </div>
+        </div>
+        <div class="rpt-head-right">
+            <span class="badge badge--netral">IDR</span>
+            <span class="badge badge--sukses">
+                Open            </span>
+        </div>
+    </div>
+
+    <div class="rpt-title-block">
+        <h2 class="rpt-title">Laporan Laba Rugi</h2>
+        <div class="rpt-subtitle">01 Nov 2026 – 30 Nov 2026</div>
+        <div class="rpt-meta">
+            <span><strong>Periode</strong> November 2026</span>
+            <span><strong>Pembanding</strong> 01 Okt 2026 – 31 Okt 2026</span>
+            <span><strong>Sumber</strong> Jurnal posted</span>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="rpt-table">
+            <thead>
+                <tr>
+                                            <th class="" style="width:46%">
+                            Uraian                        </th>
+                                            <th class="num" style="width:20%">
+                            Periode Ini                        </th>
+                                            <th class="num" style="width:20%">
+                            01 Okt 2026 – 31 Okt 2026                        </th>
+                                            <th class="num" style="width:14%">
+                            Δ %                        </th>
+                                    </tr>
+            </thead>
+            <tbody>
+                                                                                <tr class="rpt-section">
+                            <td colspan="4">PENDAPATAN USAHA</td>
+                        </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">4-1000</span>
+                                                                <span class="rpt-indent">Pendapatan Jasa Konstruksi</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    3.900.000.000                                </td>
+                                                                                            <td class="num">
+                                    3.560.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="trend trend--up">
+                                            9,6%                                        </span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">4-1100</span>
+                                                                <span class="rpt-indent">Pendapatan Penjualan Air</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    780.000.000                                </td>
+                                                                                            <td class="num">
+                                    710.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="trend trend--up">
+                                            9,9%                                        </span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-subtotal">
+                            <td>
+                                                                <span class="">Total Pendapatan Usaha</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    4.680.000.000                                </td>
+                                                                                            <td class="num">
+                                    4.270.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                    <tr class="rpt-section">
+                            <td colspan="4">PENDAPATAN LAIN</td>
+                        </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">4-9000</span>
+                                                                <span class="rpt-indent">Pendapatan Lain-lain</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    170.000.000                                </td>
+                                                                                            <td class="num">
+                                    150.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="trend trend--up">
+                                            13,3%                                        </span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-subtotal">
+                            <td>
+                                                                <span class="">Total Pendapatan Lain</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    170.000.000                                </td>
+                                                                                            <td class="num">
+                                    150.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-total">
+                            <td>
+                                                                <span class="">TOTAL PENDAPATAN</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    4.850.000.000                                </td>
+                                                                                            <td class="num">
+                                    4.420.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                    <tr class="rpt-spacer"><td colspan="4">&nbsp;</td></tr>
+                                                                                                    <tr class="rpt-section">
+                            <td colspan="4">HARGA POKOK PENDAPATAN</td>
+                        </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">5-1100</span>
+                                                                <span class="rpt-indent">Beban Material</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    1.620.000.000                                </td>
+                                                                                            <td class="num">
+                                    1.490.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="trend trend--up">
+                                            8,7%                                        </span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">5-1200</span>
+                                                                <span class="rpt-indent">Upah Langsung</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    1.050.000.000                                </td>
+                                                                                            <td class="num">
+                                    980.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="trend trend--up">
+                                            7,1%                                        </span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-subtotal">
+                            <td>
+                                                                <span class="">Total Harga Pokok Pendapatan</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    2.670.000.000                                </td>
+                                                                                            <td class="num">
+                                    2.470.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-subtotal">
+                            <td>
+                                                                <span class="">LABA KOTOR</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    2.180.000.000                                </td>
+                                                                                            <td class="num">
+                                    1.950.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                    <tr class="rpt-spacer"><td colspan="4">&nbsp;</td></tr>
+                                                                                                    <tr class="rpt-section">
+                            <td colspan="4">BEBAN OPERASIONAL</td>
+                        </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">5-2100</span>
+                                                                <span class="rpt-indent">Beban Gaji &amp; Tunjangan</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    620.000.000                                </td>
+                                                                                            <td class="num">
+                                    598.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="trend trend--up">
+                                            3,7%                                        </span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">5-2200</span>
+                                                                <span class="rpt-indent">Beban Sewa</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    185.000.000                                </td>
+                                                                                            <td class="num">
+                                    185.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">5-2300</span>
+                                                                <span class="rpt-indent">Beban Penyusutan</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    240.000.000                                </td>
+                                                                                            <td class="num">
+                                    225.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="trend trend--up">
+                                            6,7%                                        </span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">5-2400</span>
+                                                                <span class="rpt-indent">Beban Listrik, Air &amp; Telekomunikasi</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    96.000.000                                </td>
+                                                                                            <td class="num">
+                                    88.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="trend trend--up">
+                                            9,1%                                        </span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">5-2500</span>
+                                                                <span class="rpt-indent">Beban Pemeliharaan</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    152.000.000                                </td>
+                                                                                            <td class="num">
+                                    144.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="trend trend--up">
+                                            5,6%                                        </span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-subtotal">
+                            <td>
+                                                                <span class="">Total Beban Operasional</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    1.293.000.000                                </td>
+                                                                                            <td class="num">
+                                    1.240.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-subtotal">
+                            <td>
+                                                                <span class="">LABA OPERASIONAL</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    887.000.000                                </td>
+                                                                                            <td class="num">
+                                    710.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                    <tr class="rpt-spacer"><td colspan="4">&nbsp;</td></tr>
+                                                                                                    <tr class="rpt-section">
+                            <td colspan="4">BEBAN LAIN-LAIN</td>
+                        </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">5-3100</span>
+                                                                <span class="rpt-indent">Beban Bunga Pinjaman</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    75.000.000                                </td>
+                                                                                            <td class="num">
+                                    80.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="trend trend--down">
+                                            -6,3%                                        </span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">5-3200</span>
+                                                                <span class="rpt-indent">Beban Administrasi Bank</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    12.000.000                                </td>
+                                                                                            <td class="num">
+                                    12.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-subtotal">
+                            <td>
+                                                                <span class="">Total Beban Lain-lain</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    87.000.000                                </td>
+                                                                                            <td class="num">
+                                    92.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-subtotal">
+                            <td>
+                                                                <span class="">LABA SEBELUM PAJAK</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    800.000.000                                </td>
+                                                                                            <td class="num">
+                                    618.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                    <tr class="rpt-section">
+                            <td colspan="4">PAJAK PENGHASILAN</td>
+                        </tr>
+                                                                                                                            <tr class="rpt-data">
+                            <td>
+                                                                    <span class="rpt-kode">5-4100</span>
+                                                                <span class="rpt-indent">Beban Pajak Penghasilan Badan</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    80.000.000                                </td>
+                                                                                            <td class="num">
+                                    76.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="trend trend--up">
+                                            5,3%                                        </span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-subtotal">
+                            <td>
+                                                                <span class="">Total Pajak</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    80.000.000                                </td>
+                                                                                            <td class="num">
+                                    76.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                                                                                            <tr class="rpt-total">
+                            <td>
+                                                                <span class="">LABA (RUGI) BERSIH</span>
+                                                            </td>
+                                                                                            <td class="num">
+                                    720.000.000                                </td>
+                                                                                            <td class="num">
+                                    542.000.000                                </td>
+                                                                                        <td class="num">
+                                                                            <span class="muted">—</span>
+                                                                    </td>
+                                                    </tr>
+                                                </tbody>
+        </table>
+    </div>
+
+            <div class="rpt-notes">
+                            <div class="rpt-note"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="8" r=".7"/></svg> <span>Angka dalam Rupiah penuh, dihitung dari jurnal berstatus posted.</span></div>
+                            <div class="rpt-note"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="8" r=".7"/></svg> <span>Nilai negatif ditampilkan dalam tanda kurung.</span></div>
+                    </div>
+    </div>
+
+<div class="grid-main mt-16">
+    <div class="card">
+        <div class="card-head">
+            <div>
+                <h2 class="card-title">Struktur Laba Rugi</h2>
+                <div class="card-sub">Proporsi terhadap total pendapatan periode</div>
+            </div>
+        </div>
+        <div class="card-body">
+                            <div style="margin-bottom:14px">
+                    <div class="row" style="justify-content:space-between">
+                        <span class="small strong">Beban Pokok</span>
+                        <span class="small">Rp 2.670.000.000 · 55,1%</span>
+                    </div>
+                    <div class="progress-track progress-track--warning" style="margin-top:6px">
+                        <span style="width:55%"></span>
+                    </div>
+                </div>
+                            <div style="margin-bottom:14px">
+                    <div class="row" style="justify-content:space-between">
+                        <span class="small strong">Beban Operasional &amp; Lain</span>
+                        <span class="small">Rp 1.370.000.000 · 28,2%</span>
+                    </div>
+                    <div class="progress-track progress-track--danger" style="margin-top:6px">
+                        <span style="width:28%"></span>
+                    </div>
+                </div>
+                            <div style="margin-bottom:14px">
+                    <div class="row" style="justify-content:space-between">
+                        <span class="small strong">Laba Bersih</span>
+                        <span class="small">Rp 720.000.000 · 14,8%</span>
+                    </div>
+                    <div class="progress-track progress-track--success" style="margin-top:6px">
+                        <span style="width:15%"></span>
+                    </div>
+                </div>
+            
+            <div class="notice notice--info mt-12">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="8" r=".7"/></svg>                <div class="tiny">
+                    Laba bersih periode ini <strong>Rp 720.000.000</strong>
+                    dengan margin <strong>14,9%</strong>.
+                    Total beban Rp 4.040.000.000.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card--flush">
+        <div class="card-head">
+            <div>
+                <h2 class="card-title">Rasio Terkait</h2>
+                <div class="card-sub">Dari neraca &amp; laba rugi periode terpilih</div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr><th>Rasio</th><th style="width:120px">Nilai</th></tr>
+                </thead>
+                <tbody>
+                                            <tr>
+                            <td class="small strong">Rasio Lancar</td>
+                            <td>
+                                <span class="badge badge--sukses">
+                                    3,02×                                </span>
+                            </td>
+                        </tr>
+                                            <tr>
+                            <td class="small strong">Rasio Kas</td>
+                            <td>
+                                <span class="badge badge--sukses">
+                                    1,59×                                </span>
+                            </td>
+                        </tr>
+                                            <tr>
+                            <td class="small strong">Debt to Equity</td>
+                            <td>
+                                <span class="badge badge--sukses">
+                                    0,52×                                </span>
+                            </td>
+                        </tr>
+                                            <tr>
+                            <td class="small strong">Net Profit Margin</td>
+                            <td>
+                                <span class="badge badge--sukses">
+                                    14,9%                                </span>
+                            </td>
+                        </tr>
+                                            <tr>
+                            <td class="small strong">Return on Assets</td>
+                            <td>
+                                <span class="badge badge--sukses">
+                                    4,2%                                </span>
+                            </td>
+                        </tr>
+                                            <tr>
+                            <td class="small strong">Return on Equity</td>
+                            <td>
+                                <span class="badge badge--sukses">
+                                    6,4%                                </span>
+                            </td>
+                        </tr>
+                                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+        </main>
+
+        <div class="footer-bar">
+            <span>&copy; 2026 PT. Lampung Jasa Utama · LJU Finance v1.0.0</span>
+            <span>Zona waktu Asia/Jakarta · Data per 18 Nov 2026 02:34 WIB</span>
+        </div>
+    </div>
+</div>
+<div class="sidebar-backdrop" data-sidebar-close></div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

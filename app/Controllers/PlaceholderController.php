@@ -16,7 +16,7 @@ final class PlaceholderController extends BaseController
         4 => ['title' => 'Hutang & Piutang', 'theme' => 'Siklus AP/AR dan aging'],
         5 => ['title' => 'Anggaran & Approval Center', 'theme' => 'Kontrol RKAP dan alur persetujuan'],
         6 => ['title' => 'Aset Tetap & Perpajakan', 'theme' => 'Penyusutan dan kepatuhan pajak'],
-        7 => ['title' => 'Pelaporan Keuangan & PDF', 'theme' => 'Laporan standar dan ekspor domPDF'],
+        7 => ['title' => 'Pelaporan Keuangan & PDF', 'theme' => 'Laporan standar dan ekspor PDF/XLSX/CSV'],
     ];
 
     private const MODULES = [
@@ -186,7 +186,7 @@ final class PlaceholderController extends BaseController
             'title' => 'Financial Reports',
             'stage' => 7,
             'route' => 'report',
-            'description' => 'Laporan keuangan standar otomatis dengan ekspor PDF (domPDF), Excel, dan CSV.',
+            'description' => 'Laporan keuangan standar otomatis dengan ekspor PDF, Excel, dan CSV.',
             'features' => [
                 'Neraca, Laba Rugi, Arus Kas, Perubahan Ekuitas',
                 'Neraca Saldo, Buku Besar, Jurnal Umum',

@@ -68,7 +68,6 @@ $config = [
     ],
 
     'pdf' => [
-        'dompdf_path' => 'vendor/dompdf/autoload.inc.php',
         'paper'       => 'A4',
         'orientation' => 'portrait',
     ],

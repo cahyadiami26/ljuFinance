@@ -10,7 +10,7 @@ menunggu konfirmasi sebelum tahap berikutnya dimulai.
 - Versi aplikasi: **1.0.0**
 - Status dokumen: **aktif** (diperbarui setiap tahap selesai)
 - Bahasa antarmuka: Indonesia
-- Basis: PHP 8 native (tanpa framework, tanpa Composer), MySQL 5.7+/MariaDB 10.3+, domPDF (instalasi manual)
+- Basis: PHP 8 native (tanpa framework, tanpa Composer), MySQL 5.7+/MariaDB 10.3+, penulis PDF bawaan
 - Desain: mengikuti referensi dashboard "LJU Finance Enterprise" (sidebar navy, kartu putih, aksen biru)
 
 ---
@@ -22,7 +22,7 @@ menunggu konfirmasi sebelum tahap berikutnya dimulai.
 | 1 | Mengelola seluruh transaksi keuangan perusahaan | Jurnal Umum, Kas & Bank, Uang Muka, Biaya, AP/AR |
 | 2 | Mengontrol anggaran dan realisasi biaya | RKAP, Budget Control, Cost/Profit Center |
 | 3 | Mengelola piutang dan hutang | AR (invoice, penerimaan, aging), AP (tagihan, pembayaran, aging) |
-| 4 | Menghasilkan laporan keuangan otomatis | Reporting engine + domPDF, tutup buku |
+| 4 | Menghasilkan laporan keuangan otomatis | Reporting engine + PDF/XLSX/CSV, tutup buku |
 | 5 | Memudahkan monitoring keuangan oleh Direksi | Executive Dashboard + grafik tren |
 | 6 | Rekam jejak untuk audit internal & eksternal | Audit trail immutable, dokumen pendukung, periode terkunci |
 
@@ -72,7 +72,7 @@ menunggu konfirmasi sebelum tahap berikutnya dimulai.
 │   ├── js/transaksi.js        # baris dinamis kas/uang muka/biaya/rekonsiliasi/AP/AR
 │   └── img/                   # fallback logo, placeholder
 ├── uploads/                   # bukti transaksi (diproteksi dari eksekusi PHP)
-├── vendor/dompdf/             # domPDF (manual, tanpa composer)
+├── app/Core/Pdf.php           # penulis PDF bawaan (tanpa composer)
 ├── database/
 │   ├── schema/                # 01_foundation.sql ... 07_approval.sql
 │   ├── seed/                  # 01_reference.sql (wajib), 02_demo.sql (opsional)
@@ -164,6 +164,11 @@ Aset tetap & perpajakan memakai `asset.view/manage` dan `tax.view/manage`. Datab
 sebelum Tahap 6 perlu menjalankan `database/migrations/2026-11-18_tahap6_asset_tax.sql` agar permission,
 setting aset/pajak (`asset_auto_depreciate`, `asset_depreciation_day`, `asset_min_capitalize`,
 `tax_ppn_rate`, `tax_filing_due_day`), dan prefix `AST`/`DEP`/`TAX` tersedia.
+
+Pelaporan keuangan memakai `report.view` dan `report.export`. Database yang dipasang sebelum Tahap 7
+perlu menjalankan `database/migrations/2026-11-18_tahap7_report.sql` agar kedua permission dan setting
+kop/tanda tangan (`pdf_paper`, `report_footer_note`, `report_sign1_*` … `report_sign3_*`) tersedia.
+Tidak ada tabel baru pada tahap ini.
 
 **Approval engine** mendukung: approve, return-for-revision, reject-with-reason, delegasi,
 penggantian pejabat (delegation berlaku per modul & rentang tanggal), riwayat persetujuan,
@@ -306,6 +311,30 @@ belum ada pencocokan otomatis baris jurnal ↔ dokumen pajak. e-Faktur dihasilka
 integrasi langsung ke aplikasi DJP. Penjualan/penghapusan aset belum memakai Approval Center karena
 `approval_flows` belum memiliki modul aset.
 
+
+### Implementasi (Tahap 7 — selesai)
+
+| Komponen | Perilaku |
+|----------|----------|
+| `ReportService` | satu API `laporan($jenis, $periodeId, $mode, $filter)` untuk `laba-rugi`, `neraca`, `arus-kas`, `ekuitas`, dan `proyek`; setiap dataset berisi `kolom`, `baris` (`section/data/subtotal/total/spacer`), `kpi`, `catatan`, nilai periode berjalan + pembanding + Δ%, serta total tambahan untuk kartu ringkasan |
+| Laba rugi | pendapatan usaha & lain, harga pokok, beban operasional, beban lain, dan pajak; menghasilkan laba kotor, laba operasional, laba sebelum pajak, laba bersih, dan net margin. Akun pendapatan/kewajiban/ekuitas dibalik agar tampil positif |
+| Neraca | saldo kumulatif jurnal posted per kategori aset lancar/tetap/lain, kewajiban lancar/jangka panjang, dan ekuitas; laba tahun berjalan yang belum ditutup ditambahkan ke ekuitas sehingga `seimbang`/`selisih` dapat diperiksa langsung dari halaman |
+| Arus kas | metode langsung dari jurnal yang menyentuh akun `is_kas_bank`: setiap jurnal dipecah menjadi arus masuk/keluar berdasarkan akun lawan, lalu dipetakan ke operasi/investasi/pendanaan lewat `coa_accounts.arus_kas`; blok rekonsiliasi laba bersih + penyusutan + perubahan modal kerja disajikan sebagai kontrol |
+| Perubahan ekuitas | saldo awal (akun ekuitas + laba kumulatif), laba periode, setoran/prive per akun ekuitas, total mutasi, saldo akhir, dan rincian saldo akhir per akun |
+| Laba rugi proyek | agregasi pendapatan/beban per `ms_projects` dari dimensi baris jurnal, laba & margin per proyek, baris `Tanpa Proyek`, serta total yang konsisten dengan laba rugi periode |
+| Rasio & tren | rasio lancar, rasio kas, debt-to-equity, net profit margin, ROA, dan ROE; tren pendapatan vs beban enam bulan terakhir + perbandingan bulan berjalan dengan bulan sebelumnya |
+| Periode & dimensi | mode **bulanan** dan **s.d. tahun berjalan (YTD)**; filter bidang/divisi/proyek diterapkan pada seluruh query laporan; pembanding bulan lalu memakai rentang tanggal setara (YTD: periode yang sama tahun sebelumnya) |
+| `Lju\Core\Pdf` | penulis PDF tanpa dependensi eksternal (A4/Letter, portrait/landscape, Helvetica F1/F2): kop perusahaan, judul + meta, tabel dengan page-break otomatis dan header `(lanjutan)`, catatan kaki, footer `Dicetak … WIB` + `Halaman n / m`, serta blok tanda tangan; angka negatif dalam tanda kurung dan nol sebagai `-` |
+| `Lju\Core\Exporter` | CSV UTF-8 pemisah titik koma, SpreadsheetML (`.xls`), dan XLSX asli (Office Open XML) dengan writer ZIP bawaan bila ekstensi `ZipArchive` tidak tersedia; gaya angka `#,##0;(#,##0)` dan kolom persen |
+| UI | `report/index` (KPI, kartu lima laporan, tren 6 bulan, rasio, akses cepat), `report/income`, `report/balance-sheet` (indikator seimbang + rasio), `report/cash-flow` (status rekonsiliasi), `report/equity` (rincian mutasi per akun), `report/project`, serta layout cetak khusus `layouts/print` dengan kop, catatan, dan tiga kolom tanda tangan |
+| Ekspor & audit | setiap ekspor memeriksa `report.export`, mencatat `audit_logs` (`module = report`), lalu mengirim PDF/XLSX/CSV dengan nama file `laporan-<jenis>-<periode>[-ytd]` |
+
+Catatan: Dompdf tidak dipakai; `Lju\Core\Pdf` menghasilkan PDF valid tanpa `vendor/`. Laba tahun berjalan
+pada neraca berasal dari akun pendapatan/beban yang belum ditutup, sehingga setelah tutup buku angkanya
+berpindah ke laba ditahan tanpa mengubah total ekuitas. Rekonsiliasi arus kas dapat menunjukkan selisih
+bila ada jurnal tidak seimbang atau akun kas yang belum ditandai `is_kas_bank`; selisih tersebut
+ditampilkan eksplisit, bukan disembunyikan.
+
 Catatan: status dokumen modul **tidak diubah** oleh lapisan approval — Approval Center hanya
 mencerminkan dan menyinkronkan status yang sama (`submitted/approved/rejected/draft`). Perhitungan
 realisasi memakai jurnal posted, bukan cache `account_period_balances`, sehingga konsisten dengan
@@ -351,11 +380,11 @@ Responsif: sidebar menjadi drawer < 1024 px; grid KPI 4 → 2 → 1 kolom.
 
 ## 11. Laporan & PDF
 
-- Semua laporan punya filter (periode, bidang, divisi, cost center, proyek, unit usaha) dan ekspor:
-  **PDF (domPDF)**, **Excel (XLSX via SpreadsheetML/HTML table)**, **CSV**, serta **cetak** (CSS print).
-- domPDF di `vendor/dompdf/` (tanpa Composer) — `app/Services/PdfService.php` mengecek keberadaan
-  `vendor/dompdf/autoload.inc.php`; bila belum ada, ekspor PDF otomatis *fallback* ke halaman cetak
-  HTML (tidak pernah error ke user).
+- Semua laporan punya filter periode/dimensi dan ekspor **PDF**, **Excel (XLSX)**, **CSV**, serta
+  **cetak** (CSS print).
+- PDF ditulis oleh `Lju\Core\Pdf` (tanpa Composer/vendor): kop, meta, tabel multi-halaman dengan header
+  lanjutan, catatan kaki, nomor halaman, dan blok tanda tangan. XLSX memakai writer ZIP bawaan bila
+  ekstensi `ZipArchive` tidak aktif, dengan cadangan SpreadsheetML (`.xls`).
 - Laporan wajib: Neraca, Laba Rugi, Arus Kas, Perubahan Ekuitas, Neraca Saldo, Buku Besar, Jurnal Umum,
   Hutang, Piutang, Aging AR/AP, Anggaran vs Realisasi, Aset Tetap, Rekap Pajak.
 
@@ -447,9 +476,14 @@ Legenda: ✅ selesai · 🚧 berjalan · ⬜ belum
 - **Perpajakan**: faktur keluaran/masukan, bukti potong, SSP, penyetoran pajak, rekap PPN & PPh bulanan,
   SPT per jenis dengan status pelaporan, arsip dokumen, serta ekspor CSV e-Faktur untuk DJP.
 
-### Tahap 7 — Pelaporan Keuangan & PDF ⬜
-Reporting engine + domPDF (instalasi manual), seluruh laporan wajib, ekspor XLSX/CSV/cetak,
-dashboard Direksi lanjutan (grafik tren pendapatan vs pengeluaran, perbandingan antarperiode).
+### Tahap 7 — Pelaporan Keuangan & PDF ✅
+- **Lima laporan wajib**: laba rugi, neraca, arus kas (metode langsung + rekonsiliasi), perubahan ekuitas,
+  dan laba rugi per proyek; semua memakai jurnal **posted** dan menyajikan kolom pembanding + Δ%.
+- **Periode fleksibel**: bulanan atau s.d. tahun berjalan, filter bidang/divisi/proyek, pemilihan periode
+  terbuka/tertutup dari toolbar.
+- **Rasio & tren**: likuiditas, solvabilitas, profitabilitas, serta grafik tren pendapatan vs beban enam bulan.
+- **Ekspor & cetak**: PDF bawaan (tanpa Dompdf), XLSX, CSV, dan halaman cetak A4 dengan kop, catatan,
+  serta blok tanda tangan.
 
 ### Tahap 8 — Integrasi & Hardening ⬜
 Project accounting (kontrak, termin, pendapatan diakui, laba/rugi proyek), revenue recognition,
@@ -466,7 +500,7 @@ dokumentasi pengguna, hardening keamanan & backup.
 3. Import `database/schema/*.sql` berurutan, lalu `database/seed/01_reference.sql`
    (opsional `02_demo.sql` untuk data contoh).
 4. Pastikan folder `uploads/` dan `storage/` writable (chmod 775).
-5. Pasang domPDF manual: ekstrak ke `vendor/dompdf/` sehingga ada `vendor/dompdf/autoload.inc.php`.
+5. Tidak perlu memasang pustaka PDF; `app/Core/Pdf.php` sudah tersedia.
 6. Buka `https://finance.lju.co.id` — akan redirect ke portal SSO.
 
 Detail lengkap ada di `readme.md`.
@@ -547,3 +581,18 @@ Detail lengkap ada di `readme.md`.
 - [ ] Rekap PPN = pajak keluaran − pajak masukan; dokumen `void` tidak dihitung.
 - [ ] `tax_reports` melakukan upsert per `periode_id + jenis` (tidak membuat duplikat saat hitung ulang).
 - [ ] CSV e-Faktur hanya memuat faktur keluaran periode terpilih dan memakai pemisah titik koma.
+
+**Khusus pelaporan keuangan (Tahap 7)**
+
+- [ ] Laba rugi hanya menghitung jurnal posted dan menampilkan pendapatan, beban, laba kotor, laba operasional, laba sebelum pajak, dan laba bersih.
+- [ ] Baris akun pendapatan, kewajiban, dan ekuitas tampil positif (saldo kredit dibalik), sedangkan nilai negatif tetap dalam tanda kurung.
+- [ ] Neraca menyajikan laba tahun berjalan yang belum ditutup pada ekuitas dan indikator **seimbang** bernilai nol selisihnya.
+- [ ] Arus kas memecah jurnal kas/bank per akun lawan dan mengelompokkannya ke operasi, investasi, serta pendanaan.
+- [ ] Rekonsiliasi arus kas menampilkan selisih secara eksplisit bila ada jurnal tidak seimbang atau akun kas tanpa tanda `is_kas_bank`.
+- [ ] Laporan perubahan ekuitas: saldo awal + laba periode + setoran − prive = saldo akhir, dan sama dengan ekuitas pada neraca.
+- [ ] Laba rugi proyek menjumlah ke total laba rugi periode (termasuk baris `Tanpa Proyek`).
+- [ ] Mode YTD memakai 1 Januari s.d. tanggal periode, dan pembanding memakai rentang yang sama tahun sebelumnya.
+- [ ] Filter bidang/divisi/proyek mengubah angka laporan secara konsisten pada semua jenis laporan.
+- [ ] Ekspor CSV/XLSX/PDF memerlukan `report.export`, tercatat di audit log, dan PDF dapat dibuka dengan jumlah halaman benar.
+- [ ] Halaman cetak menyembunyikan navigasi, menampilkan kop perusahaan, catatan, dan tiga kolom tanda tangan.
+- [ ] Tidak ada dependensi Dompdf/vendor: PDF dihasilkan oleh `Lju\Core\Pdf`.

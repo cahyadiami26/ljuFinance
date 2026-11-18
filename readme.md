@@ -1,7 +1,7 @@
 # LJU Finance & Accounting System
 
 Sistem informasi keuangan dan akuntansi **PT. Lampung Jasa Utama** — dibangun dengan **PHP native + MySQL**
-tanpa framework dan tanpa Composer (domPDF dipasang manual), dirancang untuk dijalankan di
+tanpa framework, tanpa Composer, dan tanpa dependensi PDF eksternal, dirancang untuk dijalankan di
 `https://finance.lju.co.id`.
 
 Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap ada di
@@ -145,6 +145,19 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 - **e-Faktur**: daftar faktur keluaran periode terpilih dan unduhan CSV `FK;NPWP;Nama;Tanggal;DPP;Tarif;PPN;Referensi`
   siap diimpor ke aplikasi e-Faktur DJP.
 
+**Pelaporan keuangan & PDF (Tahap 7)**
+
+- **Lima laporan wajib**: laba rugi (laba kotor/operasional/sebelum pajak/bersih + margin), neraca
+  (aset lancar/tetap/lain, kewajiban, ekuitas + indikator seimbang), arus kas metode langsung
+  (operasi/investasi/pendanaan + rekonsiliasi), perubahan ekuitas (saldo awal, laba, setoran/prive,
+  saldo akhir), dan laba rugi per proyek.
+- **Periode & pembanding**: bulanan atau s.d. tahun berjalan (YTD), filter bidang/divisi/proyek,
+  kolom pembanding periode sebelumnya beserta Δ%.
+- **Rasio & tren**: rasio lancar, rasio kas, debt-to-equity, net profit margin, ROA, ROE, dan grafik
+  tren pendapatan vs beban enam bulan terakhir pada hub laporan.
+- **Ekspor & cetak**: unduhan **PDF** (penulis bawaan tanpa Dompdf), **XLSX**, dan **CSV** dengan audit
+  log, serta halaman cetak A4 berkop lengkap dengan catatan dan tiga kolom tanda tangan.
+
 **Administrasi sistem**
 
 - Pengguna & hak akses (9 role, permission granular `modul.aksi`).
@@ -162,15 +175,15 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
 | Ekstensi PHP | `pdo_mysql`, `mbstring`, `json`, `openssl`, `fileinfo` |
 | MySQL / MariaDB | 5.7+ / 10.3+ (utf8mb4) |
 | Web server | Apache 2.4 (`mod_rewrite`, `.htaccess`) atau Nginx |
-| domPDF | dipasang manual di `vendor/dompdf/` (dipakai Tahap 7) |
+| PDF | tidak perlu pustaka eksternal; `Lju\Core\Pdf` menulis PDF langsung (Dompdf tidak dipakai) |
+| ZIP (opsional) | ekstensi `zip` mempercepat XLSX; tanpa ekstensi tetap dihasilkan lewat writer ZIP bawaan |
 
 ---
 
 ## 3. Instalasi
 
 1. **Unggah** seluruh repositori ke document root (mis. `public_html`).
-2. **Unduh domPDF** dari <https://github.com/dompdf/dompdf/releases>, ekstrak sehingga menjadi:
-   `vendor/dompdf/` (berisi `autoload.inc.php`, `src/`, `lib/`). Folder `vendor/` tidak di-commit.
+2. **Tanpa dependensi PDF eksternal** — laporan PDF memakai penulis bawaan `app/Core/Pdf.php`.
 3. **Siapkan database** secara manual (opsional — installer bisa membuatnya):
 
    ```sql
@@ -199,6 +212,10 @@ Repositori ini sedang dibangun **bertahap (8 tahap)**. Status rinci tiap tahap a
    Database yang dipasang **sebelum** Tahap 6 perlu menjalankan
    `database/migrations/2026-11-18_tahap6_asset_tax.sql` agar permission `asset.*`/`tax.*`, setting
    aset & pajak, dan prefix `AST`/`DEP`/`TAX` tersedia (idempotent).
+
+   Database yang dipasang **sebelum** Tahap 7 perlu menjalankan
+   `database/migrations/2026-11-18_tahap7_report.sql` agar permission `report.view`/`report.export`
+   dan setting kop/tanda tangan laporan tersedia (idempotent, tanpa tabel baru).
 
 4. **Jalankan installer** dengan token (default ada di `config/config.php` → `security.install_token`):
 
@@ -237,7 +254,7 @@ Prioritas: `config/config.php` → ditimpa `config/config.local.php` (dibuat ins
 | `db.*` | host, port, nama database, user, password |
 | `sso.*` | `session_name` (`LJU_APPS`), `db`, `user_table`, `enabled`, `dev_login` |
 | `security.install_token` | Token akses `install.php` |
-| `upload.*`, `pdf.*` | Batas ukuran/tipe lampiran dan pengaturan domPDF |
+| `upload.*`, `pdf_paper` | Batas ukuran/tipe lampiran dan ukuran kertas PDF laporan |
 
 Konfigurasi sensitif tidak boleh di-commit — lihat `.gitignore`.
 
@@ -281,7 +298,7 @@ ljuFinance/
 ├── preview/                   # HTML statis pratinjau desain
 ├── storage/                   # log & ekspor (tidak di-commit)
 ├── uploads/                   # lampiran (tidak di-commit)
-└── vendor/                    # domPDF manual (tidak di-commit)
+└── vendor/                    # tidak diperlukan (PDF ditulis sendiri)
 ```
 
 ---
@@ -392,6 +409,21 @@ Sembilan role aplikasi: `super_admin`, `dirut`, `dirops`, `kabid_keuangan`, `sta
     terbentuk. Buka **Rekap SPT** → **Hitung Rekap** PPN → angka kurang bayar = keluaran − masukan, ubah status
     menjadi `final`/`dilaporkan`, lalu **Unduh e-Faktur CSV** dan periksa isinya.
 
+**Tahap 7 — pelaporan keuangan & PDF**
+
+33. Buka **Laporan Keuangan** → pilih periode → periksa kartu Total Aset, Pendapatan, Laba Bersih, dan
+    Kas & Bank; grafik tren enam bulan serta tabel rasio terisi dari jurnal posted.
+34. Buka **Laba Rugi** → bandingkan kolom periode ini dengan pembanding dan Δ%; ubah mode ke
+    **s.d. tahun berjalan** → rentang berubah dan angka mengikuti YTD.
+35. Buka **Neraca** → pastikan indikator **Neraca seimbang** aktif dan total aset = kewajiban + ekuitas;
+    baris laba tahun berjalan muncul di ekuitas.
+36. Buka **Arus Kas** → periksa pengelompokan operasi/investasi/pendanaan, kas awal + neto = kas akhir,
+    dan status rekonsiliasi; lalu **Perubahan Ekuitas** dan **Laba Rugi Proyek**.
+37. Terapkan filter bidang/divisi/proyek → seluruh laporan berubah konsisten; kosongkan filter untuk
+    kembali ke angka penuh.
+38. Klik **PDF** → file `laporan-*.pdf` terunduh dan dapat dibuka (kop, tabel, catatan, tanda tangan);
+    ulangi untuk **Excel** dan **CSV**, lalu buka **Cetak** dan simpan sebagai PDF dari browser.
+
 ---
 
 ## 9. Catatan Pengembangan
@@ -399,6 +431,6 @@ Sembilan role aplikasi: `super_admin`, `dirut`, `dirops`, `kabid_keuangan`, `sta
 - Branch kerja: `arena/d346e56d-ljufinance`.
 - Setiap tahap diselesaikan lalu **berhenti untuk konfirmasi** sebelum tahap berikutnya.
 - `projects.md` adalah acuan arsitektur (skema, modul, roadmap) dan diperbarui setiap tahap.
-- Library pihak ketiga selain domPDF tidak digunakan (tanpa Composer, tanpa CDN).
+- Tidak ada library pihak ketiga (tanpa Composer, tanpa CDN, tanpa Dompdf).
 
 © PT. Lampung Jasa Utama — penggunaan internal.

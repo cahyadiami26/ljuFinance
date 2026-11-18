@@ -27,7 +27,7 @@ use Lju\Controllers\JournalController;
 use Lju\Controllers\LedgerController;
 use Lju\Controllers\MasterController;
 use Lju\Controllers\PeriodController;
-use Lju\Controllers\PlaceholderController;
+use Lju\Controllers\ReportController;
 use Lju\Controllers\ProfileController;
 use Lju\Controllers\ReconciliationController;
 use Lju\Controllers\RevenueController;
@@ -269,4 +269,13 @@ $router->post('tax/{id}/setor', [TaxController::class, 'setor'], 'tax.manage');
 $router->post('tax/{id}/lapor', [TaxController::class, 'lapor'], 'tax.manage');
 $router->post('tax/{id}/void', [TaxController::class, 'void'], 'tax.manage');
 $router->post('tax/{id}/delete', [TaxController::class, 'destroy'], 'tax.manage');
-$router->get('report', [PlaceholderController::class, 'show'], 'report.view');
+
+/* ---------------------------------------------------- laporan keuangan */
+$router->get('report', [ReportController::class, 'index'], 'report.view');
+$router->get('report/income', [ReportController::class, 'income'], 'report.view');
+$router->get('report/balance-sheet', [ReportController::class, 'balanceSheet'], 'report.view');
+$router->get('report/cash-flow', [ReportController::class, 'cashFlow'], 'report.view');
+$router->get('report/equity', [ReportController::class, 'equity'], 'report.view');
+$router->get('report/project', [ReportController::class, 'project'], 'report.view');
+$router->get('report/print/{jenis}', [ReportController::class, 'print'], 'report.view');
+$router->get('report/export/{jenis}', [ReportController::class, 'export'], 'report.export');
